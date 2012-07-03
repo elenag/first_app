@@ -3,6 +3,17 @@ class Device < ActiveRecord::Base
   STATUS_BROKEN = 'broken'
   STATUS_MISSING = 'missing'
   STATUS_SPARE = 'spare'
+  STATUS_RETURNED =  'returned' 
+  STATUS_REPAIRED = 'repaired'
+  STATUS_DISPOSED = 'disposed'
+  STATUS_TO_RETURN = 'to_return'
+  STATUS_TO_REPAIR = 'to_repair'
+
+  BROKEN_SCREEN = 'broken_screen'
+  FROZEN_SCREEN = 'frozen_screen'
+  CONNECTIVITY_PROBLEM = 'connectivity_problem'
+  LOOSE_CHARGE_CONTACT = 'loose_contact'
+
   
   attr_accessible :serial_number, :status, :flagged, :control, :reinforced_screen, :device_type, :account_id, :device_type_id, :purchase_order_id, :events_attributes
   
@@ -16,17 +27,21 @@ class Device < ActiveRecord::Base
 
   has_one :homeroom, :through => :account
   has_one :school, :through => :homeroom
-  has_one :project, :through => :school
-  validates :serial_number, :presence => true
-  validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_MISSING], :message => "You need to pick one status." }
+  has_one :project, :through => :purchase_order
+  validates :serial_number, :device_type_id, :purchase_order_id, :status, :presence => true
+  validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_MISSING, STATUS_SPARE, STATUS_RETURNED, STATUS_REPAIRED, STATUS_DISPOSED, STATUS_TO_RETURN,STATUS_TO_REPAIR], :message => "You need to pick one status." }
+  validates :return_reason, :inclusion => { :in => [BROKEN_SCREEN, FROZEN_SCREEN, CONNECTIVITY_PROBLEM, LOOSE_CHARGE_CONTACT], :message => "You need to pick a reason for return." }
 
 class << self
-    def status_collection
+    def device_status_collection
       {
         "OK" => STATUS_OK,
         "Broken" => STATUS_BROKEN,
         "Missing" => STATUS_MISSING,
-        "Spare" => STATUS_SPARE
+        "Spare" => STATUS_SPARE,
+        "Returned" => STATUS_RETURNED,
+        "Repaired" => STATUS_REPAIRED,
+        "Disposed" => STATUS_DISPOSED
       }
     end
     

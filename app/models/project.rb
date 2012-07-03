@@ -5,11 +5,13 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :schools, :allow_destroy => true
   has_many :homerooms, :through => :schools
   accepts_nested_attributes_for :homerooms, :allow_destroy => true
+  has_many :accounts, :through => :homerooms
+  accepts_nested_attributes_for :accounts, :allow_destroy => true
   belongs_to :origin, :include => :continent
   accepts_nested_attributes_for :origin, :allow_destroy => true
   belongs_to :model
 
-  validates :name, :presence => true
+  validates :name, :origin_id, :presence => true
 
   class << self
     def status_collection
@@ -36,21 +38,23 @@ class Project < ActiveRecord::Base
   def accounts_active
     account_total = 0
     self.homerooms.each do |h|
-        account_total +=h.accounts.where(:status => 'OK').count
+        account_total +=h.accounts.where(:status => Account::STATUS_ACTIVE).count
     end
     account_total
   end
 
   def devices_active
     devices_total = 0
-    self.homerooms.each do |h|
-      h.accounts.each do |a|
-        devices_total +=a.devices.where(:status => 'OK').count
+    self.schools.each do |s|
+      s.homerooms.each do |h|
+        h.accounts.each do |a|
+          devices_total += a.devices.where(:status => Device::STATUS_OK).count
+        end
       end
     end
     devices_total
   end
- 
+
 end
 
 #def total_schools

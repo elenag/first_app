@@ -1,19 +1,34 @@
 ActiveAdmin.register Author do
 	index do
-        column :name 
+        column("Name") do |author|
+            link_to author.name, admin_author_path(author)
+        end
+ #       column :name 
 		column :origin
 		column "Books" do |author| 
 			author.books.map{ |book| book.title }.join("<br />").html_safe
 		end
+        column :comments
+    end
 
-        default_actions
+    show do
+      attributes_table do
+        row :name 
+        row :origin
+        row "Books" do |author| 
+            author.books.map{ |book| book.title }.join(" ;").html_safe
+        end
+        row :comments
+      end
+
+ #       default_actions
     end
 
     form do |f|
     	f.inputs "Author Details" do
     		f.input :name
         	f.input :origin, :collection => Origin.all.map{ |origin| [origin.name, origin.id] }
-#        	f.input :comments
+        	f.input :comments
         end
         
         f.buttons
@@ -22,6 +37,9 @@ ActiveAdmin.register Author do
 end
 
 ActiveAdmin.register PublishingRight do
+
+    menu false
+
     index do
         column :name 
         default_actions
@@ -52,6 +70,8 @@ ActiveAdmin.register Language do
 end
 
 ActiveAdmin.register Genre do
+    menu false 
+
     index do
         column :name 
         default_actions
@@ -67,6 +87,8 @@ ActiveAdmin.register Genre do
 end
 
 ActiveAdmin.register Platform do
+    menu false 
+
     index do
         column :name 
         default_actions
@@ -82,6 +104,8 @@ ActiveAdmin.register Platform do
 end
 
 ActiveAdmin.register Level do
+menu false
+
     index do
         column :name 
         default_actions

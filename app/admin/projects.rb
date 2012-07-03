@@ -1,6 +1,6 @@
 ActiveAdmin.register Project do
+ 
 
-#  menu false
   filter :name, :html => "class='hoge'"
   filter :origin
   filter :model, :as => :check_boxes

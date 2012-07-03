@@ -1,5 +1,5 @@
 class Origin < ActiveRecord::Base
-  attr_accessible :name, :id
+  attr_accessible :name, :id, :continent_id
 
   belongs_to :continent
   has_many :projects
@@ -8,6 +8,6 @@ class Origin < ActiveRecord::Base
   accepts_nested_attributes_for :authors
   has_many :publishers
   
-  validates :name, :presence => true
+  validates :name, :continent_id, :presence => true
 
 end

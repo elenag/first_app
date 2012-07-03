@@ -12,7 +12,7 @@ class School < ActiveRecord::Base
   has_many :accounts, :through => :homerooms
   accepts_nested_attributes_for :accounts
 
-  validates :name, :presence => true
+  validates :name, :project_id, :presence => true
 
 end
 

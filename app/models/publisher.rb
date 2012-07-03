@@ -1,9 +1,12 @@
 class Publisher < ActiveRecord::Base
   attr_accessible :name, :origin_id
- # accepts_nested_attributes_for :books
+ 
 
   has_many :books
-  belongs_to :origin
+  belongs_to :origin, :include => :continent
 
-  validates :name, :presence => true
+  accepts_nested_attributes_for :origin
+
+
+  validates :name, :origin_id, :presence => true
 end

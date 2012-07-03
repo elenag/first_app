@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120606095931) do
+ActiveRecord::Schema.define(:version => 20120702164143) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -65,6 +65,7 @@ ActiveRecord::Schema.define(:version => 20120606095931) do
     t.integer  "origin_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.text     "comments"
   end
 
   add_index "authors", ["origin_id"], :name => "index_authors_on_origin_id"
@@ -89,6 +90,9 @@ ActiveRecord::Schema.define(:version => 20120606095931) do
     t.text     "comments"
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
+    t.date     "date_added"
+    t.string   "status"
+    t.boolean  "restricted"
   end
 
   add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "books_language_publisher_genre_index", :unique => true
@@ -125,7 +129,15 @@ ActiveRecord::Schema.define(:version => 20120606095931) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "project_id"
   end
+
+  create_table "content_buckets_homerooms", :id => false, :force => true do |t|
+    t.integer "content_bucket_id"
+    t.integer "homeroom_id"
+  end
+
+  add_index "content_buckets_homerooms", ["content_bucket_id", "homeroom_id"], :name => "content_bucket_homeroom_index", :unique => true
 
   create_table "continents", :force => true do |t|
     t.string   "name"
@@ -150,6 +162,8 @@ ActiveRecord::Schema.define(:version => 20120606095931) do
     t.datetime "created_at",                           :null => false
     t.datetime "updated_at",                           :null => false
     t.string   "status"
+    t.string   "return_reason"
+    t.text     "comments"
   end
 
   add_index "devices", ["account_id", "purchase_order_id", "device_type_id"], :name => "device_account_po_dt_index"
@@ -248,11 +262,25 @@ ActiveRecord::Schema.define(:version => 20120606095931) do
 
   create_table "purchase_orders", :force => true do |t|
     t.string   "po_number"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
     t.date     "date_ordered"
-    t.date     "date_received"
+    t.date     "warranty_end_date"
+    t.integer  "project_id"
+    t.text     "comments"
   end
+
+  create_table "pushes", :force => true do |t|
+    t.integer  "book_id"
+    t.integer  "content_bucket_id"
+    t.date     "push_date"
+    t.boolean  "successful"
+    t.text     "comments"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "pushes", ["book_id", "content_bucket_id"], :name => "index_pushes_on_book_id_and_content_bucket_id"
 
   create_table "schools", :force => true do |t|
     t.string   "name"
@@ -269,8 +297,8 @@ ActiveRecord::Schema.define(:version => 20120606095931) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "account_id"
-    t.boolean  "teacher"
     t.text     "comments"
+    t.string   "role"
   end
 
   add_index "students", ["account_id"], :name => "index_students_on_account_id", :unique => true
