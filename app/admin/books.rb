@@ -1,5 +1,6 @@
 ActiveAdmin.register Book do
 
+#scope lambda { where :status => 'published' }
 scope :all, :default => true
 scope :published do |books| 
     books.where( :status => 'published' )#:continent => 'Africa')

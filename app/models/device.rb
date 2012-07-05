@@ -32,6 +32,8 @@ class Device < ActiveRecord::Base
   validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_MISSING, STATUS_SPARE, STATUS_RETURNED, STATUS_REPAIRED, STATUS_DISPOSED, STATUS_TO_RETURN,STATUS_TO_REPAIR], :message => "You need to pick one status." }
   validates :return_reason, :inclusion => { :in => [BROKEN_SCREEN, FROZEN_SCREEN, CONNECTIVITY_PROBLEM, LOOSE_CHARGE_CONTACT], :message => "You need to pick a reason for return." }
 
+
+
 class << self
     def device_status_collection
       {
@@ -43,6 +45,14 @@ class << self
         "Repaired" => STATUS_REPAIRED,
         "Disposed" => STATUS_DISPOSED
       }
+    end
+
+    def projectSelector
+      print "LALALALALA"
+      print Project.all
+      print "LOLOLOLO"
+      Project.where(:id => 4)
+      #Project.all
     end
     
     def this_month

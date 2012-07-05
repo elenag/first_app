@@ -34,6 +34,8 @@ class Book < ActiveRecord::Base
       STATUS_WAITING_PUBLISHING, STATUS_WAITING_PDF, STATUS_PROBLEM_WITH_MOBI, STATUS_PROBLEM_WITH_PDF], :message =>"You need to specify a book status" }
   validates :title, :status, :date_added, :publisher_id, :language_id, :genre_id, :author_ids, :presence => true
 
+  #scope :publish, lambda { where :status => 'published' }
+
   class << self
     def books_status_collection
       {

@@ -2,7 +2,7 @@ ActiveAdmin.register Device do
 #    belongs_to :project
 
     filter :project, :as => :select, :label => "Project", 
-        :collection => proc {Project.all} rescue nil
+        :collection => proc {Device.projectSelector} rescue nil
     filter :school, :as => :select, :label => "School", 
         :collection => proc {School.all} rescue nil
     filter :homeroom, :as => :select, :label => "Classroom", 
@@ -33,6 +33,7 @@ ActiveAdmin.register Device do
 
 
     index do
+
         column("Account") do |device|
             link_to device.account.acc_number, admin_device_path(device)
         end
@@ -48,6 +49,7 @@ ActiveAdmin.register Device do
         column('Reinforced') { |device| device.reinforced_screen }
         column("Comments") { |device| device.account.comments }
         column("Broken devices") { |device| device.account.number_broken }
+
     end
 
     csv do

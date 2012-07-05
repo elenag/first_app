@@ -36,6 +36,8 @@ class DeviseCreateAdminUsers < ActiveRecord::Migration
       ## Token authenticatable
       # t.string :authentication_token
 
+      ## Menu attributes
+      t.boolean :can_edit_origins, : default => false
 
       t.timestamps
     end
