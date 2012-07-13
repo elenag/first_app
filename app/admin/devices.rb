@@ -1,8 +1,11 @@
 ActiveAdmin.register Device do
 #    belongs_to :project
 
-    filter :project, :as => :select, :label => "Project", 
-        :collection => proc {Device.projectSelector} rescue nil
+    scope_to :current_admin_user #, :association_method => :projects
+
+
+    filter :project, :include_blank => false, :as => :select, :label => "Project", 
+        :collection => proc {Project.all} rescue nil
     filter :school, :as => :select, :label => "School", 
         :collection => proc {School.all} rescue nil
     filter :homeroom, :as => :select, :label => "Classroom", 
@@ -34,22 +37,21 @@ ActiveAdmin.register Device do
 
     index do
 
-        column("Account") do |device|
+         column("Account") do |device|
             link_to device.account.acc_number, admin_device_path(device)
-        end
-        column "Surname" do |device| 
-            device.account.students.map(&:other_names).join("<br />").html_safe
-        end
-        column "Name" do |device| 
-            device.account.students.map(&:first_name).join("<br />").html_safe
-        end
-        column :serial_number
-        column :device_type
-        column ("Status") { |device| device.status }
-        column('Reinforced') { |device| device.reinforced_screen }
-        column("Comments") { |device| device.account.comments }
-        column("Broken devices") { |device| device.account.number_broken }
-
+         end
+          column "Surname" do |device| 
+              device.account.students.map(&:other_names).join("<br />").html_safe
+          end
+         column "Name" do |device| 
+             device.account.students.map(&:first_name).join("<br />").html_safe
+         end
+         column :serial_number
+         column :device_type
+         column ("Status") { |device| device.status }
+         column('Reinforced') { |device| device.reinforced_screen }
+         column("Comments") { |device| device.account.comments }
+         column("Broken devices") { |device| device.account.number_broken }
     end
 
     csv do

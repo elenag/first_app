@@ -28,6 +28,7 @@ class Device < ActiveRecord::Base
   has_one :homeroom, :through => :account
   has_one :school, :through => :homeroom
   has_one :project, :through => :purchase_order
+  has_many :admin_users, :through => :projects
   validates :serial_number, :device_type_id, :purchase_order_id, :status, :presence => true
   validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_MISSING, STATUS_SPARE, STATUS_RETURNED, STATUS_REPAIRED, STATUS_DISPOSED, STATUS_TO_RETURN,STATUS_TO_REPAIR], :message => "You need to pick one status." }
   validates :return_reason, :inclusion => { :in => [BROKEN_SCREEN, FROZEN_SCREEN, CONNECTIVITY_PROBLEM, LOOSE_CHARGE_CONTACT], :message => "You need to pick a reason for return." }
@@ -48,11 +49,14 @@ class << self
     end
 
     def projectSelector
-      print "LALALALALA"
-      print Project.all
-      print "LOLOLOLO"
-      Project.where(:id => 4)
-      #Project.all
+      Project.all
+    end
+
+    def getDevicePromProject
+     # AdminUser.getProjects
+      #userProjects = Project.where(:id => [AdminUser.getProjects.id]);
+      #print userProjects
+      #Device.where(:purchase_order_id => Project::STATUS_OK).count)
     end
     
     def this_month

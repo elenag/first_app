@@ -10,6 +10,8 @@ class Project < ActiveRecord::Base
   belongs_to :origin, :include => :continent
   accepts_nested_attributes_for :origin, :allow_destroy => true
   belongs_to :model
+  has_and_belongs_to_many :admin_users, :join_table => :admin_users_projects
+  has_many :purchase_orders
 
   validates :name, :origin_id, :presence => true
 

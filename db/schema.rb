@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120704211356) do
+ActiveRecord::Schema.define(:version => 20120711201247) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -60,6 +60,13 @@ ActiveRecord::Schema.define(:version => 20120704211356) do
 
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
   add_index "admin_users", ["reset_password_token"], :name => "index_admin_users_on_reset_password_token", :unique => true
+
+  create_table "admin_users_projects", :id => false, :force => true do |t|
+    t.integer "admin_user_id"
+    t.integer "project_id"
+  end
+
+  add_index "admin_users_projects", ["admin_user_id", "project_id"], :name => "admin_user_project_index", :unique => true
 
   create_table "authors", :force => true do |t|
     t.string   "name"
@@ -237,11 +244,12 @@ ActiveRecord::Schema.define(:version => 20120704211356) do
     t.string   "name"
     t.integer  "model_id"
     t.integer  "origin_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "target_size"
     t.integer  "current_size"
     t.text     "comments"
+    t.integer  "admin_user_id"
   end
 
   add_index "projects", ["origin_id", "model_id"], :name => "index_projects_on_origin_id_and_model_id"

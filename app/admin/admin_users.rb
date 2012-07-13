@@ -13,6 +13,9 @@ ActiveAdmin.register AdminUser do #, :as => "Users" do
        link_to("Details", admin_admin_user_path(admin_user)) + " | " + \
       link_to("Edit", edit_admin_admin_user_path(admin_user)) + delete.try(:html_safe)
     end
+    column "Projects" do |admin_user| 
+            admin_user.projects.map(&:name).join("<br />").html_safe
+    end
     #default_actions
   end
 
@@ -34,6 +37,7 @@ ActiveAdmin.register AdminUser do #, :as => "Users" do
       f.input :password, :type => :password
       f.input :password_confirmation, :type => :password
       f.input :can_edit_origins
+      f.input :projects
     end
     
     f.buttons
