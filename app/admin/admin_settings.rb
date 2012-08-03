@@ -1,45 +1,6 @@
-ActiveAdmin.register Author do
-	index do
-        column("Name") do |author|
-            link_to author.name, admin_author_path(author)
-        end
- #       column :name 
-		column :origin
-		column "Books" do |author| 
-			author.books.map{ |book| book.title }.join("<br />").html_safe
-		end
-        column :comments
-    end
-
-    show do
-      attributes_table do
-        row :name 
-        row :origin
-        row "Books" do |author| 
-            author.books.map{ |book| book.title }.join(" ;").html_safe
-        end
-        row :comments
-      end
-
- #       default_actions
-    end
-
-    form do |f|
-    	f.inputs "Author Details" do
-    		f.input :name
-        	f.input :origin, :collection => Origin.all.map{ |origin| [origin.name, origin.id] }
-        	f.input :comments
-        end
-        
-        f.buttons
-
-    end
-end
-
 ActiveAdmin.register PublishingRight do
-
-    menu false
-
+    menu :if => proc{ current_admin_user.can_edit_origins? }
+ 
     index do
         column :name 
         default_actions
@@ -55,6 +16,7 @@ ActiveAdmin.register PublishingRight do
 end
 
 ActiveAdmin.register Language do
+    menu :if => proc{ current_admin_user.can_edit_origins? }
     index do
         column :name 
         default_actions
@@ -70,7 +32,7 @@ ActiveAdmin.register Language do
 end
 
 ActiveAdmin.register Genre do
-    menu false 
+    menu :if => proc{ current_admin_user.can_edit_origins? } 
 
     index do
         column :name 
@@ -87,7 +49,7 @@ ActiveAdmin.register Genre do
 end
 
 ActiveAdmin.register Platform do
-    menu false 
+    menu :if => proc{ current_admin_user.can_edit_origins? } 
 
     index do
         column :name 
@@ -104,7 +66,7 @@ ActiveAdmin.register Platform do
 end
 
 ActiveAdmin.register Level do
-menu false
+   menu :if => proc{ current_admin_user.can_edit_origins? }
 
     index do
         column :name 
@@ -120,20 +82,40 @@ menu false
     end
 end
 
-ActiveAdmin.register Publisher do
+ActiveAdmin.register DeviceType do
+    menu :if => proc{ current_admin_user.can_edit_origins? }
+    
     index do
         column :name 
-        column :origin
         default_actions
     end
 
     form do |f|
-        f.inputs "Publisher Details" do
+        f.inputs "Device Types Details" do
             f.input :name
-            f.input :origin
         end
         
         f.buttons
     end
 end
 
+ActiveAdmin.register Origin do
+  menu :if => proc{ current_admin_user.can_edit_origins? }
+
+  index do
+    column :name
+    column :continent
+    default_actions
+  end
+
+end
+
+ActiveAdmin.register ProjectType do
+  menu :if => proc{ current_admin_user.can_edit_origins? }
+
+  index do
+    column :name
+    default_actions
+  end
+
+end

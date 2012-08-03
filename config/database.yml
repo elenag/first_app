@@ -19,7 +19,9 @@ test:
   timeout: 5000
 
 production:
-  adapter: postgresql
-  database: db/production.postgresql
-  pool: 5
-  timeout: 5000
+  adapter: mysql
+  database: worldreader
+  encoding: utf8
+  username: worldreader
+  password: totKoirIvnavwuds
+  host: localhost

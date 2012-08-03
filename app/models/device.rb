@@ -1,21 +1,25 @@
 class Device < ActiveRecord::Base
+  scope :OK, where(:status => 'ok' )
+  scope :BROKEN, where(:status => 'broken' )
+  scope :SPARE, where(:status => 'spare')
+  scope :TO_REPAIR, where(:action => 'repair')
+  scope :TO_RETURN, where(:action => 'return')
+
   STATUS_OK = 'ok'
   STATUS_BROKEN = 'broken'
-  STATUS_MISSING = 'missing'
   STATUS_SPARE = 'spare'
-  STATUS_RETURNED =  'returned' 
-  STATUS_REPAIRED = 'repaired'
-  STATUS_DISPOSED = 'disposed'
-  STATUS_TO_RETURN = 'to_return'
-  STATUS_TO_REPAIR = 'to_repair'
+
+#Reasons For Return:
 
   BROKEN_SCREEN = 'broken_screen'
   FROZEN_SCREEN = 'frozen_screen'
   CONNECTIVITY_PROBLEM = 'connectivity_problem'
   LOOSE_CHARGE_CONTACT = 'loose_contact'
-
   
-  attr_accessible :serial_number, :status, :flagged, :control, :reinforced_screen, :device_type, :account_id, :device_type_id, :purchase_order_id, :events_attributes
+  attr_accessible :serial_number, 
+                  :status, :action, :flagged, :control, 
+                  :reinforced_screen, :device_type, :account_id, 
+                  :device_type_id, :purchase_order_id, :events_attributes
   
   belongs_to :account
   belongs_to :purchase_order
@@ -28,9 +32,9 @@ class Device < ActiveRecord::Base
   has_one :homeroom, :through => :account
   has_one :school, :through => :homeroom
   has_one :project, :through => :purchase_order
-  has_many :admin_users, :through => :projects
+  has_many :admin_users, :through => :project
   validates :serial_number, :device_type_id, :purchase_order_id, :status, :presence => true
-  validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_MISSING, STATUS_SPARE, STATUS_RETURNED, STATUS_REPAIRED, STATUS_DISPOSED, STATUS_TO_RETURN,STATUS_TO_REPAIR], :message => "You need to pick one status." }
+  validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_SPARE], :message => "You need to pick one status." }
   validates :return_reason, :inclusion => { :in => [BROKEN_SCREEN, FROZEN_SCREEN, CONNECTIVITY_PROBLEM, LOOSE_CHARGE_CONTACT], :message => "You need to pick a reason for return." }
 
 
@@ -40,11 +44,15 @@ class << self
       {
         "OK" => STATUS_OK,
         "Broken" => STATUS_BROKEN,
-        "Missing" => STATUS_MISSING,
-        "Spare" => STATUS_SPARE,
-        "Returned" => STATUS_RETURNED,
-        "Repaired" => STATUS_REPAIRED,
-        "Disposed" => STATUS_DISPOSED
+        "Spare" => STATUS_SPARE
+      }
+    end
+
+    def device_action_collection
+      {
+        "None" => 'none',
+        "To Repair" => 'repair',
+        "To return" => 'return'
       }
     end
 
@@ -68,9 +76,32 @@ class << self
     Event.where(:device_id => self.id).last
   end
 
+  def new_event(pname)
+    if pname.eql?('assigned') || pname.eql?('repaired') then 
+      self.update_attribute(:status, 'ok')
+      self.update_attribute(:action, 'none')
+    elsif pname.eql?('broken') then
+      if self.purchase_order.in_warranty then
+        self.update_attribute(:action, 'return')
+      else
+        self.update_attribute(:action, 'repair')
+      end
+      self.update_attribute(:status, 'broken')
+    elsif pname.eql?('returned') || pname.eql?('missing') then 
+      self.update_attribute(:action, 'none')
+      self.update_attribute(:status, 'broken')
+    else
+      @tri = "wrong!!!!!!!!!!!!!!!"
+      #:notice => "You have entered a worng status." 
+    end
+    Event.new(:device_id => self.id, :name => pname).save
+  end
+
+
+
   def project_search
-    @project = Project.all.where(:name => :in_name)
-    @school = School.all.where(:project_id => @project.id)
+    @project = Project.where(:name => :in_name)
+    @schools = School.where(:project_id => @project.id)
   end
 
 #    @projects_with_awesome_users_search =

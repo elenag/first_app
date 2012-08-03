@@ -9,6 +9,8 @@ class School < ActiveRecord::Base
   has_many :homerooms, :dependent => :destroy
   accepts_nested_attributes_for :homerooms, :allow_destroy => true
 
+  has_many :students
+
   has_many :accounts, :through => :homerooms
   accepts_nested_attributes_for :accounts
 

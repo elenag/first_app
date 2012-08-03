@@ -6,12 +6,13 @@ gem 'haml'
 
 
 # ActiveAdmin related gems
-gem "activeadmin", "~> 0.4.3"
+gem "activeadmin", :git => "git://github.com/gregbell/active_admin.git"
 gem "meta_search",    '>= 1.1.0.pre'
 gem "formtastic", "~> 2.1.1"  # 2.2 + breaks active admin
-
+gem 'sass-rails',   '3.2.4'
 gem 'jquery-rails', '2.0.0'
 gem 'json'
+gem 'capistrano'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -19,7 +20,6 @@ gem 'json'
 # Gems used only for assets and not required
 # in production environments by default.
 group :assets do
-  gem 'sass-rails',   '3.2.4'
   gem 'coffee-rails', '3.2.2'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes

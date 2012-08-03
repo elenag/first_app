@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120711201247) do
+ActiveRecord::Schema.define(:version => 20120802165631) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -56,6 +56,9 @@ ActiveRecord::Schema.define(:version => 20120711201247) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.boolean  "can_edit_origins"
+    t.boolean  "ops_rel"
+    t.boolean  "publishing_rel"
+    t.boolean  "DR_rel"
   end
 
   add_index "admin_users", ["email"], :name => "index_admin_users_on_email", :unique => true
@@ -172,6 +175,7 @@ ActiveRecord::Schema.define(:version => 20120711201247) do
     t.string   "status"
     t.string   "return_reason"
     t.text     "comments"
+    t.string   "action"
   end
 
   add_index "devices", ["account_id", "purchase_order_id", "device_type_id"], :name => "device_account_po_dt_index"
@@ -240,16 +244,23 @@ ActiveRecord::Schema.define(:version => 20120711201247) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "project_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "projects", :force => true do |t|
     t.string   "name"
     t.integer  "model_id"
     t.integer  "origin_id"
-    t.datetime "created_at",    :null => false
-    t.datetime "updated_at",    :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
     t.integer  "target_size"
     t.integer  "current_size"
     t.text     "comments"
     t.integer  "admin_user_id"
+    t.integer  "project_type_id"
   end
 
   add_index "projects", ["origin_id", "model_id"], :name => "index_projects_on_origin_id_and_model_id"

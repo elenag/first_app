@@ -1,4 +1,5 @@
 ActiveAdmin.register School do
+  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? }
   filter :name, :html => "class='hoge'"
   filter :origin
 
@@ -16,7 +17,7 @@ form do |f|
       p.input :name
     end
   end
-  f.buttons
+  f.actions
 end
 
 end

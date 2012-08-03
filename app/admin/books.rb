@@ -1,18 +1,43 @@
 ActiveAdmin.register Book do
 
-#scope lambda { where :status => 'published' }
-scope :all, :default => true
-scope :published do |books| 
-    books.where( :status => 'published' )#:continent => 'Africa')
+batch_action :publish_amazon do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'publish_amazon')}
+    redirect_to collection_path, :notice => "status changed to published!"
 end
-#scope :african do |books| 
-#    books.all.where( :continent => 'Africa')
-#end
-#scope :international, where(:continent => nil)
+batch_action :publish_app do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'publish_app')}
+    redirect_to collection_path, :notice => "status changed to published!"
+end
+batch_action :publish_both do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'publish_both')}
+    redirect_to collection_path, :notice => "status changed to published!"
+end
+batch_action :waiting_pdf do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'waiting_pdf')}
+    redirect_to collection_path, :notice => "status changed to Waiting PDF!"
+end
+batch_action :problem_pdf do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'problem_pdf')}
+    redirect_to collection_path, :notice => "status changed to problem with PDF!"
+end
+batch_action :problem_mobi do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'problem_mobi')}
+    redirect_to collection_path, :notice => "status changed to Problem with the MOBI file!"
+end
+batch_action :waiting_pub do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'waiting_pub')}
+    redirect_to collection_path, :notice => "status changed to awaiting publication on Amazon!"
+end
+batch_action :other do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:status, 'other')}
+    redirect_to collection_path, :notice => "status changed to other! Please, specify in the comments"
+end
+
 
 filter :status, :as => :select, :collection => Book.books_status_collection
 filter :genre
 filter :language
+filter :levels
 filter :rating
 filter :publisher
 filter :price
@@ -22,9 +47,18 @@ filter :title
 filter :authors
 filter :date_added
 filter :restricted, :as => :select
-#filter :origin
+filter :origin
 filter :continent
 #filter :not_pushed_to
+
+  controller do
+    def create 
+      create! do |format|
+        format.html { redirect_to admin_books_url }
+         create!(:notice => "Book has been created") { admin_books_url }
+      end
+    end
+  end
 
 
   action_item :only => :index do
@@ -40,11 +74,13 @@ filter :continent
     	redirect_to :action => :index, :notice => "CSV imported successfully!"
   	end
 
-
+  
     index do
-        column :status
+        selectable_column
+        column("Status") {|book| status_tag(book.status) }
         column("ASIN") do |book|
-		    link_to book.asin, admin_book_path(book)
+           # link_to("Delete", admin_admin_user_path(admin_user), :method => :delete, :confirm => "Are you sure?") 
+		    link_to book.asin, admin_book_path(book), :method => :edit
   		end
 		column :title
 		column "Author" do |book| 
@@ -52,17 +88,17 @@ filter :continent
 		end
         column :rating
         column :publisher
-        column :continent
+ #       column :continent
         column :genre
         column :restricted
         column "Levels" do |book| 
             book.levels.map(&:name).join("<br />").html_safe
         end
-        column "Pushed to" do |book| 
-            book.content_buckets.map(&:name).join("<br />").html_safe
-        end
+#        column "Pushed to" do |book| 
+ #           book.content_buckets.map(&:name).join("<br />").html_safe
+ #       end
 
-#        default_actions
+        default_actions
     end
 
 

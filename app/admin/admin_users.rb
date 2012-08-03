@@ -1,4 +1,5 @@
 ActiveAdmin.register AdminUser do #, :as => "Users" do
+  menu :if => proc{ current_admin_user.can_edit_origins? }
   filter :email
   filter :last_sign_in_at
   
@@ -6,6 +7,9 @@ ActiveAdmin.register AdminUser do #, :as => "Users" do
     column :id
     column :email
     column :can_edit_origins
+    column :publishing_rel
+    column :ops_rel
+    column :DR_rel
     column "Last Sign in", :last_sign_in_at
     column ("Actions") do |admin_user|
        delete = " | " + link_to("Delete", admin_admin_user_path(admin_user), :method => :delete, :confirm => "Are you sure?") unless current_admin_user == admin_user
@@ -26,6 +30,9 @@ ActiveAdmin.register AdminUser do #, :as => "Users" do
        row :last_sign_in_at
        row :created_at
        row :can_edit_origins
+       row :publishing_rel
+       row :ops_rel
+       row :DR_rel
       end
     end
   end
@@ -37,6 +44,9 @@ ActiveAdmin.register AdminUser do #, :as => "Users" do
       f.input :password, :type => :password
       f.input :password_confirmation, :type => :password
       f.input :can_edit_origins
+      f.input :ops_rel
+      f.input :publishing_rel
+      f.input :DR_rel
       f.input :projects
     end
     

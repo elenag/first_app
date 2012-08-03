@@ -3,3 +3,18 @@
 
 en:
   hello: "Hello world"
+
+  active_admin:
+    batch_actions:
+      labels:
+        publish_amazon: "AMAZON_Published"
+        publish_app: "APP_Published"
+        waiting_pdf: "Waitiing PDF"
+        problem_pdf: "Problem with PDF"
+        problem_mobi: "Problem with mobi"
+        waiting_pub_app: "Waiting To Published on App"
+        waiting_pub_amazon: "Waiting To Published on App"
+        in_review: "In Review at Amazon"
+        sent_to_convert: "Sent to convert"
+        other: "Other"
+

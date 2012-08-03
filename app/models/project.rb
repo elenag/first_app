@@ -1,19 +1,27 @@
 class Project < ActiveRecord::Base
-  attr_accessible :name, :model_id, :origin_id, :schools_attributes, :homerooms_attributes, :target_size, :current_size
+  attr_accessible :name, :model_id, :origin_id, :project_type_id, :schools_attributes, :homerooms_attributes, :content_buckets_attributes, :target_size, :current_size
 
   has_many :schools, :dependent => :destroy
   accepts_nested_attributes_for :schools, :allow_destroy => true
   has_many :homerooms, :through => :schools
   accepts_nested_attributes_for :homerooms, :allow_destroy => true
+  has_many :content_buckets
+  accepts_nested_attributes_for :content_buckets
+  
   has_many :accounts, :through => :homerooms
   accepts_nested_attributes_for :accounts, :allow_destroy => true
   belongs_to :origin, :include => :continent
   accepts_nested_attributes_for :origin, :allow_destroy => true
   belongs_to :model
+  belongs_to :project_type
   has_and_belongs_to_many :admin_users, :join_table => :admin_users_projects
   has_many :purchase_orders
 
+
   validates :name, :origin_id, :presence => true
+
+  
+#  scope :kits, where(:project_type_id => 1)#ProjectType.find_by_name('Kits') )
 
   class << self
     def status_collection
@@ -22,6 +30,11 @@ class Project < ActiveRecord::Base
         "Sent" => STATUS_SENT,
         "Paid" => STATUS_PAID
       }
+    end
+
+    def projects_CB
+      @content_buckets = ContentBucket.projects_content_buckets( :id)#.count
+      print @content_buckets
     end
     
     def this_month
@@ -56,6 +69,8 @@ class Project < ActiveRecord::Base
     end
     devices_total
   end
+
+
 
 end
 
