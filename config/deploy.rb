@@ -9,8 +9,8 @@ set :user, "ubuntu"
 #role :app, "worldreader"
 role :web, "worldreader" # Your HTTP server, Apache/etc
 role :app, "worldreader" # This may be the same as your `Web` server
-role :db,  "worldreader", :primary => true # This is where Rails migrations will run
-role :db,  "worldreader"
+role :db, "worldreader", :primary => true # This is where Rails migrations will run
+role :db, "worldreader"
 
 # role :web, "your web-server here"                          # Your HTTP server, Apache/etc
 # role :app, "your app-server here"                          # This may be the same as your `Web` server
