@@ -21,11 +21,11 @@ class Student < ActiveRecord::Base
   class << self
     def students_roles_collection
       {
-        "Student" => ROLE_STUDENT,
-        "Teacher" => ROLE_TEACHER,
-        "Project Manager" => ROLE_PROJECT_MANAGER,
-        "Staff" => ROLE_STAFF,
-        "Other" => ROLE_OTHER
+        "student" => ROLE_STUDENT,
+        "teacher" => ROLE_TEACHER,
+        "project manager" => ROLE_PROJECT_MANAGER,
+        "staff" => ROLE_STAFF,
+        "other" => ROLE_OTHER
       }
     end
   end

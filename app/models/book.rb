@@ -31,7 +31,7 @@ class Book < ActiveRecord::Base
 
   has_one :origin, :through => :publisher
   has_one :continent, :through => :origin
-#  accepts_nested_attributes_for :continent
+
 
   validates :status, :inclusion => { :in => [STATUS_OTHER, STATUS_PUBLISHED_APP, STATUS_PUBLISHED_AMAZON, STATUS_PUBLISHED_BOTH, STATUS_IN_REVIEW, STATUS_SENT_TO_CONVERT,
       STATUS_WAITING_PUBLISHING, STATUS_WAITING_PDF, STATUS_PROBLEM_WITH_MOBI, STATUS_PROBLEM_WITH_PDF], :message =>"You need to specify a book status" }

@@ -6,7 +6,7 @@ section "STATISTICS" do
       table do
         tr do
           th "Total Number of Devices"
-            td number_with_delimiter(Device.where(:status => 'ok').count)
+      #      td number_with_delimiter(Project.students_with_devices + Device.others_with_devices)
    #         li link_to(project.name, admin_project_path(project))
    #       end
         end
@@ -44,9 +44,9 @@ section "DEVICES" do
       t.column("Model") { |project| project.model.name }
       t.column("Current Size") { |project| project.current_size }
       t.column("Target Size") { |project| project.target_size }
-      t.column("Devices Teachers") { |project| project.schools.all.count }
-      t.column("Devices Students") { |project| project.devices_active }
-      t.column("Out of Order") { |project| project.accounts_active }
+      t.column("Devices Teachers") { |project| project.others_with_devices }
+      t.column("Devices Students") { |project| project.students_with_devices }
+      t.column("Out of Order") { |project| project.out_of_order }
     end
   end
 

@@ -20,8 +20,9 @@ test:
 
 production:
   adapter: mysql
-  database: worldreader
-  encoding: utf8
-  username: worldreader
-  password: totKoirIvnavwuds
-  host: localhost
+  database: worldreader
+  encoding: utf8
+  username: worldreader
+  password: totKoirIvnavwuds
+  host: localhost
+  timeout: 5000

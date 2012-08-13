@@ -13,7 +13,20 @@ filter :school, :as => :select, :label => "School",
 filter :homeroom, :as => :select, :label => "Classroom", 
         :collection => proc {Homeroom.all} rescue nil
 
+  action_item :only => :index do
+    link_to 'Upload CSV', :action => 'upload_csv'
+  end
 
+  collection_action :upload_csv do
+    render "admin/csv/upload_csv"
+  end
+
+  collection_action :import_csv, :method => :post do
+    CsvDb.convert_save("Student", params[:dump][:file])
+    redirect_to :action => :index, :notice => "CSV imported successfully!"
+  end
+
+  
   index  do |student|
     column :first_name
     column :other_names
@@ -33,6 +46,9 @@ form do |f|
       f.input :first_name
       f.input :other_names
       f.input :role, :collection =>  Student.students_roles_collection
+   #   f.input :homeroom
+      f.input :account
+
       f.buttons
     end
 end

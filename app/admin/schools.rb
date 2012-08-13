@@ -20,5 +20,35 @@ form do |f|
   f.actions
 end
 
+show do 
+   
+    panel "School" do
+      table_for school.homerooms do
+        column "Classrroms" do |homeroom|
+          link_to homeroom.name, admin_homeroom_path(homeroom)
+        end
+        column "Number of active accounts" do |homeroom|
+           homeroom.accounts.where(:status => 'active').count 
+        end
+        column "number of devices" do |homeroom|
+          homeroom.accounts.where(:status => 'active').count 
+        end
+      end
+    end
+    
+
+    # panel "Content Buckets" do
+    #   table_for project.content_buckets do
+    #     column "name" do |content_bucket|
+    #       link_to content_bucket.name, admin_content_bucket_path(content_bucket)
+    #     end
+    #     column "books" do |cb|
+    #       cb.books.map{ |book| book.title }.join("<br />").html_safe
+    #     end
+    #   end
+    # end
+  end
+
+
 end
     

@@ -8,6 +8,7 @@ class Device < ActiveRecord::Base
   STATUS_OK = 'ok'
   STATUS_BROKEN = 'broken'
   STATUS_SPARE = 'spare'
+  STATUS_DECEASED = 'deceased'
 
 #Reasons For Return:
 
@@ -16,12 +17,13 @@ class Device < ActiveRecord::Base
   CONNECTIVITY_PROBLEM = 'connectivity_problem'
   LOOSE_CHARGE_CONTACT = 'loose_contact'
   
-  attr_accessible :serial_number, 
+  attr_accessible :serial_number, :return_reason,
                   :status, :action, :flagged, :control, 
                   :reinforced_screen, :device_type, :account_id, 
                   :device_type_id, :purchase_order_id, :events_attributes
   
   belongs_to :account
+  accepts_nested_attributes_for :account
   belongs_to :purchase_order
   belongs_to :device_type
 
@@ -34,8 +36,8 @@ class Device < ActiveRecord::Base
   has_one :project, :through => :purchase_order
   has_many :admin_users, :through => :project
   validates :serial_number, :device_type_id, :purchase_order_id, :status, :presence => true
-  validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_SPARE], :message => "You need to pick one status." }
-  validates :return_reason, :inclusion => { :in => [BROKEN_SCREEN, FROZEN_SCREEN, CONNECTIVITY_PROBLEM, LOOSE_CHARGE_CONTACT], :message => "You need to pick a reason for return." }
+  validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_SPARE, STATUS_DECEASED], :message => "You need to pick one status." }
+#  validates :return_reason, :inclusion => { :in => [BROKEN_SCREEN, FROZEN_SCREEN, CONNECTIVITY_PROBLEM, LOOSE_CHARGE_CONTACT], :message => "You need to pick a reason for return." }
 
 
 
@@ -44,7 +46,8 @@ class << self
       {
         "OK" => STATUS_OK,
         "Broken" => STATUS_BROKEN,
-        "Spare" => STATUS_SPARE
+        "Spare" => STATUS_SPARE,
+        "Deceased" => STATUS_DECEASED
       }
     end
 
@@ -81,15 +84,26 @@ class << self
       self.update_attribute(:status, 'ok')
       self.update_attribute(:action, 'none')
     elsif pname.eql?('broken') then
-      if self.purchase_order.in_warranty then
+      if purchase_order.warranty_end_date > Date.new(Time.now.year, Time.now.month, Time.now.day).to_datetime then
         self.update_attribute(:action, 'return')
       else
         self.update_attribute(:action, 'repair')
       end
       self.update_attribute(:status, 'broken')
-    elsif pname.eql?('returned') || pname.eql?('missing') then 
+      @numbroken = Account.find(self.account_id).number_broken rescue nil
+      if @numbroken.nil?
+        @numbroken = 1
+      else
+        @numbroken += 1
+      end
+
+      self.account.update_attribute(:number_broken, @numbroken)
+ #     @nb = account.find_by_device_id(self.id).number_broken + 1
+ #     account.update_attribute(:number_broken, @nb)
+    elsif pname.eql?('returned') || pname.eql?('missing') #|| pname.eql?('disposed')  
       self.update_attribute(:action, 'none')
-      self.update_attribute(:status, 'broken')
+      self.update_attribute(:status, STATUS_DECEASED)
+      self.update_attribute(:account_id, 0)
     else
       @tri = "wrong!!!!!!!!!!!!!!!"
       #:notice => "You have entered a worng status." 

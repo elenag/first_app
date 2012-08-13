@@ -33,7 +33,8 @@ ActiveAdmin.register Author do
     end
 
   index do
-        column("Name") do |author|
+    selectable_column
+    column("Name") do |author|
             link_to author.name, admin_author_path(author)
         end
  #       column :name 

@@ -2,6 +2,21 @@ ActiveAdmin.register Homeroom do
 
  # menu false
 
+  action_item :only => :show do
+    link_to 'Upload CSV', :action => 'upload_csv'
+  end
+
+  collection_action :upload_csv do
+    render "admin/csv/upload_csv"
+  end
+
+  collection_action :import_csv, :method => :post do
+    CsvDb.convert_save("account", params[:dump][:file])
+    redirect_to :action => :index, :notice => "CSV imported successfully!"
+  end
+
+
+
   index do
     column :name
     column "Content Bucket" do |homeroom| 
@@ -14,15 +29,33 @@ ActiveAdmin.register Homeroom do
   end
 
 
-  show do 
+  show do
     panel("Classroom details") do
       attributes_table_for homeroom do 
-        row :name
-#        row :model
-#        row("List of Accounts") do |homeroom|
- #         link_to homeroom.accounts.students.first_name, admin_accounts_path(homeroom.accounts.students.all) 
- #       end 
-   #     row("Number of devices") homeroom.accounts.devices
+        row "Number of Accounts" do 
+          homeroom.accounts.where(:status => 'active').count
+        end
+        row "Number of Pupils" do 
+          homeroom.students.where(:role => 'student').count
+        end
+        row "Number of Working Devices" do 
+  #        homeroom.accounts.where(:role => 'student').count
+        end
+        row "Surname" do |h| 
+    #         h.accounts.map.students.map(&:other_names).join("<br />").html_safe
+         end
+      end
+    end
+    panel("Classroom details") do
+      table_for homeroom.accounts.where(:status => 'active') do 
+        column "List of Accounts" do |account|
+#          account.acc_number
+        # column("List of Accounts") do 
+        #   link_to homeroom.accounts.map(&:acc_number).join("<br />").html_safe #, admin_account_path(account) 
+        end 
+        column "Device" do |account|
+ #         account.devices.where(:status => 'ok').count #("Number of devices") accounts.devices
+        end
       end
     end
   end
@@ -33,7 +66,11 @@ ActiveAdmin.register Homeroom do
       f.input :school
       f.input :content_buckets
       f.has_many :accounts do |acc|
-        acc.inputs
+        acc.input :acc_number
+        acc.input :status
+        acc.input :number_broken
+        acc.input :flagged
+        acc.input :comments
       end
     end
   f.buttons

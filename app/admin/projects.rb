@@ -13,6 +13,7 @@ ActiveAdmin.register Project do
   filter :project_type, :as => :check_boxes
 
   index  do |project|
+    selectable_column
     column :name do |project|
       link_to project.name, admin_project_path(project)
     end
@@ -21,8 +22,8 @@ ActiveAdmin.register Project do
     column :project_type
     column :target_size
     column :current_size
-    column('Devices #') { |project| project.devices_active }
-    column('Students with Devices') {}
+    column('Devices #') { |project| (project.students_with_devices + project.others_with_devices)}
+    column('Students with Devices') {|project| project.students_with_devices}
     column('Content Buckets') do |project| 
        project.content_buckets.map(&:name).join("<br />").html_safe
     end
@@ -52,8 +53,8 @@ ActiveAdmin.register Project do
         column "homerooms" do |h|
           link_to h.homerooms.map(&:name).join("<br />").html_safe
         end
-        column "number of pupils" do |p|
-          p.homerooms.count
+        column "number of devices" do |p|
+  #        p.homerooms.accounts.where(device.status => 'ok')
         end
       end
     end
@@ -64,39 +65,15 @@ ActiveAdmin.register Project do
         column "name" do |content_bucket|
           link_to content_bucket.name, admin_content_bucket_path(content_bucket)
         end
-        column "books" do |books|
-
+        column "books" do |cb|
+          cb.books.map{ |book| book.title }.join("<br />").html_safe
         end
       end
     end
   end
- 
-  # active_admin_comments
 
 
-  # sidebar "Content Buckets", :only => :show do
-  #   @cb = Project.projects_CB
-  #   section "STATISTICS" do
-  #   div :class => "attributes_table" do
-  #     table do
-  #       tr do
-  #         th "Total Number of Devices"
-  #           td number_with_delimiter(Device.where(:status => Device::STATUS_OK).count)
-  #  #         li link_to(project.name, admin_project_path(project))
-  #  #       end
-  #       end
-
-
-  #    table_for project.content_buckets  do |t|
-  #       t.column("") do |project|
-  #          project.content_buckets.map(&:name).join("<br />").html_safe  
-  #       end
-  #     #  t.column { |project| link_to project.content_buckets.first, admin_content_bucket_path(project.content_buckets.first) }
-  #    end
- 
- 
-
-form do |f|
+  form do |f|
     f.inputs "Project Details" do
       f.input :name
       f.input :origin

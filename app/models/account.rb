@@ -19,13 +19,21 @@ class Account < ActiveRecord::Base
 
   validates :acc_number, :status, :homeroom_id, :presence => true
 
-  def show_student
-  	student = Student.where(:account_id => self.id)
-  	if student 
-#  		"#{student.first_name, student.other_names }"
-  	else
-  		"Friendy child"
-  	end
+  class << self
+
+    def show_students
+  	  @student = Student.where(:account_id => self.id)
+  	  unless @student.empty? 
+  		  student.other_names
+  	  else
+  		  "Friendy child"
+  	  end
+    end
+
+    def students_count
+      Student.find(:id).count
+    end
+
   end
 
   
