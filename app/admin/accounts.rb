@@ -40,7 +40,7 @@ ActiveAdmin.register Homeroom do
           homeroom.students.where(:role => 'student').count
         end
         row "Number of Working Devices" do 
-          homeroom.accounts.where(with_device == true).count
+#          homeroom.accounts.where(with_device == true).count
         end
         row "Surname" do |h| 
   #           h.accounts.students.map(&:other_names).join("<br />").html_safe
