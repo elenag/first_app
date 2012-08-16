@@ -105,8 +105,9 @@ class << self
       self.update_attribute(:status, STATUS_DECEASED)
       self.update_attribute(:account_id, 0)
     else
-      @tri = "wrong!!!!!!!!!!!!!!!"
-      #:notice => "You have entered a worng status." 
+      self.update_attribute(:action, 'none')
+      self.update_attribute(:status, STATUS_DECEASED)
+      self.update_attribute(:account_id, 0)
     end
     Event.new(:device_id => self.id, :name => pname).save
   end

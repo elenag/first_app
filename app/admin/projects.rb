@@ -91,21 +91,6 @@ ActiveAdmin.register Project do
     end
 end
 
-# show do 
-#   panel("Project details") do
-#     attributes_table_for project do 
-#       row :name
-#       row :origin
-#       row :model
-#       row :project_type
-#       row "# Classes" do
-#         project.homerooms.count
-#       end
-#     end
-#   end
-
-#   active_admin_comments
-# end
 
 end
 

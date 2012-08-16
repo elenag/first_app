@@ -1,5 +1,6 @@
 ActiveAdmin.register Homeroom do
-  menu :parent => "Projects", :priority => 2
+  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? },
+       :parent => "Projects", :priority => 2
 
  # menu false
 
@@ -16,9 +17,8 @@ ActiveAdmin.register Homeroom do
     redirect_to :action => :index, :notice => "CSV imported successfully!"
   end
 
-
-
   index do
+    selectable_column
     column :name
     column "Content Bucket" do |homeroom| 
       homeroom.content_buckets.map(&:name).join("<br />").html_safe
@@ -83,68 +83,70 @@ end
 
 
 
-# ActiveAdmin.register Account do
-# #  menu false
+ ActiveAdmin.register Account do
+  menu :parent => "Students"
  
 
-#     filter :project, :include_blank => false, :as => :select, :label => "Project", 
-#         :collection => proc {Project.all} rescue nil
-#     filter :school, :as => :select, :label => "School", 
-#         :collection => proc {School.all} rescue nil
-#     filter :homeroom, :as => :select, :label => "Classroom", 
-#         :collection => proc {Homeroom.all} rescue nil
-#     filter :device_type
-#     filter :name #, :as => :select, :label => "Account", 
-#         #:collection => proc {Account.all.where(:id => :account_id)} rescue nil
-#     filter :control
-#     filter :flagged
-#     filter :serial_number
-#     filter :status, :as =>select, :label => "Status", :collection => proc {Device.all} rescue nil
-#     filter :reinforced_screen
-#     filter :purchase_order
-#     filter :number_broken
+    filter :project, :include_blank => false, :as => :select, :label => "Project", 
+        :collection => proc {Project.all} rescue nil
+    filter :school, :as => :select, :label => "School", 
+        :collection => proc {School.all} rescue nil
+    filter :homeroom, :as => :select, :label => "Classroom", 
+        :collection => proc {Homeroom.all} rescue nil
+    filter :device_type
+    filter :name #, :as => :select, :label => "Account", 
+        #:collection => proc {Account.all.where(:id => :account_id)} rescue nil
+    filter :control
+    filter :flagged
+    filter :serial_number
+    filter :status, :as =>select, :label => "Status", :collection => proc {Device.all} rescue nil
+    filter :reinforced_screen
+    filter :purchase_order
+    filter :number_broken
 
 
-#   index do
-#       selectable_column
-#       column("Account") { |account| account.acc_number }
-#          column "Surname" do |account| 
-#              account.students.map(&:other_names).join("<br />").html_safe
-#          end
-#          column "Name" do |account| 
-#              account.students.map(&:first_name).join("<br />").html_safe
-#          end
-#          column("Serial No") do |account|
-#              account.devices.map(&:serial_number).join("<br />").html_safe
-#          end
-#          column("DevType") do |account|
-#               account.devices.device_types.map(&:name).join("<br />").html_safe
-#           end
-#          column ("DevStatus") do |account| 
-#               account.devices.map(&:status).join("<br />").html_safe 
-#          end
-#       #   column('Reinforced') { |account| account.device.reinforced_screen }
-#          column :comments 
-#          column :number_broken 
-#     end
+    index do
+      selectable_column
+         column("Account Number") do |account| 
+            link_to account.acc_number, admin_account_path(account)
+         end
+         column "Surname" do |account| 
+             account.students.map(&:other_names).join("<br />").html_safe
+         end
+         column "Name" do |account| 
+             account.students.map(&:first_name).join("<br />").html_safe
+         end
+         column("Serial No") do |account|
+             account.devices.map(&:serial_number).join("<br />").html_safe
+         end
+         # column("DevType") do |account|
+         #      account.devices.device_types.map(&:name).join("<br />").html_safe
+         #  end
+         # column ("DevStatus") do |account| 
+         #      account.devices.map(&:status).join("<br />").html_safe 
+         # end
+      #   column('Reinforced') { |account| account.device.reinforced_screen }
+         column :comments 
+         column :number_broken 
+    end
 
-#     # csv do
-#     #     column("Account") do |device|
-#     #       device.account.acc_number
-#     #     end
-#     #     column "Surname" do |device| 
-#     #         device.account.students.map(&:other_names).join(", ")
-#     #     end
-#     #     column "Name" do |device| 
-#     #         device.account.students.map(&:first_name).join(", ")
-#     #     end
-#     #     column("SerialNumber") {|device| device.serial_number }
-#     #     column("Type") { |device| device.device_type.name }
-#     #     column("Status") { |device| device.status }
-#     #     column('Reinforced') { |device| device.reinforced_screen }
-#     #     column("Comments") { |device| device.account.comments }
-#     #     column("Broken") { |device| device.account.number_broken }
-#     # end
+    # csv do
+    #     column("Account") do |device|
+    #       device.account.acc_number
+    #     end
+    #     column "Surname" do |device| 
+    #         device.account.students.map(&:other_names).join(", ")
+    #     end
+    #     column "Name" do |device| 
+    #         device.account.students.map(&:first_name).join(", ")
+    #     end
+    #     column("SerialNumber") {|device| device.serial_number }
+    #     column("Type") { |device| device.device_type.name }
+    #     column("Status") { |device| device.status }
+    #     column('Reinforced') { |device| device.reinforced_screen }
+    #     column("Comments") { |device| device.account.comments }
+    #     column("Broken") { |device| device.account.number_broken }
+    # end
 
 #   form do |f|
 #     f.inputs "Account Details" do
@@ -167,5 +169,5 @@ end
 #     f.buttons
 #   end
 
-# end
+ end
 

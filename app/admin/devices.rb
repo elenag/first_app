@@ -73,7 +73,8 @@ ActiveAdmin.register Device do
     filter :status#, :as =>select, :label => "Status", :collection => proc {Device.all} rescue nil
     filter :event
     filter :reinforced_screen
-    filter :purchase_order
+    filter :purchase_order, :as => :select, :label => "Purchase Order", 
+        :collection => proc {PurchaseOrder.all.map(&:po_number)} rescue nil
     filter :number_broken
     filter :action, :as =>:select, :collection => Device.device_action_collection
 

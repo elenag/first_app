@@ -1,5 +1,5 @@
 ActiveAdmin.register Publisher do
-   menu :if => proc{ current_admin_user.publishing_rel? }
+   menu :if => proc{ current_admin_user.publishing_rel? }, :parent => "Books" 
     index do
         column :name 
         column :origin
@@ -17,7 +17,7 @@ ActiveAdmin.register Publisher do
 end
 
 ActiveAdmin.register Author do
-  menu :if => proc{ current_admin_user.publishing_rel? }
+  menu :if => proc{ current_admin_user.publishing_rel? }, :parent => "Books"
   
   action_item :only => :index do
       link_to 'Upload CSV', :action => 'upload_csv'

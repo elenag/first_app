@@ -1,13 +1,14 @@
 ActiveAdmin.register School do
-#  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? }
- menu :parent => "Projects"
+  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? }, :parent => "Projects"
   filter :name, :html => "class='hoge'"
   filter :origin
 
   index  do |school|
+    selectable_column
     column :name do |school|
       link_to school.name, admin_school_path(school)
     end
+    default_actions
   end
 
 form do |f|

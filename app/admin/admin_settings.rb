@@ -1,5 +1,5 @@
 ActiveAdmin.register PublishingRight do
-    menu :if => proc{ current_admin_user.can_edit_origins? }
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
  
     index do
         column :name 
@@ -16,7 +16,7 @@ ActiveAdmin.register PublishingRight do
 end
 
 ActiveAdmin.register Language do
-    menu :if => proc{ current_admin_user.can_edit_origins? }
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
     index do
         column :name 
         default_actions
@@ -32,7 +32,7 @@ ActiveAdmin.register Language do
 end
 
 ActiveAdmin.register Genre do
-    menu :if => proc{ current_admin_user.can_edit_origins? } 
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
 
     index do
         column :name 
@@ -49,7 +49,7 @@ ActiveAdmin.register Genre do
 end
 
 ActiveAdmin.register Platform do
-    menu :if => proc{ current_admin_user.can_edit_origins? } 
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
 
     index do
         column :name 
@@ -66,7 +66,7 @@ ActiveAdmin.register Platform do
 end
 
 ActiveAdmin.register Level do
-   menu :if => proc{ current_admin_user.can_edit_origins? }
+   menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
 
     index do
         column :name 
@@ -83,7 +83,7 @@ ActiveAdmin.register Level do
 end
 
 ActiveAdmin.register DeviceType do
-    menu :if => proc{ current_admin_user.can_edit_origins? }
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
     
     index do
         column :name 
@@ -100,7 +100,7 @@ ActiveAdmin.register DeviceType do
 end
 
 ActiveAdmin.register Origin do
-  menu :if => proc{ current_admin_user.can_edit_origins? }
+  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
 
   index do
     column :name
@@ -111,7 +111,7 @@ ActiveAdmin.register Origin do
 end
 
 ActiveAdmin.register ProjectType do
-  menu :if => proc{ current_admin_user.can_edit_origins? }
+  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
 
   index do
     column :name

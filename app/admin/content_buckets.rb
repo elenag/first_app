@@ -1,7 +1,4 @@
 ActiveAdmin.register ContentBucket do
-#	menu false
-
-   batch_action :destroy
 
   action_item :only => :show do
     link_to 'Upload CSV', :action => 'upload_csv'
