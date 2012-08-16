@@ -24,6 +24,7 @@ class Book < ActiveRecord::Base
   
   has_many :pushes
   has_many :content_buckets, :through => :pushes
+  has_many :associated_projects, :class_name => "Project"
 
   belongs_to :language
   belongs_to :genre
@@ -54,10 +55,39 @@ class Book < ActiveRecord::Base
         "Other" => STATUS_OTHER
       }
     end
-    def not_pushed_to 
-#    @books = Book.all.where(:content_bucket_ids)
+    
+    def not_pushed_to( project ) 
+      @pid = Project.find_by_name(project)
+      @books = Book.where( :project_id != @pid )
+      return @books
    end
 
+   def African_count
+      @books = Book.all
+      @bc = @books.count
+      counter = 0
+      @books.each do |book|
+        if book.publisher.origin.continent.name.eql?("Africa") then
+          print book.publisher.origin.continent
+
+          counter +=1
+        end
+      end
+      return counter
+    end
+
+    def Intl_count
+      @books = Book.all
+      @bc = @books.count
+      counter = 0
+      @books.each do |book|
+        if not book.publisher.origin.continent.name.eql?("Africa") then
+          counter +=1
+        end
+      end
+      return counter
+    end
+  
   end
 
 end

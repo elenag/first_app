@@ -1,3 +1,3 @@
 ActiveAdmin.register Event do
-  #  menu false
+    menu false
 end

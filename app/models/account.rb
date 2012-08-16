@@ -34,6 +34,15 @@ class Account < ActiveRecord::Base
       Student.find(:id).count
     end
 
+    def with_device
+      self.devices.each do |device|
+        if device.status.eql?('ok') then
+          return true
+        end
+      end
+      return false  
+    end
+
   end
 
   

@@ -121,7 +121,7 @@ ActiveAdmin.register ProjectType do
 end
 
 ActiveAdmin.register Continent do
-#  menu :if => proc{ current_admin_user.can_edit_origins? }
+  menu :if => proc{ current_admin_user.can_edit_origins? }
 
 action_item :only => :index do
         link_to 'Upload CSV', :action => 'upload_csv'

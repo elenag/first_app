@@ -7,6 +7,7 @@ class Homeroom < ActiveRecord::Base
   has_many :accounts
   accepts_nested_attributes_for :accounts
   has_many :students, :through => :accounts
+  has_many :devices, :through => :accounts
 
   has_and_belongs_to_many :content_buckets, :join_table => :content_buckets_homerooms
   accepts_nested_attributes_for :content_buckets
@@ -16,6 +17,14 @@ class Homeroom < ActiveRecord::Base
   validates :name, :school_id, :presence => true
 
   class << self
+    def students_accounts_in_homeroom
+      self.accounts.where(:status => 'active').where(:role =>'student')
+    end
+
+    def students_devices_in_homeroom
+      self.accounts.with_device?.count
+    end
+
     def students_accounts_in_homeroom
       self.accounts.where(:status => 'active').where(:role =>'student')
     end

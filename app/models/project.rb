@@ -7,6 +7,7 @@ class Project < ActiveRecord::Base
   accepts_nested_attributes_for :homerooms, :allow_destroy => true
   has_many :content_buckets
   accepts_nested_attributes_for :content_buckets
+  has_and_belongs_to_many :assosiated_books, :class_name => "Book"
   
   has_many :accounts, :through => :homerooms
   accepts_nested_attributes_for :accounts, :allow_destroy => true

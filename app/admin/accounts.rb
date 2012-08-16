@@ -1,4 +1,5 @@
 ActiveAdmin.register Homeroom do
+  menu :parent => "Projects", :priority => 2
 
  # menu false
 
@@ -39,10 +40,10 @@ ActiveAdmin.register Homeroom do
           homeroom.students.where(:role => 'student').count
         end
         row "Number of Working Devices" do 
-  #        homeroom.accounts.where(:role => 'student').count
+          homeroom.accounts.where(with_device == true).count
         end
         row "Surname" do |h| 
-    #         h.accounts.map.students.map(&:other_names).join("<br />").html_safe
+  #           h.accounts.students.map(&:other_names).join("<br />").html_safe
          end
       end
     end

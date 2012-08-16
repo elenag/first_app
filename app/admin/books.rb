@@ -49,7 +49,10 @@ filter :date_added
 filter :restricted, :as => :select
 filter :origin
 filter :continent
-#filter :not_pushed_to
+filter :books_in_select_content_bucket, #_in_project_select, :as => :select, 
+        :label => "Not Pushed To ", 
+        :collection => proc { ContentBucket.all.map(&:name)}
+
 
   controller do
     def create 
