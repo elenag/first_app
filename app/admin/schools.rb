@@ -11,30 +11,30 @@ ActiveAdmin.register School do
     default_actions
   end
 
-form do |f|
-  f.inputs "School Details" do
-    f.input :name
-    f.input :project
-    f.has_many :homerooms do |p|
-      p.input :name
+  form do |f|
+    f.inputs "School Details" do
+      f.input :name
+      f.input :project
+      f.has_many :homerooms do |p|
+        p.input :name
+      end
     end
+    f.actions
   end
-  f.actions
-end
 
-show do 
-   
+
+  show do  
     panel "School" do
-      table_for school.homerooms do
+      table_for school.homerooms.each do
         column "Classrroms" do |homeroom|
           link_to homeroom.name, admin_homeroom_path(homeroom)
         end
         column "Number of active accounts" do |homeroom|
            homeroom.accounts.where(:status => 'active').count 
         end
-        column "number of devices" do |homeroom|
-          homeroom.accounts.where(:status => 'active').count 
-        end
+        # column "number of devices" do |homeroom|
+        #   homeroom.accounts_without_devices
+        # end
       end
     end
     

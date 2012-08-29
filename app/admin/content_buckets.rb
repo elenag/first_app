@@ -43,15 +43,15 @@ ActiveAdmin.register ContentBucket do
     f.inputs "ContentBucket Details" do
     	f.input :name
     	f.input :project
-      f.buttons
     end
+    f.actions
 
     f.inputs "Push Details" do
       f.has_many :pushes do |p|
         p.input :book #, :collection => Book.all.map{ |book| [book.title, book.id] } 
         p.input :push_date
         p.input :successful
-        p.input :comments
+ #       p.input :comments
       end
       f.buttons
     end   
@@ -59,3 +59,9 @@ ActiveAdmin.register ContentBucket do
   end
 end
 
+
+
+ActiveAdmin.register Push do
+  menu false
+
+end

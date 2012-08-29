@@ -6,11 +6,11 @@ section "STATISTICS" do
       table do
         tr do
           th "Total Number of Devices"
-             td number_with_delimiter(Device.where(:status => 'ok').count)
+          td number_with_delimiter(Device.where(:status => 'ok').count)
          end
         tr do
           th "Devices Out of Order"
-          td number_with_delimiter(Device.where(:status => 'broken').count)
+          td number_with_delimiter(sum(Project.each.out_of_order))
         end
 
         tr do

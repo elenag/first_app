@@ -2,7 +2,7 @@ class ContentBucket < ActiveRecord::Base
   attr_accessible :name, :content_bucket_id, :project_id, :pushes_attributes #, :push_date, :successful, :comment
   
   has_many :pushes #, :join_table => :books_content_buckets
-  accepts_nested_attributes_for :pushes
+  accepts_nested_attributes_for :pushes, :allow_destroy => true
   has_many :books, :through => :pushes
   accepts_nested_attributes_for :books
   

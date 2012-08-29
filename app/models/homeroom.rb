@@ -37,6 +37,30 @@ class Homeroom < ActiveRecord::Base
       self.accounts.where(:status => 'active').where(:role => !('teacher' || 'student'))
     end
 
+    def students_with_devices
+      devices_total = 0
+      self.accounts.each do |a|
+        a.students.each do |s|
+          if s.role == 'student'
+            devices_total += a.devices.where(:status => Device::STATUS_OK).count
+          end
+        end
+      end
+      devices_total
+    end
+
+    def accounts_without_devices
+      devices_total = 0
+      acc_total=0
+      self.accounts.each do |a|
+        devices_total += a.devices.where(:status => Device::STATUS_OK).count
+        if a.status == 'active' 
+          acc_total += 1
+        end
+      end
+      acc_total-devices_total
+    end
+
   end
 end
 

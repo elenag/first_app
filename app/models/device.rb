@@ -80,9 +80,11 @@ class << self
   end
 
   def new_event(pname)
+    
     if pname.eql?('assigned') || pname.eql?('repaired') then 
       self.update_attribute(:status, 'ok')
       self.update_attribute(:action, 'none')
+    
     elsif pname.eql?('broken') then
       if purchase_order.warranty_end_date > Date.new(Time.now.year, Time.now.month, Time.now.day).to_datetime then
         self.update_attribute(:action, 'return')
@@ -96,20 +98,24 @@ class << self
       else
         @numbroken += 1
       end
-
       self.account.update_attribute(:number_broken, @numbroken)
- #     @nb = account.find_by_device_id(self.id).number_broken + 1
- #     account.update_attribute(:number_broken, @nb)
+    
     elsif pname.eql?('returned') || pname.eql?('missing') #|| pname.eql?('disposed')  
       self.update_attribute(:action, 'none')
       self.update_attribute(:status, STATUS_DECEASED)
       self.update_attribute(:account_id, 0)
+    
     else
       self.update_attribute(:action, 'none')
       self.update_attribute(:status, STATUS_DECEASED)
       self.update_attribute(:account_id, 0)
     end
+
     Event.new(:device_id => self.id, :name => pname).save
+  end
+
+  def date_of(eventname)
+    @evs = Event.where(:device_id => self.id).where(:name =>eventname)
   end
 
 

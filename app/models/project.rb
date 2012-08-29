@@ -75,13 +75,27 @@ class Project < ActiveRecord::Base
     devices_total
   end
 
+  def accounts_with_devices
+    devices_total = 0
+    self.schools.each do |s|
+      s.homerooms.each do |h|
+        h.accounts.each do |a|
+          devices_total += a.devices.where(:status => Device::STATUS_OK).count
+        end
+      end
+    end
+    devices_total
+  end
+
+
+
   def others_with_devices
     devices_total = 0
     self.schools.each do |s|
       s.homerooms.each do |h|
         h.accounts.each do |a|
           a.students.each do |s|
-            if s.role != 'student'
+            if s.role != 'student' 
               devices_total += a.devices.where(:status => Device::STATUS_OK).count
             end
           end
@@ -92,15 +106,24 @@ class Project < ActiveRecord::Base
   end
 
   def out_of_order
+    acc_total = 0
     devices_total = 0
     self.schools.each do |s|
       s.homerooms.each do |h|
         h.accounts.each do |a|
-               devices_total += a.devices.where(:status => Device::STATUS_BROKEN).count
+          devices_total += a.devices.where(:status => Device::STATUS_OK).count
+          if a.status == 'active' 
+            acc_total += 1
+          end
         end
       end
     end
-    devices_total
+    acc_total-devices_total
+  end
+
+  def total_out_of_order
+    total = 0
+    projects = Project.all.sum.out_of_order
   end
 
 

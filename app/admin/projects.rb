@@ -29,9 +29,17 @@ ActiveAdmin.register Project do
     end
   end
 
+  sidebar "Devices Info", :only => :show do
+    attributes_table_for project do 
+      row('Students Devices') {|project| project.students_with_devices}
+      row('Teachers Devices') {|project| project.others_with_devices}
+      row("Total devices") { |project| (project.students_with_devices + project.others_with_devices)}
+      row("Without Devices"){|project| project.out_of_order} 
+    end
+  end
 
   show do 
-    h2 project.name 
+#    h2 project.name 
 
     panel "Project Data" do
       attributes_table_for project do
@@ -40,22 +48,24 @@ ActiveAdmin.register Project do
         row :model
         row :project_type
         row :target_size
-        row :current_size
-  #      row("Number of devices")
+        row :current_size  
       end
     end
 
-    panel "School" do
+    panel "Schools" do
       table_for project.schools do
         column "name" do |school|
           link_to school.name, admin_school_path(school)
         end
         column "homerooms" do |h|
-          link_to h.homerooms.map(&:name).join("<br />").html_safe
+          h.homerooms.map(&:name).join("<br />").html_safe
         end
-        column "number of devices" do |p|
-  #        p.homerooms.accounts.where(device.status => 'ok')
-        end
+#         column "students devices" do |p|
+# #          p.homerooms.map(&:students_with_devices).join("<br />").html_safe
+#         end
+        # column "out of order" do |p|
+        #   p.homerooms.accounts_without_devices
+        # end
       end
     end
     

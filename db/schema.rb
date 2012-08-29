@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120802165631) do
+ActiveRecord::Schema.define(:version => 20120824114943) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -104,6 +104,8 @@ ActiveRecord::Schema.define(:version => 20120802165631) do
     t.date     "date_added"
     t.string   "status"
     t.boolean  "restricted"
+    t.string   "appstatus"
+    t.integer  "limit"
   end
 
   add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "books_language_publisher_genre_index", :unique => true

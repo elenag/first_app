@@ -14,10 +14,6 @@ class CsvDb
 
       n = conversion[foreignKey]
 
-      print n
-      print name_in
-      print "\n"
-
       if n == nil then
         n = "name"
       end
@@ -31,33 +27,23 @@ class CsvDb
 
 
     def convert_save(model_name, csv_data)
-      print "DARIO =====================\n"
       csv_file = csv_data.read # this returns an array of arrays ["Europe"]["USA"][...]
       CSV.parse(csv_file) do |row|
-        print ",\n"
         target_model = model_name.classify.constantize
-        print target_model
-        print ",\n"
         new_object = target_model.new
         # NOTE: column_iterator MUST begin in -1 since the column "ID" is ENFORCED to be at index 0
         column_iterator = -1
         target_model.column_names.each do |key|
           unless key == "id"
-            print column_iterator
-            print "k:" + key + "\n"
             value = row[column_iterator]
             if key[-3, 3] == "_id" then
               valuet = search_by_name_and_fk(key, value)
-              print value
               if valuet.nil?
                 value = -1 # "---ERROR---"
               else
                 value = valuet.id
               end
             end
-            print "v:"
-            print value
-            print "\n"
             new_object.send "#{key}=", value
           end
           column_iterator += 1

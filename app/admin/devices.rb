@@ -111,6 +111,38 @@ ActiveAdmin.register Device do
          column("Broken devices") { |device| device.account.number_broken rescue nil}
     end
 
+    show do
+      attributes_table_for device do
+        row :serial_number 
+        row :device_type
+        row :status
+        row('Purchase Order') { |device| device.purchase_order.po_number rescue nil} 
+        row('Project') { |device| device.purchase_order.project.name rescue nil} 
+        row :flagged
+        row :control 
+        row :reinforced_screen
+        row :action
+        row :return_reason
+        row("Account") { |device| device.account.acc_number rescue nil}
+        row "Surname" do |device| 
+          device.account.students.map(&:other_names)
+        end
+        row :comments
+      end
+    end
+
+    sidebar "Events Info", :only => :show do
+      attributes_table_for device do 
+        row('Assigned') {|device| device.date_of('assigned') }
+        row('Broken') {|device| device.date_of('broken') }
+        row('REPAIRED') {|device| device.date_of('repaired') }
+        row('RETURNED') {|device| device.date_of('returned') }
+        row('MISSING') {|device| device.date_of('missing') }
+        row('DISPOSED') {|device| device.date_of('disposed') }
+      end
+    end 
+
+
     csv do
         column("Account") do |device|
           device.account.acc_number
