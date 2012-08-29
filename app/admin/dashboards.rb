@@ -10,7 +10,7 @@ section "STATISTICS" do
          end
         tr do
           th "Devices Out of Order"
-          td number_with_delimiter(sum(Project.each.out_of_order))
+          td number_with_delimiter(Project.sum {|p| p.out_of_order })
         end
 
         tr do

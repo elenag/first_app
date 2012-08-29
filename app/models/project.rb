@@ -121,23 +121,7 @@ class Project < ActiveRecord::Base
     acc_total-devices_total
   end
 
-  def total_out_of_order
-    total = 0
-    projects = Project.all.sum.out_of_order
-  end
-
-
 
 end
 
-#def total_schools
-  #    items_total = 0
-  #    self.school.each do |school|
-    #  	self.school.homeroom.each do |homeroom|
-   #   	  self.school.homeroom.account.each do |account|
-  #    		items_total +=account.device.where(:status => 'OK')
- #     	  end
- #     	end
- #     end
- #     items_total
- #   end
+
