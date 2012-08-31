@@ -22,7 +22,7 @@ ActiveAdmin.register Student do
   end
 
   collection_action :import_csv, :method => :post do
-    CsvDb.convert_save("Student", params[:dump][:file])
+    CsvDb.convert_save("students", params[:dump][:file])
     redirect_to :action => :index, :notice => "CSV imported successfully!"
   end
 

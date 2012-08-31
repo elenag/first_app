@@ -42,7 +42,7 @@ class Homeroom < ActiveRecord::Base
       self.accounts.each do |a|
         a.students.each do |s|
           if s.role == 'student'
-            devices_total += a.devices.where(:status => Device::STATUS_OK).count
+            devices_total += a.devices.where(:status => 'ok').count
           end
         end
       end

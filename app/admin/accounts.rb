@@ -2,8 +2,6 @@ ActiveAdmin.register Homeroom do
   menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? },
        :parent => "Projects", :priority => 2
 
- # menu false
-
   action_item :only => :show do
     link_to 'Upload CSV', :action => 'upload_csv'
   end
@@ -36,15 +34,12 @@ ActiveAdmin.register Homeroom do
         row "Number of Accounts" do 
           homeroom.accounts.where(:status => 'active').count
         end
-        row "Number of Pupils" do 
-          homeroom.students.where(:role => 'student').count
-        end
+        # row "Number of Pupils" do 
+        #   homeroom.students.count
+        # end
         row "Number of Working Devices" do 
-#          homeroom.accounts.where(with_device == true).count
+          homeroom.devices.where(:status => 'ok')
         end
-        row "Surname" do |h| 
-  #           h.accounts.students.map(&:other_names).join("<br />").html_safe
-         end
       end
     end
     panel("Classroom details") do

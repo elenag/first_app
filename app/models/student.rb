@@ -15,7 +15,7 @@ class Student < ActiveRecord::Base
 
 
   validates :first_name, :other_names, :role, :account_id, :presence => true
-  validates :role, :inclusion => { :in => [ROLE_STUDENT, ROLE_TEACHER, ROLE_PROJECT_MANAGER, ROLE_STAFF, ROLE_OTHER], :message =>"You need to select a role" }
+#  validates :role, :inclusion => { :in => [ROLE_STUDENT, ROLE_TEACHER, ROLE_PROJECT_MANAGER, ROLE_STAFF, ROLE_OTHER], :message =>"You need to select a role" }
 
 
   class << self

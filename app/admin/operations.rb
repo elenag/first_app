@@ -15,6 +15,7 @@ ActiveAdmin.register PurchaseOrder do
   	end
 
     index do
+      selectable_column
         column :po_number
         column :date_ordered
         column :warranty_end_date
