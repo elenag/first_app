@@ -75,7 +75,7 @@ filter :date_added
 filter :restricted, :as => :select
 filter :origin
 filter :continent
-filter :limit
+filter :limited
 filter :books_in_select_content_bucket, #_in_project_select, :as => :select, 
         :label => "Not Pushed To ", 
         :collection => proc { ContentBucket.all.map(&:name)}
@@ -126,7 +126,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         # column "Pushed to" do |book| 
         #    book.content_buckets.map(&:name).join("<br />").html_safe
         # end
-        column :limit
+        column :limited
     end
 
     csv do
@@ -160,7 +160,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
             f.input :appstatus, :collection => Book.books_appstatus
         	f.input :price
         	f.input :restricted
-            f.input :limit
+            f.input :limited
             f.input :flagged
             f.input :date_added
         	f.input :rating

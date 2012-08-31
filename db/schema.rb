@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120824114943) do
+ActiveRecord::Schema.define(:version => 20120831062211) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -105,10 +105,10 @@ ActiveRecord::Schema.define(:version => 20120824114943) do
     t.string   "status"
     t.boolean  "restricted"
     t.string   "appstatus"
-    t.integer  "limit"
+    t.integer  "limited"
   end
 
-  add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "books_language_publisher_genre_index", :unique => true
+  add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "altered_books_language_publisher_genre_index", :unique => true
 
   create_table "books_content_buckets", :id => false, :force => true do |t|
     t.integer "book_id"
