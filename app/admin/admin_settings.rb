@@ -48,6 +48,57 @@ ActiveAdmin.register Genre do
     end
 end
 
+ActiveAdmin.register FictionType do
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
+
+    index do
+        column :name 
+        default_actions
+    end
+
+    form do |f|
+        f.inputs "Fiction Type Details" do
+            f.input :name
+        end
+        
+        f.buttons
+    end
+end
+
+ActiveAdmin.register TextbookLevel do
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
+
+    index do
+        column :name 
+        default_actions
+    end
+
+    form do |f|
+        f.inputs "Textbook Level Details" do
+            f.input :name
+        end
+        
+        f.buttons
+    end
+end
+
+ActiveAdmin.register TextbookSubject do
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
+
+    index do
+        column :name 
+        default_actions
+    end
+
+    form do |f|
+        f.inputs "Textbook Subject Details" do
+            f.input :name
+        end
+        
+        f.buttons
+    end
+end
+
 ActiveAdmin.register Platform do
     menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
 

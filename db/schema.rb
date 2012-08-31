@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120831062211) do
+ActiveRecord::Schema.define(:version => 20120831203353) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -93,19 +93,22 @@ ActiveRecord::Schema.define(:version => 20120831062211) do
     t.string   "title"
     t.decimal  "price"
     t.integer  "rating"
-    t.boolean  "flagged",      :default => false
+    t.boolean  "flagged",             :default => false
     t.boolean  "copublished"
     t.integer  "publisher_id"
     t.integer  "language_id"
     t.integer  "genre_id"
     t.text     "comments"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.datetime "created_at",                             :null => false
+    t.datetime "updated_at",                             :null => false
     t.date     "date_added"
     t.string   "status"
     t.boolean  "restricted"
     t.string   "appstatus"
     t.integer  "limited"
+    t.integer  "fiction_type_id"
+    t.integer  "textbook_level_id"
+    t.integer  "textbook_subject_id"
   end
 
   add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "altered_books_language_publisher_genre_index", :unique => true
@@ -190,6 +193,12 @@ ActiveRecord::Schema.define(:version => 20120831062211) do
   end
 
   add_index "events", ["device_id"], :name => "index_events_on_device_id"
+
+  create_table "fiction_types", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "genres", :force => true do |t|
     t.string   "name"
@@ -324,5 +333,17 @@ ActiveRecord::Schema.define(:version => 20120831062211) do
   end
 
   add_index "students", ["account_id"], :name => "index_students_on_account_id", :unique => true
+
+  create_table "textbook_levels", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "textbook_subjects", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
 end

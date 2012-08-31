@@ -15,9 +15,9 @@ class Book < ActiveRecord::Base
 
 
   attr_accessible :asin, :title, :price, :rating, :copublished, :flagged, :status, :author_ids, 
-        :publishing_right_ids, :publisher_id, :genre_id, :language_id, :level_ids,
-        :comments, :authors_attributes, :content_bucket_ids, :push_ids, :restricted, :date_added,
-        :appstatus, :limit
+        :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, :textbook_level_id,
+        :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
+        :content_bucket_ids, :push_ids, :restricted, :date_added, :appstatus, :limit
 
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :platforms
@@ -32,6 +32,9 @@ class Book < ActiveRecord::Base
 
   belongs_to :language
   belongs_to :genre
+  belongs_to :fiction_type
+  belongs_to :textbook_level
+  belongs_to :textbook_subject
   belongs_to :publisher, :include => :origin
 
   has_one :origin, :through => :publisher

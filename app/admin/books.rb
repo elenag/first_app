@@ -62,6 +62,9 @@ end
 filter :status, :as => :select, :collection => Book.books_status_collection
 filter :appstatus, :as => :select, :collection => Book.books_appstatus
 filter :genre
+filter :fiction_type
+filter :textbook_level
+filter :textbook_subject
 filter :language
 filter :levels
 filter :rating
