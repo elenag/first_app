@@ -65,6 +65,7 @@ class CsvDb
       err = []
       target_model = Book
       CSV.parse(csv_file) do |row|
+        new_object = nil
         new_object = target_model.new
         # NOTE: column_iterator MUST begin in -1 since the column "ID" is ENFORCED to be at index 0
         column_iterator = -1

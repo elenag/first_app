@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120902195721) do
+ActiveRecord::Schema.define(:version => 20120907161855) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(:version => 20120902195721) do
     t.integer "project_id"
   end
 
-  add_index "admin_users_projects", ["admin_user_id", "project_id"], :name => "admin_user_project_index", :unique => true
+  add_index "admin_users_projects", ["admin_user_id", "project_id"], :name => "admin_user_project_index"
 
   create_table "appstatuses", :force => true do |t|
     t.string   "name"
@@ -125,7 +125,9 @@ ActiveRecord::Schema.define(:version => 20120902195721) do
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
   add_index "books", ["fiction_type_id"], :name => "index_books_on_fiction_type_id"
-  add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "altered_books_language_publisher_genre_index", :unique => true
+  add_index "books", ["genre_id"], :name => "index_books_on_genre_id"
+  add_index "books", ["language_id"], :name => "index_books_on_language_id"
+  add_index "books", ["publisher_id"], :name => "index_books_on_publisher_id"
   add_index "books", ["textbook_level_id"], :name => "index_books_on_textbook_level_id"
   add_index "books", ["textbook_subject_id"], :name => "index_books_on_textbook_subject_id"
 
@@ -230,13 +232,6 @@ ActiveRecord::Schema.define(:version => 20120902195721) do
   end
 
   add_index "homerooms", ["school_id"], :name => "index_homerooms_on_school_id"
-
-  create_table "homerooms_content_buckets", :id => false, :force => true do |t|
-    t.integer "content_bucket_id"
-    t.integer "homeroom_id"
-  end
-
-  add_index "homerooms_content_buckets", ["homeroom_id", "content_bucket_id"], :name => "homeroom_content_bucket_index", :unique => true
 
   create_table "languages", :force => true do |t|
     t.string   "name"
@@ -348,7 +343,7 @@ ActiveRecord::Schema.define(:version => 20120902195721) do
     t.string   "role"
   end
 
-  add_index "students", ["account_id"], :name => "index_students_on_account_id", :unique => true
+  add_index "students", ["account_id"], :name => "index_students_on_account_id"
 
   create_table "textbook_levels", :force => true do |t|
     t.string   "name"

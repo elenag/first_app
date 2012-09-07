@@ -103,7 +103,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
   	end
 
   	collection_action :import_csv, :method => :post do
-    	CsvDb.convert_save("books", params[:dump][:file])
+    	CsvDb.convert_save_books(params[:dump][:file])
     	redirect_to :action => :index, :notice => "CSV imported successfully!"
   	end
 
