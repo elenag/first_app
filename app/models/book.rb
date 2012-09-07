@@ -88,11 +88,9 @@ class Book < ActiveRecord::Base
   end
 
    def African_count
-      @books = Book.all
-      @bc = @books.count
       counter = 0
-      @books.each do |book|
-        if book.publisher.origin.continent.name.eql?("Africa") then
+      Book.all.each do |book|
+        if book.publisher && book.publisher.origin.continent.name.eql?("Africa") then
           counter +=1
         end
       end
@@ -100,15 +98,13 @@ class Book < ActiveRecord::Base
     end
 
     def Intl_count
-      @books = Book.all
-      @bc = @books.count
       counter = 0
-      @books.each do |book|
-        if not book.publisher.origin.continent.name.eql?("Africa") then
+      Book.all.each do |book|
+        if book.publisher && book.publisher.origin.continent.name.eql?("Africa") then
           counter +=1
         end
       end
-      return counter
+      return (Book.all.count - counter)
     end
   
   end
