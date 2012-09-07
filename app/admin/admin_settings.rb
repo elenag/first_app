@@ -99,6 +99,14 @@ ActiveAdmin.register TextbookSubject do
     end
 end
 
+ActiveAdmin.register BookStatus do
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
+end
+
+ActiveAdmin.register Appstatus do
+    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
+end
+
 ActiveAdmin.register Platform do
     menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
 

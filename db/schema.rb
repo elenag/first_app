@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120831203353) do
+ActiveRecord::Schema.define(:version => 20120902195721) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -71,6 +71,12 @@ ActiveRecord::Schema.define(:version => 20120831203353) do
 
   add_index "admin_users_projects", ["admin_user_id", "project_id"], :name => "admin_user_project_index", :unique => true
 
+  create_table "appstatuses", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "authors", :force => true do |t|
     t.string   "name"
     t.integer  "origin_id"
@@ -88,6 +94,12 @@ ActiveRecord::Schema.define(:version => 20120831203353) do
 
   add_index "authors_books", ["book_id", "author_id"], :name => "index_authors_books_on_book_id_and_author_id"
 
+  create_table "book_statuses", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "books", :force => true do |t|
     t.string   "asin"
     t.string   "title"
@@ -102,16 +114,20 @@ ActiveRecord::Schema.define(:version => 20120831203353) do
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.date     "date_added"
-    t.string   "status"
     t.boolean  "restricted"
-    t.string   "appstatus"
     t.integer  "limited"
     t.integer  "fiction_type_id"
     t.integer  "textbook_level_id"
     t.integer  "textbook_subject_id"
+    t.integer  "book_status_id"
+    t.integer  "appstatus_id"
   end
 
+  add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
+  add_index "books", ["fiction_type_id"], :name => "index_books_on_fiction_type_id"
   add_index "books", ["language_id", "publisher_id", "genre_id"], :name => "altered_books_language_publisher_genre_index", :unique => true
+  add_index "books", ["textbook_level_id"], :name => "index_books_on_textbook_level_id"
+  add_index "books", ["textbook_subject_id"], :name => "index_books_on_textbook_subject_id"
 
   create_table "books_content_buckets", :id => false, :force => true do |t|
     t.integer "book_id"

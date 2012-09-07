@@ -1,23 +1,25 @@
 class Book < ActiveRecord::Base
-  STATUS_WAITING_ON_PDF = 'waiting_on_pdf'
-  STATUS_SENT_TO_CONVERT = 'sent_to_convert'
-  STATUS_PROBLEM_WITH_PDF = 'problem_with_pdf'
-  STATUS_PROBLEM_WITH_MOBI = 'problem_with_mobi'
-  STATUS_WAITING_TO_BE_PUBLISHED =  'waiting_publishing' 
-  STATUS_NA = 'N/A'
-  STATUS_PUBLISHED_AMAZON = 'published_on_amazon'
-  STATUS_OTHER = 'other'
-  APPSTATUS_NA = 'app_N/A'
-  APPSTATUS_PUBLISHED = 'published'
-  APPSTATUS_WAITING_ON_FILE = 'app_waiting_on_file'
-  APPSTATUS_WAITING_TO_PUBLISH = 'app_waiting_to_publish'
-  APPSTATUS_PROBLEM_WITH_FILE = "problem_with_file"
+  # STATUS_WAITING_ON_PDF = 'waiting_on_pdf'
+  # STATUS_SENT_TO_CONVERT = 'sent_to_convert'
+  # STATUS_PROBLEM_WITH_PDF = 'problem_with_pdf'
+  # STATUS_PROBLEM_WITH_MOBI = 'problem_with_mobi'
+  # STATUS_WAITING_TO_BE_PUBLISHED =  'waiting_publishing' 
+  # STATUS_NA = 'N/A'
+  # STATUS_PUBLISHED_AMAZON = 'published_on_amazon'
+  # STATUS_OTHER = 'other'
+  # APPSTATUS_NA = 'app_N/A'
+  # APPSTATUS_PUBLISHED = 'published'
+  # APPSTATUS_WAITING_ON_FILE = 'app_waiting_on_file'
+  # APPSTATUS_WAITING_TO_PUBLISH = 'app_waiting_to_publish'
+  # APPSTATUS_PROBLEM_WITH_FILE = "problem_with_file"
 
+#scope :without_feed, joins('left outer join authors_feeds on authors.id=authors_feeds.author_id').where('authors_feeds.feed_id is null')
 
-  attr_accessible :asin, :title, :price, :rating, :copublished, :flagged, :status, :author_ids, 
-        :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, :textbook_level_id,
+  attr_accessible :asin, :title, :price, :rating, :copublished, :flagged, :book_status_id, 
+        :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, 
+        :textbook_level_id, 
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
-        :content_bucket_ids, :push_ids, :restricted, :date_added, :appstatus, :limit
+        :content_bucket_ids, :push_ids, :restricted, :date_added, :appstatus_id, :limited
 
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :platforms
@@ -35,41 +37,41 @@ class Book < ActiveRecord::Base
   belongs_to :fiction_type
   belongs_to :textbook_level
   belongs_to :textbook_subject
+  belongs_to :book_status
+  belongs_to :appstatus
   belongs_to :publisher, :include => :origin
 
   has_one :origin, :through => :publisher
   has_one :continent, :through => :origin
 
 
-  # validates :status, :inclusion => { :in => [STATUS_OTHER, STATUS_PUBLISHED_APP, STATUS_PUBLISHED_AMAZON, STATUS_PUBLISHED_BOTH, STATUS_IN_REVIEW, STATUS_SENT_TO_CONVERT,
-  #     STATUS_WAITING_PUBLISHING, STATUS_WAITING_PDF, STATUS_PROBLEM_WITH_MOBI, STATUS_PROBLEM_WITH_PDF], :message =>"You need to specify a book status" }
-  validates :title, :status, :date_added, :publisher_id, :language_id, :genre_id, :author_ids, :presence => true
 
-  #scope :publish, lambda { where :status => 'published' }
+  validates :title, :date_added, :publisher_id, :language_id, :genre_id, :presence => true
+
 
   class << self
-    def books_status_collection
-      {
-        "Waiting on PDF" => STATUS_WAITING_ON_PDF,
-        "Sent to convert" => STATUS_SENT_TO_CONVERT,
-        "Problem with PDF" => STATUS_PROBLEM_WITH_PDF,
-        "Problem with Mobi" => STATUS_PROBLEM_WITH_MOBI,
-        "Awaiting publishing" => STATUS_WAITING_TO_BE_PUBLISHED,
-        "NA" => STATUS_NA, 
-        "Published on Amazon" => STATUS_PUBLISHED_AMAZON,
-        "Other" => STATUS_OTHER
-      }
-    end
+    # def books_status_collection
+    #   {
+    #     "Waiting on PDF" => STATUS_WAITING_ON_PDF,
+    #     "Sent to convert" => STATUS_SENT_TO_CONVERT,
+    #     "Problem with PDF" => STATUS_PROBLEM_WITH_PDF,
+    #     "Problem with Mobi" => STATUS_PROBLEM_WITH_MOBI,
+    #     "Awaiting publishing" => STATUS_WAITING_TO_BE_PUBLISHED,
+    #     "NA" => STATUS_NA, 
+    #     "Published on Amazon" => STATUS_PUBLISHED_AMAZON,
+    #     "Other" => STATUS_OTHER
+    #   }
+    # end
 
-    def books_appstatus
-      {
-        "NA" => APPSTATUS_NA,
-        "Waiting on file" => APPSTATUS_WAITING_ON_FILE,
-        "Problem with file" => APPSTATUS_PROBLEM_WITH_FILE,
-        "Waiting to be published" => APPSTATUS_WAITING_TO_PUBLISH, 
-        "Published on app" => APPSTATUS_PUBLISHED
-      }
-    end
+    # def books_appstatus
+    #   {
+    #     "NA" => APPSTATUS_NA,
+    #     "Waiting on file" => APPSTATUS_WAITING_ON_FILE,
+    #     "Problem with file" => APPSTATUS_PROBLEM_WITH_FILE,
+    #     "Waiting to be published" => APPSTATUS_WAITING_TO_PUBLISH, 
+    #     "Published on app" => APPSTATUS_PUBLISHED
+    #   }
+    # end
     
     def not_pushed_to( project ) 
       @pid = Project.find_by_name(project)

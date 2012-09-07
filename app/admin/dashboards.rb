@@ -6,7 +6,7 @@ section "STATISTICS" do
       table do
         tr do
           th "Total Number of Devices"
-          td number_with_delimiter(Device.where(:status => 'ok').count)
+          td number_with_delimiter(Device.where(:status => 'ok').count + Device.where(:status => 'spare').count)
          end
         tr do
           th "Devices Out of Order"

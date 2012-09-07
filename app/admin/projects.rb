@@ -20,9 +20,10 @@ ActiveAdmin.register Project do
     column('Origin') { |project| project.origin.name }
     column :model
     column :project_type
-    column :target_size
-    column :current_size
+    # column :target_size
+    # column :current_size
     column('Devices #') { |project| (project.students_with_devices + project.others_with_devices)}
+    column('Spare Devices') { |project| (project.students_with_devices + project.others_with_devices)}
     column('Students with Devices') {|project| project.students_with_devices}
     column('Content Buckets') do |project| 
        project.content_buckets.map(&:name).join("<br />").html_safe
