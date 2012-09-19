@@ -14,14 +14,12 @@ ActiveAdmin.register Project do
 
   index  do |project|
     selectable_column
-    column :name do |project|
+    column "Name", :sortable => :name do |project|
       link_to project.name, admin_project_path(project)
     end
     column('Origin') { |project| project.origin.name }
-    column :model
-    column :project_type
-    # column :target_size
-    # column :current_size
+    column :model, :sortable => false
+    column :project_type, :sortable => false
     column('Devices #') { |project| (project.students_with_devices + project.others_with_devices)}
     column('Spare Devices') { |project| (project.students_with_devices + project.others_with_devices)}
     column('Students with Devices') {|project| project.students_with_devices}
@@ -41,7 +39,6 @@ ActiveAdmin.register Project do
 
   show do 
 #    h2 project.name 
-
     panel "Project Data" do
       attributes_table_for project do
         row :name

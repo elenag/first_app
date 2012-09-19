@@ -16,11 +16,9 @@ ActiveAdmin.register Student do
   action_item :only => :index do
     link_to 'Upload CSV', :action => 'upload_csv'
   end
-
   collection_action :upload_csv do
     render "admin/csv/upload_csv"
   end
-
   collection_action :import_csv, :method => :post do
     CsvDb.convert_save("students", params[:dump][:file])
     redirect_to :action => :index, :notice => "CSV imported successfully!"
@@ -32,7 +30,7 @@ ActiveAdmin.register Student do
     column :first_name
     column :other_names
     column :role
-    column :homeroom
+    column :homeroom, :sortable => false
     column('Content Bucket') do |student| 
       student.content_buckets.map{ |content_bucket| content_bucket.name }.join("<br />").html_safe
     end  

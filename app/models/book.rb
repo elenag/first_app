@@ -39,40 +39,23 @@ class Book < ActiveRecord::Base
   belongs_to :textbook_subject
   belongs_to :book_status
   belongs_to :appstatus
-  belongs_to :publisher, :include => :origin
+  belongs_to :publisher #, :include => :origin
+  belongs_to :origin, :include => :publisher
 
-  has_one :origin, :through => :publisher
+#  has_one :origin, :through => :publisher
   has_one :continent, :through => :origin
 
 
 
-  validates :title, :date_added, :publisher_id, :language_id, :genre_id, :presence => true
+  validates :title, :date_added, :publisher_id, :language_id, :genre_id, :book_status_id, :appstatus_id, :presence => true
+
+  # scope :African, do |books|
+  #   books.publisher.origin.continent.where(:name => "Africa")
+  # end
+ #  where( :publisher => "Ghana" )#.continent.name.eql?("Africa"))
 
 
   class << self
-    # def books_status_collection
-    #   {
-    #     "Waiting on PDF" => STATUS_WAITING_ON_PDF,
-    #     "Sent to convert" => STATUS_SENT_TO_CONVERT,
-    #     "Problem with PDF" => STATUS_PROBLEM_WITH_PDF,
-    #     "Problem with Mobi" => STATUS_PROBLEM_WITH_MOBI,
-    #     "Awaiting publishing" => STATUS_WAITING_TO_BE_PUBLISHED,
-    #     "NA" => STATUS_NA, 
-    #     "Published on Amazon" => STATUS_PUBLISHED_AMAZON,
-    #     "Other" => STATUS_OTHER
-    #   }
-    # end
-
-    # def books_appstatus
-    #   {
-    #     "NA" => APPSTATUS_NA,
-    #     "Waiting on file" => APPSTATUS_WAITING_ON_FILE,
-    #     "Problem with file" => APPSTATUS_PROBLEM_WITH_FILE,
-    #     "Waiting to be published" => APPSTATUS_WAITING_TO_PUBLISH, 
-    #     "Published on app" => APPSTATUS_PUBLISHED
-    #   }
-    # end
-    
     def not_pushed_to( project ) 
       @pid = Project.find_by_name(project)
       @books = Book.where( :project_id != @pid )

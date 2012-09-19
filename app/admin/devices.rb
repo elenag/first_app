@@ -64,7 +64,7 @@ ActiveAdmin.register Device do
     filter :school, :as => :select, :label => "School", 
         :collection => proc {School.all} rescue nil
     filter :homeroom
-    filter :device_type
+    filter :device_type, :sortable => false
     filter :account #, :as => :select, :label => "Account", 
         #:collection => proc {Account.all.where(:id => :account_id)} rescue nil
     filter :control

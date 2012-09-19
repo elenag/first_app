@@ -17,7 +17,7 @@ ActiveAdmin.register Publisher do
   index do
     selectable_column
     column :name 
-    column :origin
+    column :origin, :sortable => false
     column "Books" do |publisher| 
       publisher.books.map{ |book| book.title }.join("<br />").html_safe
     end
@@ -62,10 +62,10 @@ ActiveAdmin.register Author do
 
   index do
     selectable_column
-    column("Name") do |author|
+    column "Name", :sortable => :name do |author|
       link_to author.name, admin_author_path(author)
     end 
-    column :origin
+    column :origin, :sortable => false
     column "Books" do |author| 
       author.books.map{ |book| book.title }.join("<br />").html_safe
     end
