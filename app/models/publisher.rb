@@ -5,7 +5,7 @@ class Publisher < ActiveRecord::Base
   has_many :books
   belongs_to :origin, :include => :continent
 
-  accepts_nested_attributes_for :origin
+  accepts_nested_attributes_for :origin, :books
 
 
   validates :name, :origin_id, :presence => true

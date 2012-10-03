@@ -133,22 +133,18 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
     end
 
     csv do
-        column("ASIN") { |book| book.asin }
+        column("ASIN")  { |book| book.asin }
         column("Title") { |book| book.title }
         column "Author" do |book| 
             book.authors.map(&:name).join("<br />").html_safe
         end
-        column("Publisher") {|book| book.publisher.name }
-        column("Status on ereader") { |book| book.book_status.name }
-        column("Status on app") { |book| book.appstatus.name }
-        column("Genre") { |book| book.genre.name }
-        column("Language") { |book| book.language.name }
+        column("Publisher") { |book| book.publisher.name }
+        column("Genre")     { |book| book.genre.name }
+        column("Language")  { |book| book.language.name }
         column("Levels") do |book| 
             book.levels.map(&:name).join("<br />").html_safe
         end
-        column("Rating") { |book| book.rating }
-        column("Restricted") { |book| book.restricted} 
-        column("Comments") { |book| book.comments }
+        column("Comments")  { |book| book.comments }
     end
 
     form do |f|
