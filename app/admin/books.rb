@@ -60,7 +60,7 @@ ActiveAdmin.register Book do
 
 
 filter :book_status
-filter :appstatus
+#filter :appstatus
 filter :genre
 filter :fiction_type
 filter :textbook_level
@@ -74,7 +74,6 @@ filter :comments
 filter :asin
 filter :title
 filter :authors
-filter :date_added
 filter :restricted, :as => :select
 filter :origin, :label => "Country", :collection => proc {Origin.all.map(&:name)}
 filter :continent
@@ -111,7 +110,6 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
     index do
         selectable_column
         column("Status") {|book| book.book_status.name } #, book.book_status.id] }  
-        column("App Status") {|book| book.appstatus.name }
         column :asin
 		column "Title" do |book|
             link_to book.title, admin_book_path(book)
@@ -124,12 +122,9 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         column "Levels" do |book| 
             book.levels.map(&:name).join("<br />").html_safe
         end
-        column :restricted
+        column :language, :sortable => false
         column :rating
-        # column "Pushed to" do |book| 
-        #    book.content_buckets.map(&:name).join("<br />").html_safe
-        # end
-        column :limited
+#        column :limited
     end
 
     csv do
@@ -138,8 +133,8 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         column "Author" do |book| 
             book.authors.map(&:name).join("<br />").html_safe
         end
-        column("Publisher") { |book| book.publisher.name }
-        column("Genre")     { |book| book.genre.name }
+        column("Publisher") { |book| book.publisher }
+        column("Genre")     { |book| book.genre }
         column("Language")  { |book| book.language.name }
         column("Levels") do |book| 
             book.levels.map(&:name).join("<br />").html_safe
@@ -149,30 +144,28 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
 
     form do |f|
     	f.inputs "Book Details" do
-    		f.input :asin
+  #Book Details  		
+        f.input :authors, :collection => Author.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :asin
     		f.input :title
-            f.input :authors
-            f.input :publisher, :collection => Publisher.all.map{ |publisher| [publisher.name, publisher.id]}.sort            
-            f.input :language , :collection => Language.all.map{ |language| [language.name, language.id] }.sort
-            f.input :genre, :collection => Genre.all.map{ |genre| [genre.name, genre.id] }.sort
-            f.input :fiction_type, :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
-            f.input :textbook_level, :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
-            f.input :textbook_subject, :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort
-            f.input :book_status, :collection => BookStatus.all.map{ |stat| [stat.name, stat.id] }.sort
-            f.input :appstatus, :collection => Appstatus.all.map{ |stat| [stat.name, stat.id] }.sort
-        	f.input :price
-        	f.input :restricted
-            f.input :limited
-            f.input :flagged
-            f.input :date_added
-        	f.input :rating
-        	f.input :copublished
-            f.input :levels
-            f.input :content_buckets
-            f.input :publishing_rights
-        	f.input :comments
-        end
-        f.buttons
+        f.input :book_status, :collection => BookStatus.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :language , :collection => Language.all.map{ |language| [language.name, language.id] }.sort
+        f.input :genre, :collection => Genre.all.map{ |genre| [genre.name, genre.id] }.sort, :lable => "Content Type"
+        f.input :fiction_type, :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :textbook_level, :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :textbook_subject, :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :levels
+        f.input :rating
+# Publication Details
+        f.input :publisher, :collection => Publisher.all.map{ |publisher| [publisher.name, publisher.id]}.sort
+        f.input :copublished
+        f.input :price
+        f.input :publishing_rights
+        f.input :restricted
+        f.input :limited
+        f.input :comments 
+      end
+      f.buttons
     end
 
 end

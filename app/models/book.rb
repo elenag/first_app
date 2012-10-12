@@ -19,14 +19,14 @@ class Book < ActiveRecord::Base
         :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, 
         :textbook_level_id, 
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
-        :content_bucket_ids, :push_ids, :restricted, :date_added, :appstatus_id, :limited
+        :content_bucket_ids, :push_ids, :restricted, :limited
 
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :platforms
   has_and_belongs_to_many :publishing_rights
 
   has_and_belongs_to_many :authors, :join_table => :authors_books
-  accepts_nested_attributes_for :authors
+#  accepts_nested_attributes_for :authors
   
   has_many :pushes
   has_many :content_buckets, :through => :pushes
@@ -38,16 +38,14 @@ class Book < ActiveRecord::Base
   belongs_to :textbook_level
   belongs_to :textbook_subject
   belongs_to :book_status
-  belongs_to :appstatus
   belongs_to :publisher #, :include => :origin
   belongs_to :origin, :include => :publisher
 
-#  has_one :origin, :through => :publisher
   has_one :continent, :through => :origin
 
+  accepts_nested_attributes_for :genre, :publisher, :authors
 
-
-  validates :title, :date_added, :publisher_id, :language_id, :genre_id, :book_status_id, :appstatus_id, :presence => true
+  validates :title, :publisher_id, :language_id, :genre_id, :book_status_id, :presence => true
 
   # scope :African, do |books|
   #   books.publisher.origin.continent.where(:name => "Africa")

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120907161855) do
+ActiveRecord::Schema.define(:version => 20121011154513) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(:version => 20120907161855) do
     t.integer  "publisher_id"
     t.integer  "language_id"
     t.integer  "genre_id"
-    t.text     "comments"
+    t.text     "description"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.date     "date_added"
@@ -121,6 +121,13 @@ ActiveRecord::Schema.define(:version => 20120907161855) do
     t.integer  "textbook_subject_id"
     t.integer  "book_status_id"
     t.integer  "appstatus_id"
+    t.string   "mou_fname"
+    t.text     "comments"
+    t.boolean  "source_file"
+    t.boolean  "source_cover"
+    t.boolean  "mobi"
+    t.boolean  "epub"
+    t.boolean  "fixed_epub"
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
@@ -287,11 +294,36 @@ ActiveRecord::Schema.define(:version => 20120907161855) do
 
   add_index "projects", ["origin_id", "model_id"], :name => "index_projects_on_origin_id_and_model_id"
 
+  create_table "pub_contacts", :force => true do |t|
+    t.string   "name"
+    t.string   "email"
+    t.string   "telephone"
+    t.string   "comments"
+    t.integer  "publisher_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
+  add_index "pub_contacts", ["publisher_id"], :name => "index_pub_contacts_on_publisher_id"
+
   create_table "publishers", :force => true do |t|
     t.string   "name"
     t.integer  "origin_id"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.string   "address"
+    t.string   "telephone"
+    t.string   "email"
+    t.string   "account_name"
+    t.string   "account_number"
+    t.string   "bank"
+    t.string   "branch"
+    t.string   "swift_code"
+    t.string   "branch_code"
+    t.string   "bank_code"
+    t.string   "name_US_corresponding_bank"
+    t.string   "routing_number"
+    t.date     "contract_end_date"
   end
 
   add_index "publishers", ["origin_id"], :name => "index_publishers_on_origin_id"
