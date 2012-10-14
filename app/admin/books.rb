@@ -133,8 +133,8 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         column "Author" do |book| 
             book.authors.map(&:name).join("<br />").html_safe
         end
-        column("Publisher") { |book| book.publisher }
-        column("Genre")     { |book| book.genre }
+        column("Publisher") { |book| book.publisher_id }
+  #      column("Genre")     { |book| book.genre.name }
         column("Language")  { |book| book.language.name }
         column("Levels") do |book| 
             book.levels.map(&:name).join("<br />").html_safe
