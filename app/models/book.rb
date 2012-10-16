@@ -39,11 +39,11 @@ class Book < ActiveRecord::Base
   belongs_to :textbook_subject
   belongs_to :book_status
   belongs_to :publisher #, :include => :origin
-  belongs_to :origin, :include => :publisher
+  belongs_to :origin
 
   has_one :continent, :through => :origin
 
-  accepts_nested_attributes_for :genre, :publisher, :authors
+  accepts_nested_attributes_for :genre, :publisher, :authors, :origin
 
   validates :title, :publisher_id, :language_id, :genre_id, :book_status_id, :presence => true
 

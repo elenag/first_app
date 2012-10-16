@@ -2,10 +2,10 @@ ActiveAdmin.register Book do
 
 # scope :African
 
-# batch_action :NA do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'N/A')}
-#     redirect_to collection_path, :notice => "status changed to N/A!"
-# end
+ batch_action :origins do |selection|
+     Book.find(selection).each {|p| p.update_attribute(:origin_id, p.publisher.origin_id)}
+     redirect_to collection_path, :notice => "country of origin changed!"
+ end
 # batch_action :waiting_on_pdf do |selection|
 #     Book.find(selection).each {|p| p.update_attribute(:status, 'waiting_on_pdf')}
 #     redirect_to collection_path, :notice => "status changed to Waiting on PDF!"
@@ -75,7 +75,7 @@ filter :asin
 filter :title
 filter :authors
 filter :restricted, :as => :select
-filter :origin, :label => "Country", :collection => proc {Origin.all.map(&:name)}
+filter :origin #, :label => "Country", :collection => proc {Origin.all.map(&:name)}
 filter :continent
 filter :limited
 filter :books_in_select_content_bucket, #_in_project_select, :as => :select, 
@@ -128,18 +128,32 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
     end
 
     csv do
+        column("Status") { |book| book.book_status.name }
         column("ASIN")  { |book| book.asin }
         column("Title") { |book| book.title }
         column "Author" do |book| 
-            book.authors.map(&:name).join("<br />").html_safe
+            book.authors.map(&:name).join(", ").html_safe
         end
-        column("Publisher") { |book| book.publisher_id }
-  #      column("Genre")     { |book| book.genre.name }
+        column("Publisher") { |book| book.publisher.name }
+        column("Origin") do  |book| 
+          if book.origin_id > 0 then
+            book.origin.name
+          end
+        end
+        column("Genre")     { |book| book.genre.name }
         column("Language")  { |book| book.language.name }
         column("Levels") do |book| 
-            book.levels.map(&:name).join("<br />").html_safe
+            book.levels.map(&:name).join(", ").html_safe
         end
-        column("Comments")  { |book| book.comments }
+        column("Description")  { |book| book.description }
+        column("Publishing Rights") do |book| 
+            book.publishing_rights.map(&:name).join(", ").html_safe
+        end
+        column("Restrictions") { |book| book.restricted }
+        column("Description")  { |book| book.description }
+        column("MOU File Name"){ |book| book.mou_fname }
+        column("Comments")     { |book| book.comments }
+
     end
 
     form do |f|
@@ -154,6 +168,8 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         f.input :fiction_type, :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :textbook_level, :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :textbook_subject, :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :description
+        f.input :mou_fname
         f.input :levels
         f.input :rating
 # Publication Details
@@ -164,6 +180,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         f.input :restricted
         f.input :limited
         f.input :comments 
+        f.input :origin
       end
       f.buttons
     end

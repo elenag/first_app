@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121011154513) do
+ActiveRecord::Schema.define(:version => 20121016114538) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -128,6 +128,7 @@ ActiveRecord::Schema.define(:version => 20121011154513) do
     t.boolean  "mobi"
     t.boolean  "epub"
     t.boolean  "fixed_epub"
+    t.integer  "origin_id"
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"

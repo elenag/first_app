@@ -34,13 +34,13 @@ ActiveAdmin.register Publisher do
     end
   end
 
-  form do |f|
-    f.inputs "Publisher Details" do
-      f.input :name
-      f.input :origin
-    end        
-    f.buttons
-  end
+  # form do |f|
+  #   f.inputs "Publisher Details" do
+  #     f.input :name
+  #     f.input :origin
+  #   end        
+  #   f.buttons
+  # end
 
 end
 
