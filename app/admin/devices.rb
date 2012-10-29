@@ -79,7 +79,7 @@ ActiveAdmin.register Device do
     filter :action, :as =>:select, :collection => Device.device_action_collection
 
 	  action_item :only => :index do
-    	link_to 'Upload CSV', :action => 'upload_csv'
+    	link_to 'Upload Devices.csv', :action => 'upload_csv'
   	end
 
   	collection_action :upload_csv do

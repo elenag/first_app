@@ -1,17 +1,4 @@
 class Book < ActiveRecord::Base
-  # STATUS_WAITING_ON_PDF = 'waiting_on_pdf'
-  # STATUS_SENT_TO_CONVERT = 'sent_to_convert'
-  # STATUS_PROBLEM_WITH_PDF = 'problem_with_pdf'
-  # STATUS_PROBLEM_WITH_MOBI = 'problem_with_mobi'
-  # STATUS_WAITING_TO_BE_PUBLISHED =  'waiting_publishing' 
-  # STATUS_NA = 'N/A'
-  # STATUS_PUBLISHED_AMAZON = 'published_on_amazon'
-  # STATUS_OTHER = 'other'
-  # APPSTATUS_NA = 'app_N/A'
-  # APPSTATUS_PUBLISHED = 'published'
-  # APPSTATUS_WAITING_ON_FILE = 'app_waiting_on_file'
-  # APPSTATUS_WAITING_TO_PUBLISH = 'app_waiting_to_publish'
-  # APPSTATUS_PROBLEM_WITH_FILE = "problem_with_file"
 
 #scope :without_feed, joins('left outer join authors_feeds on authors.id=authors_feeds.author_id').where('authors_feeds.feed_id is null')
 
@@ -19,14 +6,15 @@ class Book < ActiveRecord::Base
         :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, 
         :textbook_level_id, 
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
-        :content_bucket_ids, :push_ids, :restricted, :limited
+        :content_bucket_ids, :push_ids, :restricted, :limited, :description, :mou_fname, :origin_id,
+        :epub, :mobi, :source_file, :source_cover, :fixed_epub
 
   has_and_belongs_to_many :levels
   has_and_belongs_to_many :platforms
   has_and_belongs_to_many :publishing_rights
 
   has_and_belongs_to_many :authors, :join_table => :authors_books
-#  accepts_nested_attributes_for :authors
+  accepts_nested_attributes_for :authors
   
   has_many :pushes
   has_many :content_buckets, :through => :pushes
@@ -46,10 +34,16 @@ class Book < ActiveRecord::Base
   accepts_nested_attributes_for :genre, :publisher, :authors, :origin
 
   validates :title, :publisher_id, :language_id, :genre_id, :book_status_id, :presence => true
+  validates_length_of :asin, :minimum => 10, :maximum => 10, :allow_blank => true
+  validates_uniqueness_of :asin
 
-  # scope :African, do |books|
-  #   books.publisher.origin.continent.where(:name => "Africa")
-  # end
+   # scope :African, where(book.origin.continent.name => "Africa")
+   # end
+   #  scope :International do |book|
+   #     book.origin.continent.where(:name => "Europe")
+   #   end
+#   scope :cero_balance, joins(:shipment).joins(:customer).where("customer_account_balance <> 0")
+ #  scope :ToBeReviewed, joins(:book_status).where("book_status_name == Published")
  #  where( :publisher => "Ghana" )#.continent.name.eql?("Africa"))
 
 

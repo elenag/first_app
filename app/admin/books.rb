@@ -1,6 +1,8 @@
 ActiveAdmin.register Book do
 
-# scope :African
+ #scope :African
+ #scope :International
+ #scope :ToBeReviewed
 
  batch_action :origins do |selection|
      Book.find(selection).each {|p| p.update_attribute(:origin_id, p.publisher.origin_id)}
@@ -75,6 +77,7 @@ filter :asin
 filter :title
 filter :authors
 filter :restricted, :as => :select
+filter :publishing_rights
 filter :origin #, :label => "Country", :collection => proc {Origin.all.map(&:name)}
 filter :continent
 filter :limited
@@ -108,15 +111,15 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
 
   
     index do
-        selectable_column
-        column("Status") {|book| book.book_status.name } #, book.book_status.id] }  
-        column :asin
-		column "Title" do |book|
-            link_to book.title, admin_book_path(book)
-        end
-		column "Author" do |book| 
-			book.authors.map(&:name).join("<br />").html_safe
-		end
+      selectable_column
+      column("Status") {|book| book.book_status.name } #, book.book_status.id] }  
+      column :asin
+		  column "Title" do |book|
+        link_to book.title, admin_book_path(book)
+      end
+		  column "Author" do |book| 
+			  link_to book.authors.map(&:name).join("<br />").html_safe, admin_author_path(book.authors)
+		  end
         column :publisher, :sortable => false
         column :genre, :sortable => false
         column "Levels" do |book| 
@@ -124,7 +127,6 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         end
         column :language, :sortable => false
         column :rating
-#        column :limited
     end
 
     csv do
@@ -146,8 +148,8 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
             book.levels.map(&:name).join(", ").html_safe
         end
         column("Description")  { |book| book.description }
-        column("Publishing Rights") do |book| 
-            book.publishing_rights.map(&:name).join(", ").html_safe
+        column("Free Content") do |book| 
+            book.publisher.free
         end
         column("Restrictions") { |book| book.restricted }
         column("Description")  { |book| book.description }
@@ -157,28 +159,44 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
     end
 
     form do |f|
-    	f.inputs "Book Details" do
-  #Book Details  		
-        f.input :authors, :collection => Author.all.map{ |stat| [stat.name, stat.id] }.sort
-        f.input :asin
-    		f.input :title
+  #  	f.inputs "Authors Details" do 
+  #       has_many :authors do |authors|
+  #         authors.input :name
+
+  # f.input :users, :as => :select, :input_html => { :size => 1}, 
+  #       :multiple => false, collection: User.where(role:1), include_blank: false
+  #       end
+  #    end
+       #, :collection => Author.all.map{ |stat| [stat.name, stat.id] }.sort
+      f.inputs "Book Details" do 
+       # f.input :authors, :as => :select, :input_html => { :size => 1}, collection: Author.all.sort
+        f.input :authors, :as => :radio,  :collection => Author.all.sort_by(&:name) 
+        #:as => :check_boxes, :collection => Author.order("name ASC").all
+        f.input :asin, :input_html => { :size => 10 }
+    		f.input :title, :input_html => { :size => 10 }
         f.input :book_status, :collection => BookStatus.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :language , :collection => Language.all.map{ |language| [language.name, language.id] }.sort
         f.input :genre, :collection => Genre.all.map{ |genre| [genre.name, genre.id] }.sort, :lable => "Content Type"
-        f.input :fiction_type, :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
-        f.input :textbook_level, :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
-        f.input :textbook_subject, :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :fiction_type, :hint => "(Only if genre is fiction)", :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :textbook_level, :hint => "(Only if genre is textbook)", :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :textbook_subject, :hint => "(Only if genre is textbook)", :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :description
-        f.input :mou_fname
+        f.input :mou_fname, :label => "MOU file name"
         f.input :levels
         f.input :rating
-# Publication Details
+        f.input :source_file
+        f.input :source_cover
+        f.input :epub
+        f.input :mobi
+        f.input :fixed_epub, :label => "Fixed layout epub"
+      end
+
+      f.inputs "Publication Details" do
         f.input :publisher, :collection => Publisher.all.map{ |publisher| [publisher.name, publisher.id]}.sort
         f.input :copublished
         f.input :price
-        f.input :publishing_rights
-        f.input :restricted
-        f.input :limited
+        f.input :restricted, :as => :boolean, :label =>"Rights restrictions", :hint => "(Specify in comments)"
+        f.input :limited, :label =>"Copy restrictions", :hint => "(Number of copies to be pushed, following the MOU)"
         f.input :comments 
         f.input :origin
       end

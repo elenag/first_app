@@ -14,7 +14,7 @@ ActiveAdmin.register Student do
         :collection => proc {Homeroom.all} rescue nil
 
   action_item :only => :index do
-    link_to 'Upload CSV', :action => 'upload_csv'
+    link_to 'Upload Students.csv', :action => 'upload_csv'
   end
   collection_action :upload_csv do
     render "admin/csv/upload_csv"

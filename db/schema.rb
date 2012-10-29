@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121016114538) do
+ActiveRecord::Schema.define(:version => 20121029141849) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -325,6 +325,7 @@ ActiveRecord::Schema.define(:version => 20121016114538) do
     t.string   "name_US_corresponding_bank"
     t.string   "routing_number"
     t.date     "contract_end_date"
+    t.boolean  "free"
   end
 
   add_index "publishers", ["origin_id"], :name => "index_publishers_on_origin_id"

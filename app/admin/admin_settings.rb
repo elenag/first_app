@@ -22,6 +22,25 @@ ActiveAdmin.register Language do
         default_actions
     end
 
+  show do 
+    panel("Language") do
+      attributes_table_for language do 
+        row :name
+      end
+    end
+    panel("Books In Language") do
+      table_for language.books do 
+        column('List of books') do |b| 
+          link_to b.title, admin_book_path(b) 
+        end
+        column('Authors') do |b| 
+          b.authors.map(&:name).join("<br />").html_safe
+        end    
+      end
+    end
+  end
+
+
     form do |f|
         f.inputs "Language Details" do
             f.input :name
@@ -32,12 +51,30 @@ ActiveAdmin.register Language do
 end
 
 ActiveAdmin.register Genre do
-    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
+  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
 
-    index do
-        column :name 
-        default_actions
+  index do
+    column :name 
+    default_actions
+ end
+
+  show do 
+    panel("Genre") do
+      attributes_table_for genre do 
+        row :name
+      end
     end
+    panel("Books In Genre") do
+      table_for genre.books do 
+        column('List of books') do |b| 
+          link_to b.title, admin_book_path(b) 
+        end
+        column('Authors') do |b| 
+          b.authors.map(&:name).join("<br />").html_safe
+        end    
+      end
+    end
+  end
 
     form do |f|
         f.inputs "Genre Details" do
@@ -55,6 +92,27 @@ ActiveAdmin.register FictionType do
         column :name 
         default_actions
     end
+
+    show do 
+    panel("Fiction Type") do
+      attributes_table_for fiction_type do 
+        row :name
+      end
+    end
+    panel("Books In Fiction Type") do
+      table_for fiction_type.books do 
+        column('List of books') do |b| 
+          link_to b.title, admin_book_path(b) 
+        end
+        column('Authors') do |b| 
+          b.authors.map(&:name).join("<br />").html_safe
+        end  
+        # column('Country') do |b|
+        #   b.origin.name
+        # end  
+      end
+    end
+  end
 
     form do |f|
         f.inputs "Fiction Type Details" do
@@ -89,6 +147,27 @@ ActiveAdmin.register TextbookSubject do
         column :name 
         default_actions
     end
+
+  show do 
+    panel("Textbook Subject") do
+      attributes_table_for textbook_subject do 
+        row :name
+      end
+    end
+    panel("Books In Subject") do
+      table_for textbook_subject.books do 
+        column('List of books') do |b| 
+          link_to b.title, admin_book_path(b) 
+        end
+        column('Authors') do |b| 
+          b.authors.map(&:name).join("<br />").html_safe
+        end  
+        # column('Country') do |b|
+        #   b.origin.name
+        # end  
+      end
+    end
+  end
 
     form do |f|
         f.inputs "Textbook Subject Details" do

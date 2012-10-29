@@ -2,22 +2,12 @@ ActiveAdmin.register Homeroom do
   menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? },
        :parent => "Projects", :priority => 2
 
-  action_item :only => :show do
-    link_to 'Upload CSV', :action => 'upload_csv'
-  end
-
-  collection_action :upload_csv do
-    render "admin/csv/upload_csv"
-  end
-
-  collection_action :import_csv, :method => :post do
-    CsvDb.convert_save("account", params[:dump][:file])
-    redirect_to :action => :index, :notice => "CSV imported successfully!"
-  end
 
   index do
     selectable_column
-    column :name
+    column "Name" do |hr|
+      link_to hr.name, admin_book_path(book)
+    end
     column "Content Bucket" do |homeroom| 
       homeroom.content_buckets.map(&:name).join("<br />").html_safe
     end
@@ -81,6 +71,18 @@ end
  ActiveAdmin.register Account do
   menu :parent => "Students"
  
+  action_item :only => :index do
+    link_to 'Upload Accounts.csv', :action => 'upload_csv'
+  end
+
+  collection_action :upload_csv do
+    render "admin/csv/upload_csv"
+  end
+
+  collection_action :import_csv, :method => :post do
+    CsvDb.convert_save("account", params[:dump][:file])
+    redirect_to :action => :index, :notice => "CSV imported successfully!"
+  end
 
     filter :project, :include_blank => false, :as => :select, :label => "Project", 
         :collection => proc {Project.all} rescue nil
