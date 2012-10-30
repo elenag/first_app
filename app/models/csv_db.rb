@@ -22,9 +22,6 @@ class CsvDb
       if foreignKey.eql?("book_status_id")
         modeln = "BookStatus"
         id_out = BookStatus.send("find_by_name", name_in)
-      elsif foreignKey.eql?("appstatus_id")
-        modeln = "Appstatus"
-        id_out = Appstatus.send("find_by_name", name_in)
       else
         modeln = foreignKey[0..-4].classify.constantize
         id_out = modeln.send( method_name, name_in)

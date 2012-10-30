@@ -8,61 +8,9 @@ ActiveAdmin.register Book do
      Book.find(selection).each {|p| p.update_attribute(:origin_id, p.publisher.origin_id)}
      redirect_to collection_path, :notice => "country of origin changed!"
  end
-# batch_action :waiting_on_pdf do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'waiting_on_pdf')}
-#     redirect_to collection_path, :notice => "status changed to Waiting on PDF!"
-# end
-# batch_action :problem_with_pdf do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'problem_with_pdf')}
-#     redirect_to collection_path, :notice => "status changed to problem_with_pdf!"
-# end
-# batch_action :sent_to_convert do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'sent_to_convert')}
-#     redirect_to collection_path, :notice => "status changed to sent_to_convert!"
-# end
-
-# batch_action :problem_with_mobi do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'problem_with_mobi')}
-#     redirect_to collection_path, :notice => "status changed to problem with mobi!"
-# end
-# batch_action :waiting_to_be_published do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'waiting_publishing')}
-#     redirect_to collection_path, :notice => "status changed to awaiting publication!"
-# end
-# batch_action :published_on_amazon do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'published_on_amazon')}
-#     redirect_to collection_path, :notice => "status changed to published on Amazon!"
-# end
-# batch_action :other do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:status, 'other')}
-#     redirect_to collection_path, :notice => "status changed to other! Please, specify in the comments"
-# end
-
-# batch_action :APP_NA do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:appstatus, 'N/A')}
-#     redirect_to collection_path, :notice => "status changed to N/A!"
-# end
-# batch_action :APP_WAITING_ON_FILE do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:appstatus, 'app_waiting_on_file')}
-#     redirect_to collection_path, :notice => "status changed to app_waiting_on_file!"
-# end
-# batch_action :APP_PROBLEM_WITH_FILE do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:appstatus, 'problem_with_file')}
-#     redirect_to collection_path, :notice => "status changed to problem_with_file!"
-# end
-# batch_action :APP_WAITING_TO_PUBLISH do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:appstatus, 'app_waiting_to_publish')}
-#     redirect_to collection_path, :notice => "status changed to app_waiting_to_publish!"
-# end
-# batch_action :APP_PUBLISHED do |selection|
-#     Book.find(selection).each {|p| p.update_attribute(:appstatus, 'published')}
-#     redirect_to collection_path, :notice => "status changed to app_published!"
-# end
-
 
 
 filter :book_status
-#filter :appstatus
 filter :genre
 filter :fiction_type
 filter :textbook_level
@@ -81,6 +29,7 @@ filter :publishing_rights
 filter :origin #, :label => "Country", :collection => proc {Origin.all.map(&:name)}
 filter :continent
 filter :limited
+filter :created_at
 filter :books_in_select_content_bucket, #_in_project_select, :as => :select, 
         :label => "Not Pushed To ", 
         :collection => proc { ContentBucket.all.map(&:name)}
@@ -137,11 +86,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
             book.authors.map(&:name).join(", ").html_safe
         end
         column("Publisher") { |book| book.publisher.name }
-        column("Origin") do  |book| 
-          if book.origin_id > 0 then
-            book.origin.name
-          end
-        end
+#        column("Origin") {|book| book.origin.name }  
         column("Genre")     { |book| book.genre.name }
         column("Language")  { |book| book.language.name }
         column("Levels") do |book| 

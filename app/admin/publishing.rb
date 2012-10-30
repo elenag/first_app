@@ -84,7 +84,7 @@ ActiveAdmin.register Publisher do
       f.input :name
       f.input :origin
       f.input :contract_end_date
-      f.input :free, :label => "Free Content"
+      f.input :free, :label => "Free Content", :as => :boolean
     end   
 
     f.inputs  "Publisher's Contact Info" do 
