@@ -4,10 +4,12 @@ ActiveAdmin.register Book do
  #scope :International
  #scope :ToBeReviewed
 
- batch_action :origins do |selection|
-     Book.find(selection).each {|p| p.update_attribute(:origin_id, p.publisher.origin_id)}
-     redirect_to collection_path, :notice => "country of origin changed!"
- end
+  batch_action :origins do |selection|
+    Book.find(selection).each {|p| p.update_attribute(:origin_id, p.publisher.origin_id)}
+    redirect_to collection_path, :notice => "country of origin changed!"
+  end
+
+  batch_action :destroy, false
 
 
 filter :book_status
@@ -46,7 +48,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
 
 
   action_item :only => :index do
-    	link_to 'Upload CSV', :action => 'upload_csv'
+    	link_to 'Upload books.csv', :action => 'upload_csv'
   	end
 
   	collection_action :upload_csv do
@@ -61,7 +63,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
   
     index do
       selectable_column
-      column("Status") {|book| book.book_status.name } #, book.book_status.id] }  
+      column("Status") {|book| book.book_status.name } 
       column :asin
 		  column "Title" do |book|
         link_to book.title, admin_book_path(book)
@@ -86,7 +88,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
             book.authors.map(&:name).join(", ").html_safe
         end
         column("Publisher") { |book| book.publisher.name }
-#        column("Origin") {|book| book.origin.name }  
+        column("Origin") {|book| book.origin.name }  
         column("Genre")     { |book| book.genre.name }
         column("Language")  { |book| book.language.name }
         column("Levels") do |book| 
@@ -115,7 +117,7 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
        #, :collection => Author.all.map{ |stat| [stat.name, stat.id] }.sort
       f.inputs "Book Details" do 
        # f.input :authors, :as => :select, :input_html => { :size => 1}, collection: Author.all.sort
-        f.input :authors, :as => :radio,  :collection => Author.all.sort_by(&:name) 
+        f.input :authors, :collection => Author.all.sort_by(&:name) 
         #:as => :check_boxes, :collection => Author.order("name ASC").all
         f.input :asin, :input_html => { :size => 10 }
     		f.input :title, :input_html => { :size => 10 }

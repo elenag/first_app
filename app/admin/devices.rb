@@ -7,7 +7,8 @@ ActiveAdmin.register Device do
   scope :TO_REPAIR
   scope :TO_RETURN
 
-
+  batch_action :destroy, false
+  
   batch_action :assign, :priority => 2 do |selection|
     Device.find(selection).each {|device| device.new_event('assigned')}
     redirect_to collection_path, :alert => "The selected devices have been assigned!"
@@ -63,7 +64,8 @@ ActiveAdmin.register Device do
         :collection => proc {Project.all} rescue nil
     filter :school, :as => :select, :label => "School", 
         :collection => proc {School.all} rescue nil
-    filter :homeroom
+    filter :homeroom, :as => :select, :label => "Homeroom", 
+        :collection => proc {Homeroom.all} rescue nil
     filter :device_type, :sortable => false
     filter :account #, :as => :select, :label => "Account", 
         #:collection => proc {Account.all.where(:id => :account_id)} rescue nil
@@ -96,10 +98,10 @@ ActiveAdmin.register Device do
          selectable_column
          column("Account") { |device| device.account.acc_number rescue nil}
          column "Surname" do |device| 
-             device.account.students.map(&:other_names).join("<br />").html_safe rescue nil
+             device.student.other_names rescue nil
          end
          column "Name" do |device| 
-             device.account.students.map(&:first_name).join("<br />").html_safe rescue nil
+             device.student.first_name rescue nil
          end
          column :serial_number do |device|
              link_to device.serial_number, admin_device_path(device), :action => :edit
@@ -112,6 +114,7 @@ ActiveAdmin.register Device do
     end
 
     show do
+     panel "Device details" do
       attributes_table_for device do
         row :serial_number 
         row :device_type
@@ -124,24 +127,40 @@ ActiveAdmin.register Device do
         row :action
         row :return_reason
         row("Account") { |device| device.account.acc_number rescue nil}
-        row "Surname" do |device| 
-          device.account.students.map(&:other_names)
-        end
+        row("Surname") { |device| device.account.student.other_names  rescue nil}
+        row("Name") { |device| device.account.student.first_name  rescue nil}
         row :comments
       end
+     end
+
+     panel 'Device EVENTS' do
+      attributes_table_for device do
+        row("Assigned") {|device| device.events.where(:name =>"assigned").map(&:created_at).join(", ").html_safe }
+        row( 'Broken') {|device| device.events.where(:name =>'broken').map(&:created_at).join(", ").html_safe  }
+        row('REPAIRED') {|device| device.events.where(:name =>'repaired').map(&:created_at).join(", ").html_safe  }
+        row('RETURNED') {|device| device.events.where(:name =>'returned').map(&:created_at).join(", ").html_safe  }
+        row('MISSING') {|device| device.events.where(:name =>'missing').map(&:created_at).join(", ").html_safe  }
+        row('DISPOSED') {|device| device.events.where(:name =>'disposed').map(&:created_at).join(", ").html_safe  }
+      end
+     end
     end
 
-    sidebar "Events Info", :only => :show do
-      attributes_table_for device do 
-        row('Assigned') {|device| device.date_of('assigned') }
-        row('Broken') {|device| device.date_of('broken') }
-        row('REPAIRED') {|device| device.date_of('repaired') }
-        row('RETURNED') {|device| device.date_of('returned') }
-        row('MISSING') {|device| device.date_of('missing') }
-        row('DISPOSED') {|device| device.date_of('disposed') }
-      end
-    end 
-
+#     sidebar "Events Info", :only => :show do
+#       attributes_table_for device do 
+#         row('Assigned') {|device| device.events.date_of('assigned') }
+#         row('Broken') {|device| device.date_of('broken') }
+#         row('REPAIRED') {|device| device.date_of('repaired') }
+#         row('RETURNED') {|device| device.date_of('returned') }
+#         row('MISSING') {|device| device.date_of('missing') }
+#         row('DISPOSED') {|device| device.date_of('disposed') }
+#       end
+#     end 
+# sidebar "Other Tasks For This User", :only => :show do
+#   table_for current_admin_user.tasks.where(:project_id => task.project) do |t|
+#     t.column("Status") { |task| status_tag (task.is_done ? "Done" : "Pending"), (task.is_done ? :ok : :error) }
+#     t.column("Title") { |task| link_to task.title, admin_task_path(task) }
+#   end
+# end
 
     csv do
         column("Account") do |device|

@@ -1,6 +1,12 @@
 ActiveAdmin.register Publisher do
   menu :if => proc{ current_admin_user.publishing_rel? }, :parent => "Books" 
+  actions :index, :show, :new, :create, :update, :edit
 
+  batch_action :destroy, false
+
+  scope :contracts_end do |publishers|
+    publishers.where('contract_end_date < ?', 1.week.from_now)
+  end
   action_item :only => :index do
     link_to 'Upload CSV', :action => 'upload_csv'
   end
@@ -16,11 +22,12 @@ ActiveAdmin.register Publisher do
   
   index do
     selectable_column
-    column :name 
+    column "Name" do |publisher|
+        link_to publisher.name, admin_publisher_path(publisher)
+      end
     column :origin, :sortable => false
-    column "Books" do |publisher| 
-      publisher.books.map{ |book| book.title }.join("<br />").html_safe
-    end
+    column :contract_end_date
+    column :free
     default_actions
   end
 
@@ -121,6 +128,8 @@ end
 
 ActiveAdmin.register Author do
   menu :if => proc{ current_admin_user.publishing_rel? }, :parent => "Books"
+
+  batch_action :destroy, false
   
   action_item :only => :index do
     link_to 'Upload CSV', :action => 'upload_csv'

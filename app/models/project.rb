@@ -54,7 +54,7 @@ class Project < ActiveRecord::Base
   def accounts_active
     account_total = 0
     self.homerooms.each do |h|
-        account_total +=h.accounts.where(:status => Account::STATUS_ACTIVE).count
+      account_total +=h.accounts.where(:status => 'accounts_with_devices').count
     end
     account_total
   end
@@ -64,10 +64,8 @@ class Project < ActiveRecord::Base
     self.schools.each do |s|
       s.homerooms.each do |h|
         h.accounts.each do |a|
-          a.students.each do |s|
-            if s.role == 'student'
-               devices_total += a.devices.where(:status => Device::STATUS_OK).count
-            end
+          if a.student != nil and a.student.role == 'student'
+            devices_total += a.devices.where(:status => Device::STATUS_OK).count
           end
         end
       end
@@ -94,10 +92,8 @@ class Project < ActiveRecord::Base
     self.schools.each do |s|
       s.homerooms.each do |h|
         h.accounts.each do |a|
-          a.students.each do |s|
-            if s.role != 'student' 
-              devices_total += a.devices.where(:status => Device::STATUS_OK).count
-            end
+          if a.student != nil and a.student.role != 'student' 
+            devices_total += a.devices.where(:status => 'ok').count
           end
         end
       end
@@ -111,7 +107,7 @@ class Project < ActiveRecord::Base
     self.schools.each do |s|
       s.homerooms.each do |h|
         h.accounts.each do |a|
-          devices_total += a.devices.where(:status => Device::STATUS_OK).count
+          devices_total += a.devices.where(:status => 'ok').count
           if a.status == 'active' 
             acc_total += 1
           end

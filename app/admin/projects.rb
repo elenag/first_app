@@ -3,9 +3,7 @@ ActiveAdmin.register Project do
   batch_action false
 
  # @pt_kits = ProjectType.find_by_name('Kits')
-#  @pt_id_lp = ProjectType.search_lp
   scope :all, :default => true
-#  scope :kits
 
   filter :name, :html => "class='hoge'"
   filter :origin
@@ -21,7 +19,7 @@ ActiveAdmin.register Project do
     column :model, :sortable => false
     column :project_type, :sortable => false
     column('Devices #') { |project| (project.students_with_devices + project.others_with_devices)}
-    column('Spare Devices') { |project| (project.students_with_devices + project.others_with_devices)}
+#    column('Spare Devices') { |project| (current_size -(project.students_with_devices + project.others_with_devices))}
     column('Students with Devices') {|project| project.students_with_devices}
     column('Content Buckets') do |project| 
        project.content_buckets.map(&:name).join("<br />").html_safe

@@ -11,4 +11,5 @@ class Publisher < ActiveRecord::Base
   accepts_nested_attributes_for :origin, :books, :pub_contacts
 
   validates :name, :origin_id, :presence => true
+
 end

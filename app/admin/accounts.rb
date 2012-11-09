@@ -5,45 +5,45 @@ ActiveAdmin.register Homeroom do
 
   index do
     selectable_column
-    column "Name" do |hr|
-      link_to hr.name, admin_book_path(book)
+    column "Name" do |homeroom|
+      link_to homeroom.name, admin_homeroom_path(homeroom)
     end
     column "Content Bucket" do |homeroom| 
       homeroom.content_buckets.map(&:name).join("<br />").html_safe
     end
-    column "Accounts" do |homeroom| 
-        homeroom.accounts.map(&:acc_number).join("<br />").html_safe
-    end
+    column("School" ) { |homeroom| homeroom.school.name }
+    column("Project" ) { |homeroom| homeroom.school.project.name }
+    column("No of accounts") {|homeroom| homeroom.accounts.where(:status => 'active').count} 
+    # column "Accounts" do |homeroom| 
+    #     homeroom.accounts.map(&:acc_number).join("<br />").html_safe
+    # end
     default_actions
   end
 
 
   show do
+   div do
     panel("Classroom details") do
       attributes_table_for homeroom do 
         row "Number of Accounts" do 
           homeroom.accounts.where(:status => 'active').count
         end
-        # row "Number of Pupils" do 
-        #   homeroom.students.count
-        # end
-        row "Number of Working Devices" do 
-          homeroom.devices.where(:status => 'ok')
+        row "Number of Working Devices" do |account|
+           account.devices(:status => 'ok').count
         end
       end
     end
     panel("Classroom details") do
-      table_for homeroom.accounts.where(:status => 'active') do 
-        column "List of Accounts" do |account|
-#          account.acc_number
-        # column("List of Accounts") do 
-        #   link_to homeroom.accounts.map(&:acc_number).join("<br />").html_safe #, admin_account_path(account) 
-        end 
-        column "Device" do |account|
+      table_for(homeroom.accounts.where(:status=>'active')) do 
+
+        column("Accounts") { |account| account.acc_number }
+        column("Students") { |account| account.student.other_names }
+     #   column("Device") { |account| account.device.serial_number }
  #         account.devices.where(:status => 'ok').count #("Number of devices") accounts.devices
-        end
+        
       end
     end
+   end
   end
 
   form do |f|
@@ -108,10 +108,10 @@ end
             link_to account.acc_number, admin_account_path(account)
          end
          column "Surname" do |account| 
-             account.students.map(&:other_names).join("<br />").html_safe
+             account.student.other_names rescue nil
          end
          column "Name" do |account| 
-             account.students.map(&:first_name).join("<br />").html_safe
+             account.student.first_name rescue nil
          end
          column("Serial No") do |account|
              account.devices.map(&:serial_number).join("<br />").html_safe

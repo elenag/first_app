@@ -3,15 +3,15 @@ class Account < ActiveRecord::Base
   STATUS_CLOSED = 'closed'
   STATUS_SPARE  = 'spare'
 
-  attr_accessible :account_id, :acc_number, :number_broken, :flagged, :comments, :status, :homeroom_id, :content_buckets_id, :device_attributes, :students_attributes, :school_id, :project_id
+  attr_accessible :account_id, :acc_number, :number_broken, :flagged, :comments, :status, :homeroom_id, :content_buckets_id, :device_attributes, :student_attributes, :school_id, :project_id
 
   belongs_to :homeroom
   has_one :school, :through => :homeroom
   has_one :project, :through => :school
 
  
-  has_many :students
-  accepts_nested_attributes_for :students
+  has_one :student
+  accepts_nested_attributes_for :student
   has_many :devices
   accepts_nested_attributes_for :devices
 

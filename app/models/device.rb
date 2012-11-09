@@ -34,6 +34,7 @@ class Device < ActiveRecord::Base
   has_one :homeroom, :through => :account
   has_one :school, :through => :homeroom
   has_one :project, :through => :purchase_order
+  has_one :student, :through => :account
   has_many :admin_users, :through => :project
   validates :serial_number, :device_type_id, :purchase_order_id, :status, :presence => true
   validates :status, :inclusion => { :in => [STATUS_OK, STATUS_BROKEN, STATUS_SPARE, STATUS_DECEASED], :message => "You need to pick one status." }
