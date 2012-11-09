@@ -14,9 +14,7 @@ ActiveAdmin.register Homeroom do
     column("School" ) { |homeroom| homeroom.school.name }
     column("Project" ) { |homeroom| homeroom.school.project.name }
     column("No of accounts") {|homeroom| homeroom.accounts.where(:status => 'active').count} 
-    # column "Accounts" do |homeroom| 
-    #     homeroom.accounts.map(&:acc_number).join("<br />").html_safe
-    # end
+    
     default_actions
   end
 
@@ -35,12 +33,12 @@ ActiveAdmin.register Homeroom do
     end
     panel("Classroom details") do
       table_for(homeroom.accounts.where(:status=>'active')) do 
-
-        column("Accounts") { |account| account.acc_number }
-        column("Students") { |account| account.student.other_names }
-     #   column("Device") { |account| account.device.serial_number }
- #         account.devices.where(:status => 'ok').count #("Number of devices") accounts.devices
-        
+        column("Accounts") { |account| account.acc_number rescue nil}
+        column("Surname") { |account| account.student.other_names rescue nil }
+        column("Name") { |account| account.student.first_name rescue nil }
+        column("Device") do |ac|
+          ac.devices.map(&:serial_number).join("<br />").html_safe 
+        end
       end
     end
    end
