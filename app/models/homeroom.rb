@@ -15,6 +15,7 @@ class Homeroom < ActiveRecord::Base
   has_many :books, :through => :pushes
 
   validates :name, :school_id, :presence => true
+  validates_uniqueness_of :name
 
   class << self
     def students_accounts_in_homeroom

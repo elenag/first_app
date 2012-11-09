@@ -7,8 +7,8 @@ ActiveAdmin.register Device do
   scope :TO_REPAIR
   scope :TO_RETURN
 
-  batch_action :destroy, false
-  
+#  batch_action :destroy, false
+
   batch_action :assign, :priority => 2 do |selection|
     Device.find(selection).each {|device| device.new_event('assigned')}
     redirect_to collection_path, :alert => "The selected devices have been assigned!"

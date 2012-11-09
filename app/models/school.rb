@@ -15,6 +15,7 @@ class School < ActiveRecord::Base
   accepts_nested_attributes_for :accounts
 
   validates :name, :project_id, :presence => true
+  validates_uniqueness_of :name
 
 end
 

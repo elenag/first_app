@@ -18,6 +18,7 @@ class Account < ActiveRecord::Base
   has_and_belongs_to_many :content_buckets
 
   validates :acc_number, :status, :homeroom_id, :presence => true
+  validates_uniqueness_of :acc_number
 
   class << self
 
