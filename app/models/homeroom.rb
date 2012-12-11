@@ -35,7 +35,7 @@ class Homeroom < ActiveRecord::Base
     end
 
     def number_of_other_accounts_in_homeroom
-      self.accounts.where(:status => 'active').where(:role => !('teacher' || 'student'))
+ #     self.accounts.where(:status => 'active').where(:role => !('teacher' || 'student'))
     end
 
     def students_with_devices

@@ -9,7 +9,7 @@ section "STATISTICS" do
           td number_with_delimiter(Device.where(:status => 'ok').count + Device.where(:status => 'spare').count)
          end
         tr do
-          th "Devices Out of Order"
+          th "Broken Devices in 2013s"
           td number_with_delimiter(Project.sum {|p| p.out_of_order })
         end
 

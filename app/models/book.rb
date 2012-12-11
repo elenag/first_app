@@ -63,13 +63,16 @@ class Book < ActiveRecord::Base
   end
 
    def African_count
-      counter = 0
-      Book.all.each do |book|
-        if book.publisher && book.publisher.origin.continent.name.eql?("Africa") then
-          counter +=1
-        end
-      end
-      return counter
+      af_count = Book.count_by_sql("select count(*) from books b, origins o, continents c where c.name = '%s' and o.continent_id = c.id and b.origin_id = o.id" % ["Africa"])
+
+
+      
+      # Book.all.each do |book|
+      #   if book.publisher && book.publisher.origin.continent.name.eql?("Africa") then
+      #     counter +=1
+      #   end
+      # end
+     #{} return counter
     end
 
     def Intl_count
