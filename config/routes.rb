@@ -1,4 +1,14 @@
 FirstApp::Application.routes.draw do
+  get "orders/search"
+
+  get "orders/review"
+
+  get "orders/confirm"
+
+  get "orders/list_all"
+
+  get "orders/show_current"
+
   ActiveAdmin.routes(self)
 
   devise_for :admin_users, ActiveAdmin::Devise.config

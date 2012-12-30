@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121029141849) do
+ActiveRecord::Schema.define(:version => 20121227175049) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -257,6 +257,24 @@ ActiveRecord::Schema.define(:version => 20121029141849) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "order_items", :force => true do |t|
+    t.integer  "order_id"
+    t.integer  "book_id"
+    t.integer  "content_bucket_id"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
+
+  add_index "order_items", ["order_id", "book_id"], :name => "index_order_items_on_order_id_and_book_id"
+
+  create_table "orders", :force => true do |t|
+    t.boolean  "confirmed",     :default => false
+    t.integer  "admin_user_id"
+    t.integer  "project_id"
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
   end
 
   create_table "origins", :force => true do |t|

@@ -14,6 +14,8 @@ class ContentBucket < ActiveRecord::Base
   has_many :accounts, :through => :homerooms
   has_many :students, :through => :accounts
 
+  has_many :order_items
+
   validates :name, :presence => true
 
   def self.projects_content_buckets (proj_id)

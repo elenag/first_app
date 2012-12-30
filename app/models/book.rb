@@ -31,6 +31,8 @@ class Book < ActiveRecord::Base
 
   has_one :continent, :through => :origin
 
+  has_many :order_items
+
   accepts_nested_attributes_for :genre, :publisher, :authors, :origin
 
   validates :title, :publisher_id, :language_id, :genre_id, :book_status_id, :presence => true
