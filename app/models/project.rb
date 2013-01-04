@@ -58,7 +58,7 @@ class Project < ActiveRecord::Base
   end
 
   def students_with_devices
-    st_devices = Project.count_by_sql("select count(*) from projects p, schools s, homerooms h, accounts a, students st, devices d where d.status = '%s' and d.account_id = a.id and st.account_id = a.id and st.role = '%s' and a.homeroom_id = h.id and h.school_id = s.id and s.project_id = %d" % ['student', Device::STATUS_OK, self.id ])
+    st_devices = Project.count_by_sql("select count(*) from projects p, schools s, homerooms h, accounts a, students st, devices d where d.status = '%s' and d.account_id = a.id and st.account_id = a.id and st.role = '%s' and a.homeroom_id = h.id and h.school_id = s.id and s.project_id = %d" % [ Device::STATUS_OK, 'student', self.id ])
   end
 
   # def students_with_devices
