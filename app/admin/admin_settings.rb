@@ -157,6 +157,26 @@ ActiveAdmin.register TextbookLevel do
   end
 end
 
+ActiveAdmin.register TextbookSumlevel do
+  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
+
+  actions :index, :show, :new, :create, :update, :edit
+
+  index do
+    column :name 
+    column("Number of books") {|tl| tl.books.count}
+    default_actions
+  end
+
+  form do |f|
+    f.inputs "Textbook Level Details" do
+      f.input :name
+    end
+        
+    f.buttons
+  end
+end
+
 ActiveAdmin.register TextbookSubject do
   menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
 
@@ -227,7 +247,7 @@ ActiveAdmin.register Platform do
     end
 end
 
-ActiveAdmin.register Level do
+ActiveAdmin.register ReadLevel do
   menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
   actions :index, :show, :new, :create, :update, :edit
 
