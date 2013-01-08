@@ -59,6 +59,7 @@ class Project < ActiveRecord::Base
 
   def students_with_devices
     st_devices = Project.count_by_sql("select count(*) from projects p, schools s, homerooms h, accounts a, students st, devices d where d.status = '%s' and d.account_id = a.id and st.account_id = a.id and st.role = '%s' and a.homeroom_id = h.id and h.school_id = s.id and s.project_id = %d" % [ Device::STATUS_OK, 'student', self.id ])
+    st_devices = st_devices / 6
   end
 
   # def students_with_devices
@@ -93,12 +94,12 @@ class Project < ActiveRecord::Base
 
   def others_with_devices
     count = Project.count_by_sql("select count(*) from projects p, schools s, homerooms h, accounts a, devices d, students st where st.role != '%s' and st.account_id = a.id and d.account_id = a.id and d.status = '%s' and a.homeroom_id = h.id and h.school_id = s.id and s.project_id = %d" % ['student', Device::STATUS_OK, self.id ])
+    count = count / 6
   end
 
   def out_of_order
     count_in = Project.count_by_sql("select count(*) from projects p, schools s, homerooms h, accounts a, devices d where d.status != '%s' and d.account_id = a.id and a.status = '%s' and a.homeroom_id = h.id and h.school_id = s.id and s.project_id = %d" % [Device::STATUS_OK, 'active', self.id ])
 
-  
   end
 
 

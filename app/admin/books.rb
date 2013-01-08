@@ -20,9 +20,7 @@ ActiveAdmin.register Book do
   filter :textbook_subject
   filter :language
   filter :read_level, :label => "Level"
-  #filter :rating
   filter :publisher
-  #filter :price
   filter :title
   filter :keywords
   filter :comments
