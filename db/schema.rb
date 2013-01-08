@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121227175049) do
+ActiveRecord::Schema.define(:version => 20130108113240) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -105,14 +105,14 @@ ActiveRecord::Schema.define(:version => 20121227175049) do
     t.string   "title"
     t.decimal  "price"
     t.integer  "rating"
-    t.boolean  "flagged",             :default => false
+    t.boolean  "flagged",              :default => false
     t.boolean  "copublished"
     t.integer  "publisher_id"
     t.integer  "language_id"
     t.integer  "genre_id"
     t.text     "description"
-    t.datetime "created_at",                             :null => false
-    t.datetime "updated_at",                             :null => false
+    t.datetime "created_at",                              :null => false
+    t.datetime "updated_at",                              :null => false
     t.date     "date_added"
     t.boolean  "restricted"
     t.integer  "limited"
@@ -129,6 +129,9 @@ ActiveRecord::Schema.define(:version => 20121227175049) do
     t.boolean  "epub"
     t.boolean  "fixed_epub"
     t.integer  "origin_id"
+    t.string   "keywords"
+    t.integer  "read_level_id"
+    t.integer  "textbook_sumlevel_id"
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
@@ -136,8 +139,10 @@ ActiveRecord::Schema.define(:version => 20121227175049) do
   add_index "books", ["genre_id"], :name => "index_books_on_genre_id"
   add_index "books", ["language_id"], :name => "index_books_on_language_id"
   add_index "books", ["publisher_id"], :name => "index_books_on_publisher_id"
+  add_index "books", ["read_level_id"], :name => "index_books_on_read_level_id"
   add_index "books", ["textbook_level_id"], :name => "index_books_on_textbook_level_id"
   add_index "books", ["textbook_subject_id"], :name => "index_books_on_textbook_subject_id"
+  add_index "books", ["textbook_sumlevel_id"], :name => "index_books_on_textbook_sumlevel_id"
 
   create_table "books_content_buckets", :id => false, :force => true do |t|
     t.integer "book_id"
@@ -376,6 +381,12 @@ ActiveRecord::Schema.define(:version => 20121227175049) do
 
   add_index "pushes", ["book_id", "content_bucket_id"], :name => "index_pushes_on_book_id_and_content_bucket_id"
 
+  create_table "read_levels", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "project_id"
@@ -404,6 +415,12 @@ ActiveRecord::Schema.define(:version => 20121227175049) do
   end
 
   create_table "textbook_subjects", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "textbook_sumlevels", :force => true do |t|
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false

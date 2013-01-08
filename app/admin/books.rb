@@ -11,31 +11,30 @@ ActiveAdmin.register Book do
 
   batch_action :destroy, false
 
-
-filter :book_status
-filter :genre
-filter :fiction_type
-filter :textbook_level
-filter :textbook_subject
-filter :language
-filter :levels
-#filter :rating
-filter :publisher
-#filter :price
-filter :comments
-filter :asin
-filter :title
-filter :authors
-filter :restricted, :as => :select
-filter :publishing_rights
-filter :origin #, :label => "Country", :collection => proc {Origin.all.map(&:name)}
-filter :continent
-filter :limited
-filter :created_at
-filter :books_in_select_content_bucket, #_in_project_select, :as => :select, 
-        :label => "Not Pushed To ", 
-        :collection => proc { ContentBucket.all.map(&:name)}
-
+  filter :asin
+  filter :book_status
+  filter :genre
+  filter :fiction_type
+  filter :textbook_level
+  filter :textbook_sumlevel
+  filter :textbook_subject
+  filter :language
+  filter :read_level, :label => "Level"
+  #filter :rating
+  filter :publisher
+  #filter :price
+  filter :title
+  filter :keywords
+  filter :comments
+  filter :authors
+  filter :restricted, :as => :select
+  filter :publishing_rights
+  filter :origin #, :label => "Country", :collection => proc {Origin.all.map(&:name)}
+  filter :continent
+  filter :limited
+  filter :created_at
+  filter :updated_at
+ 
 
   # controller do
   #   def create 
@@ -71,13 +70,11 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
 		  column "Author" do |book| 
 			  link_to book.authors.map(&:name).join("<br />").html_safe, admin_author_path(book.authors)
 		  end
-        column :publisher, :sortable => false
-        column :genre, :sortable => false
-        column "Levels" do |book| 
-            book.levels.map(&:name).join("<br />").html_safe
-        end
-        column :language, :sortable => false
-        column :rating
+      column :publisher, :sortable => false
+      column :genre, :sortable => false
+      column :read_level, :label => "Level"
+      column :language, :sortable => false
+      column :rating
     end
 
     csv do
@@ -88,12 +85,10 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
             book.authors.map(&:name).join(", ").html_safe
         end
         column("Publisher") { |book| book.publisher.name }
-        column("Origin") {|book| book.origin.name }  
+        column("Origin")    { |book| book.origin.name }  
         column("Genre")     { |book| book.genre.name }
         column("Language")  { |book| book.language.name }
-        column("Levels") do |book| 
-            book.levels.map(&:name).join(", ").html_safe
-        end
+        column :read_level
         column("Description")  { |book| book.description }
         column("Free Content") do |book| 
             book.publisher.free
@@ -126,10 +121,12 @@ filter :books_in_select_content_bucket, #_in_project_select, :as => :select,
         f.input :genre, :collection => Genre.all.map{ |genre| [genre.name, genre.id] }.sort, :lable => "Content Type"
         f.input :fiction_type, :hint => "(Only if genre is fiction)", :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :textbook_level, :hint => "(Only if genre is textbook)", :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :textbook_sumlevel, :hint => "(Only if genre is textbook)", :collection => TextbookSumlevel.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :textbook_subject, :hint => "(Only if genre is textbook)", :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :keywords
         f.input :description
         f.input :mou_fname, :label => "MOU file name"
-        f.input :levels
+        f.input :read_level, :label => "Level"
         f.input :rating
         f.input :source_file
         f.input :source_cover

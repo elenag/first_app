@@ -4,12 +4,12 @@ class Book < ActiveRecord::Base
 
   attr_accessible :asin, :title, :price, :rating, :copublished, :flagged, :book_status_id, 
         :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, 
-        :textbook_level_id, 
+        :textbook_level_id, :textbook_sumlevel_id, :keywords,
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
         :content_bucket_ids, :push_ids, :restricted, :limited, :description, :mou_fname, :origin_id,
         :epub, :mobi, :source_file, :source_cover, :fixed_epub
 
-  has_and_belongs_to_many :levels
+  has_and_belongs_to_many :levels, :join_table => :books_levels
   has_and_belongs_to_many :platforms
   has_and_belongs_to_many :publishing_rights
 
@@ -24,10 +24,12 @@ class Book < ActiveRecord::Base
   belongs_to :genre
   belongs_to :fiction_type
   belongs_to :textbook_level
+  belongs_to :textbook_sumlevel
   belongs_to :textbook_subject
   belongs_to :book_status
   belongs_to :publisher #, :include => :origin
   belongs_to :origin
+  belongs_to :read_level
 
   has_one :continent, :through => :origin
 
