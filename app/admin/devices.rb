@@ -67,8 +67,8 @@ ActiveAdmin.register Device do
     filter :homeroom, :as => :select, :label => "Homeroom", 
         :collection => proc {Homeroom.all} rescue nil
     filter :device_type, :sortable => false
-    filter :account #, :as => :select, :label => "Account", 
-        #:collection => proc {Account.all.where(:id => :account_id)} rescue nil
+    filter :account, :as => :select, :label => "Account", 
+        :collection => proc {Account.all.map(&:acc_number)} rescue nil
     filter :control
     filter :flagged
     filter :serial_number

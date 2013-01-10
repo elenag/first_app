@@ -81,10 +81,10 @@ ActiveAdmin.register Push do
 
     index do
       selectable_column
-        column("Book title")     { |push| push.book.title }
-        column("ASIN")           { |push| push.book.asin }
-        column("Content Bucket") { |push| push.content_bucket.name }
-        column("Project")        { |push| push.content_bucket.project.name }
+        column("Book title")     { |push| push.book.title rescue nil }
+        column("ASIN")           { |push| push.book.asin rescue nil }
+        column("Content Bucket") { |push| push.content_bucket.name rescue nil }
+        column("Project")        { |push| push.content_bucket.project.name rescue nil }
         default_actions
     end
 end

@@ -7,7 +7,8 @@ ActiveAdmin.register Student do
   filter :first_name
   filter :other_names
   filter :role
-  filter :account
+  filter :account, :as => :select, :label => "Account", 
+        :collection => proc {Account.all.map(&:acc_number)} rescue nil
   filter :school, :as => :select, :label => "School", 
         :collection => proc {School.all} rescue nil
   filter :homeroom, :as => :select, :label => "Classroom", 

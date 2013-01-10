@@ -109,9 +109,7 @@ ActiveAdmin.register Book do
   #    end
        #, :collection => Author.all.map{ |stat| [stat.name, stat.id] }.sort
       f.inputs "Book Details" do 
-       # f.input :authors, :as => :select, :input_html => { :size => 1}, collection: Author.all.sort
         f.input :authors, :collection => Author.all.sort_by(&:name) 
-        #:as => :check_boxes, :collection => Author.order("name ASC").all
         f.input :asin, :input_html => { :size => 10 }
     		f.input :title, :input_html => { :size => 10 }
         f.input :book_status, :collection => BookStatus.all.map{ |stat| [stat.name, stat.id] }.sort

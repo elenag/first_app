@@ -44,7 +44,7 @@ class CsvDb
             if key[-3, 3] == "_id" then
               valuet = search_by_name_and_fk(key, value)
               if valuet.nil?
-                value = -1 # "---ERROR---"
+                value = 0 # "---ERROR---"
               else
                 value = valuet.id
               end
