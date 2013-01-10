@@ -4,6 +4,7 @@ gem 'rails', '3.2.3'
 gem 'sqlite3'
 gem 'haml'
 gem 'mysql'
+gem 'cancan'
 
 
 # ActiveAdmin related gems

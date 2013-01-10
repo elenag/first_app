@@ -1,17 +1,6 @@
 ActiveAdmin.register ContentBucket do
 
-  action_item :only => :show do
-    link_to 'Upload CSV', :action => 'upload_csv'
-  end
-
-  collection_action :upload_csv do
-    render "admin/csv/upload_csv"
-  end
-
-  collection_action :import_csv, :method => :post do
-    CsvDb.convert_save("Push", params[:dump][:file])
-    redirect_to :action => :index, :notice => "CSV imported successfully!"
-  end
+  menu :parent => "Projects"
 
   index do
   selectable_column
@@ -62,6 +51,40 @@ end
 
 
 ActiveAdmin.register Push do
-  menu false
+    menu :parent => "Projects"
 
+  # action_item :only => :show do
+  #   link_to 'Upload CSV', :action => 'upload_csv'
+  # end
+
+  # collection_action :upload_csv do
+  #   render "admin/csv/upload_csv"
+  # end
+
+  # collection_action :import_csv, :method => :post do
+  #   CsvDb.convert_save("Push", params[:dump][:file])
+  #   redirect_to :action => :index, :notice => "CSV imported successfully!"
+  # end
+
+    action_item :only => :index do
+      link_to 'Upload CSV', :action => 'upload_csv'
+    end
+
+    collection_action :upload_csv do
+      render "admin/csv/upload_csv"
+    end
+
+    collection_action :import_csv, :method => :post do
+      CsvDb.convert_save("Push", params[:dump][:file])
+      redirect_to :action => :index, :notice => "CSV imported successfully!"
+    end
+
+    index do
+      selectable_column
+        column("Book title")     { |push| push.book.title }
+        column("ASIN")           { |push| push.book.asin }
+        column("Content Bucket") { |push| push.content_bucket.name }
+        column("Project")        { |push| push.content_bucket.project.name }
+        default_actions
+    end
 end
