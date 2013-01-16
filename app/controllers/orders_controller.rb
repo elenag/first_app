@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   end
 
   def review
-    render "Hello"
+#    render "Hello"
   end
 
   def confirm

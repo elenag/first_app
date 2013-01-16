@@ -3,7 +3,7 @@ class Book < ActiveRecord::Base
 #scope :without_feed, joins('left outer join authors_feeds on authors.id=authors_feeds.author_id').where('authors_feeds.feed_id is null')
 
   attr_accessible :asin, :title, :price, :rating, :copublished, :flagged, :book_status_id, 
-        :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, :read_level,
+        :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, :read_level_id,
         :textbook_level_id, :textbook_sumlevel_id, :keywords, 
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
         :content_bucket_ids, :push_ids, :restricted, :limited, :description, :mou_fname, :origin_id,
