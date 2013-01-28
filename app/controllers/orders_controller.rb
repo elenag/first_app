@@ -3,15 +3,17 @@ class OrdersController < ApplicationController
   end
 
   def review
-#    render "Hello"
+    render(:text => 'Hello Everyone')
   end
 
   def confirm
   end
 
   def list_all
+    @orders = Order.order("orders.created_at")
   end
 
   def show_current
+    @order = Order.find(params[:id])
   end
 end

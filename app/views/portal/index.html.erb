@@ -1,0 +1,9 @@
+<h1>WELCOME TO WORLDREADER'S BOOK ORDER TOOL</h1>
+<p>What would you like to do</p>
+
+
+<%= link_to("Browse Our Books", {:controller => 'books', :action => 'search' }) %> <br />
+
+<%= link_to("View Content Groups", {:controller => 'content_group', :action => 'list_all', :id => 20, :page => 5 } ) %> <br />
+
+<%= link_to("View your orders", {:controller => 'orders', :action => 'list_all' }) %> <br />

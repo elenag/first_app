@@ -1,0 +1,31 @@
+<%= link_to("<<Back to your search results", {:action => 'search'}, :class => 'back_link') %>
+
+
+<div class="subject show">
+	<h2><%= @book.title %></h2>
+	
+	<table summery="Book's detail view">
+		<tr>
+			<th>Title</th>
+			<td><%= @book.title %></td>
+		</tr>
+		<tr>
+			<th>Author</th>
+			<td><%= @author %></td>
+		</tr>
+		<tr>
+			<th>Publisher</th>
+			<td><%= @publisher %></td>
+		</tr>
+		<tr>
+			<th>Description</th>
+			<td><%= @book.description %></td>
+		</tr>
+		<tr>
+			<th>Updated</th>
+			<td><%= @book.updated_at %></td>
+		</tr>
+	</table>
+	
+</div>
+	

@@ -43,6 +43,12 @@ ActiveAdmin.setup do |config|
   # a namespace block. For example, to change the site title
   # within a namespace:
   #
+
+  config.namespace :admin do |admin_namespace|
+  # /admin renders the AdminAccountController index action
+    admin_namespace.root_to = "dashboard#index"
+  end
+  
   #   config.namespace :admin do |admin|
   #     admin.site_title = "Custom Admin Title"
   #   end

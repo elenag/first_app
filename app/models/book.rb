@@ -88,6 +88,17 @@ class Book < ActiveRecord::Base
       end
       return (Book.all.count - counter)
     end
+
+
+    def self.search(search)
+      if search
+        where 'title LIKE :search OR asin LIKE :search 
+          OR authors LIKE :search OR origin LIKE :search OR keywords LIKE :search', 
+          "%#{search}%"
+      else
+        scoped
+      end
+    end
   
   end
 

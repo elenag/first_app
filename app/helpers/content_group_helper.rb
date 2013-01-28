@@ -1,0 +1,2 @@
+module ContentGroupHelper
+end

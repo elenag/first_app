@@ -76,26 +76,23 @@ ActiveAdmin.register Book do
     end
 
     csv do
-        column("Status") { |book| book.book_status.name }
-        column("ASIN")  { |book| book.asin }
-        column("Title") { |book| book.title }
-        column "Author" do |book| 
-            book.authors.map(&:name).join(", ").html_safe
-        end
-        column("Publisher") { |book| book.publisher.name }
-        column("Origin")    { |book| book.origin.name }  
-        column("Genre")     { |book| book.genre.name }
-        column("Language")  { |book| book.language.name }
-        column :read_level
-        column("Description")  { |book| book.description }
+        column("Status")      { |book| book.book_status.name }
         column("Free Content") do |book| 
             book.publisher.free
         end
-        column("Restrictions") { |book| book.restricted }
-        column("Description")  { |book| book.description }
-        column("MOU File Name"){ |book| book.mou_fname }
-        column("Comments")     { |book| book.comments }
-
+        column("ASIN")        { |book| book.asin }
+        column("Title")       { |book| book.title }
+        column "Author" do |book| 
+            book.authors.map(&:name).join(", ").html_safe
+        end
+        column("Publisher")    { |book| book.publisher.name }
+        column("Origin")       { |book| book.origin.name rescue nil}  
+        column("Genre")        { |book| book.genre.name rescue nil }
+        column("Fiction Type") { |book| book.fiction_type.name rescue nil}
+        column("Textbook Level")    { |book| book.textbook_level.name rescue nil}
+        column("Textbook Subject")  { |book| book.textbook_subject.name rescue nil}
+        column("Reading Level")     {|book| book.read_level.name rescue nil}
+        column("Description")  { |book| book.description rescue nil}
     end
 
     form do |f|
