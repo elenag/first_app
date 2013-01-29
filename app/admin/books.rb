@@ -92,7 +92,8 @@ ActiveAdmin.register Book do
         column("Textbook Level")    { |book| book.textbook_level.name rescue nil}
         column("Textbook Subject")  { |book| book.textbook_subject.name rescue nil}
         column("Reading Level")     {|book| book.read_level.name rescue nil}
-        column("Description")  { |book| book.description rescue nil}
+        column("Language")        { |book| book.language.name }
+        column("Description")  { |book| book.description }
     end
 
     form do |f|
