@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130108113240) do
+ActiveRecord::Schema.define(:version => 20130206113124) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -132,14 +132,18 @@ ActiveRecord::Schema.define(:version => 20130108113240) do
     t.string   "keywords"
     t.integer  "read_level_id"
     t.integer  "textbook_sumlevel_id"
+    t.integer  "category_id"
+    t.integer  "subcategory_id"
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
+  add_index "books", ["category_id"], :name => "index_books_on_category_id"
   add_index "books", ["fiction_type_id"], :name => "index_books_on_fiction_type_id"
   add_index "books", ["genre_id"], :name => "index_books_on_genre_id"
   add_index "books", ["language_id"], :name => "index_books_on_language_id"
   add_index "books", ["publisher_id"], :name => "index_books_on_publisher_id"
   add_index "books", ["read_level_id"], :name => "index_books_on_read_level_id"
+  add_index "books", ["subcategory_id"], :name => "index_books_on_subcategory_id"
   add_index "books", ["textbook_level_id"], :name => "index_books_on_textbook_level_id"
   add_index "books", ["textbook_subject_id"], :name => "index_books_on_textbook_subject_id"
   add_index "books", ["textbook_sumlevel_id"], :name => "index_books_on_textbook_sumlevel_id"
@@ -171,6 +175,12 @@ ActiveRecord::Schema.define(:version => 20130108113240) do
   end
 
   add_index "books_publishing_rights", ["book_id", "publishing_right_id"], :name => "book_publishing_right_index", :unique => true
+
+  create_table "categories", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
 
   create_table "content_buckets", :force => true do |t|
     t.string   "name"
@@ -407,6 +417,14 @@ ActiveRecord::Schema.define(:version => 20130108113240) do
   end
 
   add_index "students", ["account_id"], :name => "index_students_on_account_id"
+
+  create_table "subcategories", :force => true do |t|
+    t.string   "name"
+    t.integer  "category_id"
+    t.integer  "book_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
 
   create_table "textbook_levels", :force => true do |t|
     t.string   "name"

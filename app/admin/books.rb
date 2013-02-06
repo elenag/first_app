@@ -69,7 +69,7 @@ ActiveAdmin.register Book do
 			  link_to book.authors.map(&:name).join("<br />").html_safe, admin_author_path(book.authors)
 		  end
       column :publisher, :sortable => false
-      column :genre, :sortable => false
+      column :category, :sortable => false
       column :read_level, :label => "Level"
       column :language, :sortable => false
       column :rating
@@ -92,7 +92,8 @@ ActiveAdmin.register Book do
         column("Textbook Level")    { |book| book.textbook_level.name rescue nil}
         column("Textbook Subject")  { |book| book.textbook_subject.name rescue nil}
         column("Reading Level")     {|book| book.read_level.name rescue nil}
-        column("Language")        { |book| book.language.name }
+        column("Language")          { |book| book.language.name }
+        column("Rating")            { |book| book.rating }
         column("Description")  { |book| book.description }
     end
 
@@ -114,6 +115,8 @@ ActiveAdmin.register Book do
         f.input :language , :collection => Language.all.map{ |language| [language.name, language.id] }.sort
         f.input :genre, :collection => Genre.all.map{ |genre| [genre.name, genre.id] }.sort, :lable => "Content Type"
         f.input :fiction_type, :hint => "(Only if genre is fiction)", :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
+        f.input :category, :collection => Category.all.map{ |cat| [cat.name, cat.id] }.sort, :lable => "Content Type"
+        f.input :subcategory, :collection => Subcategory.all.map{ |subc| [subc.name, subc.id] }.sort, :lable => "Content Subtype"
         f.input :textbook_level, :hint => "(Only if genre is textbook)", :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :textbook_sumlevel, :hint => "(Only if genre is textbook)", :collection => TextbookSumlevel.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :textbook_subject, :hint => "(Only if genre is textbook)", :collection => TextbookSubject.all.map{ |stat| [stat.name, stat.id] }.sort

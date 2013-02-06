@@ -4,7 +4,7 @@ class Book < ActiveRecord::Base
 
   attr_accessible :asin, :title, :price, :rating, :copublished, :flagged, :book_status_id, 
         :author_ids, :publishing_right_ids, :publisher_id, :genre_id, :fiction_type_id, :read_level_id,
-        :textbook_level_id, :textbook_sumlevel_id, :keywords, 
+        :textbook_level_id, :textbook_sumlevel_id, :keywords, :category_id, :subcategory_id,
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
         :content_bucket_ids, :push_ids, :restricted, :limited, :description, :mou_fname, :origin_id,
         :epub, :mobi, :source_file, :source_cover, :fixed_epub
@@ -23,6 +23,8 @@ class Book < ActiveRecord::Base
   belongs_to :language
   belongs_to :genre
   belongs_to :fiction_type
+  belongs_to :category
+  belongs_to :subcategory
   belongs_to :textbook_level
   belongs_to :textbook_sumlevel
   belongs_to :textbook_subject
