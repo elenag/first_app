@@ -192,6 +192,7 @@ ActiveAdmin.register Category do
       f.has_many :subcategories do |p|
         p.input :name
       end
+    end
       f.buttons
     end
 end
