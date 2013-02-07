@@ -179,19 +179,20 @@ ActiveAdmin.register Author do
 end
 
 ActiveAdmin.register Category do
-    menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
+  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
  
-    index do
-        column :name 
-        default_actions
-    end
+  index do
+    column :name 
+    default_actions
+  end
 
-    form do |f|
-        f.inputs "Books Category Details" do
-            f.input :name
-        end
-        
-        f.buttons
+  form do |f|
+    f.inputs "Books Category Details" do
+      f.input :name
+      f.has_many :subcategories do |p|
+        p.input :name
+      end
+      f.buttons
     end
 end
 
