@@ -1,5 +1,4 @@
 ActiveAdmin.register Device do
-  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.DR_rel? }
 
   scope :OK, :default => :true
   scope :BROKEN

@@ -87,12 +87,12 @@ ActiveAdmin.register Project do
       f.input :project_type
       f.input :target_size
       f.input :current_size
-      f.has_many :schools do |p|
-        p.input :name
-      end
-      f.has_many :content_buckets do |p|
-        p.input :name
-      end
+      # f.has_many :schools do |p|
+      #   p.input :name
+      # end
+      # f.has_many :content_buckets do |p|
+      #   p.input :name
+      # end
       f.buttons
     end
 end

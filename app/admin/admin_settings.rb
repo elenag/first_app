@@ -1,3 +1,5 @@
+
+
 ActiveAdmin.register PublishingRight do
     menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"
  

@@ -1,6 +1,6 @@
 ActiveAdmin.register ContentBucket do
 
-  menu :parent => "Projects"
+  menu :parent => "Projects", :priority => 2
 
   index do
   selectable_column
@@ -35,15 +35,15 @@ ActiveAdmin.register ContentBucket do
     end
     f.actions
 
-    f.inputs "Push Details" do
-      f.has_many :pushes do |p|
-        p.input :book #, :collection => Book.all.map{ |book| [book.title, book.id] } 
-        p.input :push_date
-        p.input :successful
- #       p.input :comments
-      end
-      f.buttons
-    end   
+ #    f.inputs "Push Details" do
+ #      f.has_many :pushes do |p|
+ #        p.input :book #, :collection => Book.all.map{ |book| [book.title, book.id] } 
+ #        p.input :push_date
+ #        p.input :successful
+ # #       p.input :comments
+ #      end
+ #      f.buttons
+ #    end   
     
   end
 end

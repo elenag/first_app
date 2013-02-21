@@ -1,5 +1,5 @@
 ActiveAdmin.register Publisher do
-  menu :if => proc{ current_admin_user.publishing_rel? }, :parent => "Books" 
+  menu :parent => "Books" 
   actions :index, :show, :new, :create, :update, :edit
 
   batch_action :destroy, false
@@ -126,7 +126,7 @@ ActiveAdmin.register Publisher do
 end
 
 ActiveAdmin.register Author do
-  menu :if => proc{ current_admin_user.publishing_rel? }, :parent => "Books"
+  menu :parent => "Books"
 
   batch_action :destroy, false
   

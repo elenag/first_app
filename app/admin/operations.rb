@@ -1,5 +1,5 @@
 ActiveAdmin.register PurchaseOrder do
-    menu :if => proc{ current_admin_user.ops_rel? }, :parent => "Devices"
+    menu :parent => "Devices"
 
     action_item :only => :view do
     	link_to 'Upload CSV', :action => 'upload_csv'

@@ -1,6 +1,5 @@
 ActiveAdmin.register Homeroom do
-  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? },
-       :parent => "Projects", :priority => 2
+  menu :parent => "Projects", :priority => 4
 
 
   index do
@@ -67,7 +66,6 @@ end
 
 
  ActiveAdmin.register Account do
-  menu :parent => "Students"
  
   action_item :only => :index do
     link_to 'Upload Accounts.csv', :action => 'upload_csv'

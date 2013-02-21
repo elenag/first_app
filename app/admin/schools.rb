@@ -1,5 +1,6 @@
 ActiveAdmin.register School do
-  menu :if => proc{ current_admin_user.ops_rel? or current_admin_user.can_edit_origins? }, :parent => "Projects"
+  menu :parent => "Projects", :priority => 3
+  
   filter :name, :html => "class='hoge'"
   filter :origin
 
@@ -20,9 +21,9 @@ ActiveAdmin.register School do
     f.inputs "School Details" do
       f.input :name
       f.input :project
-      f.has_many :homerooms do |p|
-        p.input :name
-      end
+      # f.has_many :homerooms do |p|
+      #   p.input :name
+      # end
     end
     f.actions
   end

@@ -1,6 +1,6 @@
 ActiveAdmin.register Student do
-  menu :if => proc{ current_admin_user.DR_rel? or current_admin_user.can_edit_origins?}
-
+  
+  menu :parent => "Accounts"
   scope :all, :default => true
 
 
