@@ -1,19 +1,19 @@
 FirstApp::Application.routes.draw do
-  get "books/search"
+  # get "books/search"
 
-  get "content_group/list_all"
+  # get "content_group/list_all"
 
-  get "portal/index"
+  # get "portal/index"
 
-   get "orders/search"
+  #  get "orders/search"
 
-   get "orders/review"
+  #  get "orders/review"
 
-   get "orders/confirm"
+  #  get "orders/confirm"
 
-   get "orders/list_all"
+  #  get "orders/list_all"
 
-   get "orders/show_current"
+  #  get "orders/show_current"
 
   ActiveAdmin.routes(self)
 
@@ -68,7 +68,7 @@ FirstApp::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
-   root :to => 'orders#search'
+   root :to => 'admin/dashboard#index'
 
   # See how all your routes lay out with "rake routes"
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130206113124) do
+ActiveRecord::Schema.define(:version => 20130305123820) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -134,6 +134,7 @@ ActiveRecord::Schema.define(:version => 20130206113124) do
     t.integer  "textbook_sumlevel_id"
     t.integer  "category_id"
     t.integer  "subcategory_id"
+    t.boolean  "in_store"
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
@@ -184,9 +185,10 @@ ActiveRecord::Schema.define(:version => 20130206113124) do
 
   create_table "content_buckets", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
     t.integer  "project_id"
+    t.string   "friendly_name"
   end
 
   create_table "content_buckets_homerooms", :id => false, :force => true do |t|

@@ -7,7 +7,7 @@ class Book < ActiveRecord::Base
         :textbook_level_id, :textbook_sumlevel_id, :keywords, :category_id, :subcategory_id,
         :textbook_subject_id, :language_id, :level_ids, :comments, :authors_attributes, 
         :content_bucket_ids, :push_ids, :restricted, :limited, :description, :mou_fname, :origin_id,
-        :epub, :mobi, :source_file, :source_cover, :fixed_epub
+        :epub, :mobi, :source_file, :source_cover, :fixed_epub, :in_store
 
   has_and_belongs_to_many :levels, :join_table => :books_levels
   has_and_belongs_to_many :platforms

@@ -9,6 +9,17 @@ ActiveAdmin.register Book do
     redirect_to collection_path, :notice => "country of origin changed!"
   end
 
+  batch_action :in_store, :priority => 2 do |selection|
+      Book.find(selection).each {|book| book.update_attribute(:in_store,'1')}
+      redirect_to collection_path, :notice => "Selected books have been marked as AVAILABLE ON AMAZON STORE"
+    end
+
+    batch_action :not_in_store, :priority => 3 do |selection|
+      Book.find(selection).each {|book| book.update_attribute(:in_store,'0')}
+      redirect_to collection_path, :notice => "Selected books have been marked as NOT AVAILABLE ON AMAZON STORE"
+    end
+
+
   batch_action :destroy, false
 
   filter :asin
@@ -27,11 +38,12 @@ ActiveAdmin.register Book do
   filter :authors
   filter :restricted, :as => :select
   filter :publishing_rights
-  filter :origin #, :label => "Country", :collection => proc {Origin.all.map(&:name)}
+  filter :origin , :label => "Country" #, :collection => proc {Origin.all.map(&:name)}
   filter :continent
   filter :limited
   filter :created_at
   filter :updated_at
+  filter :in_store, :label => "In Amazon Store", :as => :select
  
 
   # controller do
@@ -56,6 +68,8 @@ ActiveAdmin.register Book do
     	CsvDb.convert_save_books(params[:dump][:file])
     	redirect_to :action => :index, :notice => "CSV imported successfully!"
   	end
+
+    
 
   
     index do
@@ -86,7 +100,7 @@ ActiveAdmin.register Book do
             book.authors.map(&:name).join(", ").html_safe
         end
         column("Publisher")    { |book| book.publisher.name }
-        column("Origin")       { |book| book.origin.name rescue nil}  
+        column("Country")       { |book| book.origin.name rescue nil}  
         column("Genre")        { |book| book.genre.name rescue nil }
         column("Fiction Type") { |book| book.fiction_type.name rescue nil}
         column("Textbook Level")    { |book| book.textbook_level.name rescue nil}
@@ -139,7 +153,7 @@ ActiveAdmin.register Book do
         f.input :restricted, :as => :boolean, :label =>"Rights restrictions", :hint => "(Specify in comments)"
         f.input :limited, :label =>"Copy restrictions", :hint => "(Number of copies to be pushed, following the MOU)"
         f.input :comments 
-        f.input :origin
+        f.input :origin, :label =>"Country"
       end
       f.buttons
     end

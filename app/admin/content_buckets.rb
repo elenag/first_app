@@ -6,6 +6,7 @@ ActiveAdmin.register ContentBucket do
   selectable_column
     id_column
     column :name
+    column :friendly_name, :label => "User-friendly name"
 		column :project
 		column "Books" do |content_bucket| 
 			content_bucket.books.count
@@ -18,6 +19,7 @@ ActiveAdmin.register ContentBucket do
     panel("ContentBucket details") do
       attributes_table_for content_bucket do 
         row :name
+        row :friendly_name
         row :project
         row('List of books') do |cb| 
           cb.books.map{ |book| book.title }.join("<br />").html_safe
@@ -31,6 +33,7 @@ ActiveAdmin.register ContentBucket do
   form do |f|
     f.inputs "ContentBucket Details" do
     	f.input :name
+      f.input :friendly_name, :label => "User-friendly name"
     	f.input :project
     end
     f.actions
@@ -83,8 +86,19 @@ ActiveAdmin.register Push do
       selectable_column
         column("Book title")     { |push| push.book.title rescue nil }
         column("ASIN")           { |push| push.book.asin rescue nil }
+        column("Publisher")      { |push| push.book.publisher.name rescue nil }
         column("Content Bucket") { |push| push.content_bucket.name rescue nil }
         column("Project")        { |push| push.content_bucket.project.name rescue nil }
         default_actions
     end
+
+    csv do
+        column("ASIN")      { |push| push.book.asin rescue nil }
+        column("Publisher") { |push| push.book.publisher.name rescue nil }
+        column("Title")     { |push| push.book.title rescue nil }
+        column("Content Bucket") { |push| push.content_bucket.name rescue nil }
+        column("Project")        { |push| push.content_bucket.project.name rescue nil }
+    end
+
+
 end

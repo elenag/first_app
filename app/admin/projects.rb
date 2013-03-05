@@ -15,7 +15,7 @@ ActiveAdmin.register Project do
     column "Name", :sortable => :name do |project|
       link_to project.name, admin_project_path(project)
     end
-    column('Origin') { |project| project.origin.name }
+    column('Country') { |project| project.origin.name }
     column :model, :sortable => false
     column :project_type, :sortable => false
     column('Devices #') { |project| (project.students_with_devices + project.others_with_devices)}
@@ -40,7 +40,7 @@ ActiveAdmin.register Project do
     panel "Project Data" do
       attributes_table_for project do
         row :name
-        row :origin
+        row :origin, :label => "Country"
         row :model
         row :project_type
         row :target_size
@@ -82,7 +82,7 @@ ActiveAdmin.register Project do
   form do |f|
     f.inputs "Project Details" do
       f.input :name
-      f.input :origin
+      f.input :origin, :label => "Country"
       f.input :model
       f.input :project_type
       f.input :target_size

@@ -48,13 +48,13 @@ ActiveAdmin.register Homeroom do
       f.input :name
       f.input :school
       f.input :content_buckets
-      f.has_many :accounts do |acc|
-        acc.input :acc_number
-        acc.input :status
-        acc.input :number_broken
-        acc.input :flagged
-        acc.input :comments
-      end
+      # f.has_many :accounts do |acc|
+      #   acc.input :acc_number
+      #   acc.input :status
+      #   acc.input :number_broken
+      #   acc.input :flagged
+      #   acc.input :comments
+      # end
     end
   f.buttons
 

@@ -24,7 +24,7 @@ ActiveAdmin.register Publisher do
     column "Name" do |publisher|
         link_to publisher.name, admin_publisher_path(publisher)
       end
-    column :origin, :sortable => false
+    column :origin, :label => "Country", :sortable => false
     column :contract_end_date
     column :free
     default_actions
@@ -34,7 +34,7 @@ ActiveAdmin.register Publisher do
     panel("Publisher") do
       attributes_table_for publisher do 
         row :name 
-        row :origin
+        row :origin, :label => "Country"
         row :contract_end_date
         row :free
       end
