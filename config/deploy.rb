@@ -9,7 +9,7 @@ set :user, "ubuntu"
 #role :app, "worldreader"
 #role :web, "worldreader"
 role :web, "54.241.240.211" # Your HTTP server, Apache/etc
-role :app, "worldreader" # This may be the same as your `Web` server
+role :app, "54.241.240.211" # This may be the same as your `Web` server
 role :db, "worldreader", :primary => true # This is where Rails migrations will run
 role :db, "worldreader"
 
