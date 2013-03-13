@@ -3,16 +3,15 @@ set :repository,  "git@github.com:elenag/first_app.git"
 
 set :scm, :git
 set :deploy_to, "/home/ubuntu/worldreader"
-set :scm_passphrase, "IloveMila"
 set :user, "ubuntu"
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
 #role :app, "worldreader"
 #role :web, "worldreader"
-role :web, "worldreader" # Your HTTP server, Apache/etc
-role :app, "worldreader" # This may be the same as your `Web` server
-role :db, "worldreader", :primary => true # This is where Rails migrations will run
-role :db, "worldreader"
+role :web, "54.241.240.211" # Your HTTP server, Apache/etc
+role :app, "54.241.240.211" # This may be the same as your `Web` server
+role :db, "54.241.240.211", :primary => true # This is where Rails migrations will run
+role :db, "54.241.240.211"
 
 # role :web, "your web-server here"                          # Your HTTP server, Apache/etc
 # role :app, "your app-server here"                          # This may be the same as your `Web` server
