@@ -18,9 +18,9 @@ ActiveAdmin.register Project do
     column('Country') { |project| project.origin.name }
     column :model, :sortable => false
     column :project_type, :sortable => false
-    column('Devices #') { |project| (project.students_with_devices + project.others_with_devices)}
+    column('Number of Devices') { |project| project.number_devices }
 #    column('Spare Devices') { |project| (current_size -(project.students_with_devices + project.others_with_devices))}
-    column('Students with Devices') {|project| project.students_with_devices}
+    column('Devices Out of order') {|project| project.out_of_order}
     column('Content Buckets') do |project| 
        project.content_buckets.map(&:name).join("<br />").html_safe
     end
@@ -28,19 +28,16 @@ ActiveAdmin.register Project do
 
   sidebar "Devices Info", :only => :show do
     attributes_table_for project do 
-      row('Students Devices') {|project| project.students_with_devices}
-      row('Teachers Devices') {|project| project.others_with_devices}
-      row("Total devices") { |project| (project.students_with_devices + project.others_with_devices)}
-      row("Without Devices"){|project| project.out_of_order} 
+      row('Number of Devices') {|project| project.number_devices}
+      row("Devices Out of Order"){|project| project.out_of_order} 
     end
   end
 
   show do 
-#    h2 project.name 
     panel "Project Data" do
       attributes_table_for project do
         row :name
-        row :origin, :label => "Country"
+        row("Country") {|project| project.origin }
         row :model
         row :project_type
         row :target_size
@@ -56,12 +53,6 @@ ActiveAdmin.register Project do
         column "homerooms" do |h|
           h.homerooms.map(&:name).join("<br />").html_safe
         end
-#         column "students devices" do |p|
-# #          p.homerooms.map(&:students_with_devices).join("<br />").html_safe
-#         end
-        # column "out of order" do |p|
-        #   p.homerooms.accounts_without_devices
-        # end
       end
     end
     
@@ -87,13 +78,9 @@ ActiveAdmin.register Project do
       f.input :project_type
       f.input :target_size
       f.input :current_size
-      # f.has_many :schools do |p|
-      #   p.input :name
-      # end
-      # f.has_many :content_buckets do |p|
-      #   p.input :name
-      # end
-      f.buttons
+    
+    f.buttons
+    
     end
 end
 

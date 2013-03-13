@@ -103,8 +103,8 @@ ActiveAdmin.register Book do
         end
         column("Publisher")    { |book| book.publisher.name }
         column("Country")       { |book| book.origin.name rescue nil}  
-        column("Genre")        { |book| book.genre.name rescue nil }
-        column("Fiction Type") { |book| book.fiction_type.name rescue nil}
+        column("Category")        { |book| book.category.name rescue nil }
+        column("Subcategory")        { |book| book.subcategory.name rescue nil }
         column("Textbook Level")    { |book| book.textbook_level.name rescue nil}
         column("Textbook Subject")  { |book| book.textbook_subject.name rescue nil}
         column("Reading Level")     {|book| book.read_level.name rescue nil}

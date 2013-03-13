@@ -24,7 +24,7 @@ ActiveAdmin.register_page "Dashboard" do
             column("Country")             { |project| project.origin.name }
             column("Model")               { |project| project.model.name }
             column("Type")                { |project| project.project_type.name }
-            column("Number of Devices")   {|project| project.accounts_with_devices }                                    
+            column("Number of Devices")   {|project| project.number_devices }                                    
             column("Out of Order")        { |project| project.out_of_order }
           end
         end
