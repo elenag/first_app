@@ -24,10 +24,8 @@ ActiveAdmin.register Book do
 
   filter :asin
   filter :book_status
-  filter :genre
   filter :category
   filter :subcategory
-  filter :fiction_type
   filter :textbook_level
   filter :textbook_sumlevel
   filter :textbook_subject
@@ -129,8 +127,6 @@ ActiveAdmin.register Book do
     		f.input :title, :input_html => { :size => 10 }
         f.input :book_status, :collection => BookStatus.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :language , :collection => Language.all.map{ |language| [language.name, language.id] }.sort
-   #     f.input :genre, :collection => Genre.all.map{ |genre| [genre.name, genre.id] }.sort, :lable => "Content Type"
-        f.input :fiction_type, :hint => "(Only if genre is fiction)", :collection => FictionType.all.map{ |stat| [stat.name, stat.id] }.sort
         f.input :category, :collection => Category.all.map{ |cat| [cat.name, cat.id] }.sort, :lable => "Content Type"
         f.input :subcategory, :collection => Subcategory.all.map{ |subc| [subc.name, subc.id] }.sort, :lable => "Content Subtype"
         f.input :textbook_level, :hint => "(Only if genre is textbook)", :collection => TextbookLevel.all.map{ |stat| [stat.name, stat.id] }.sort

@@ -4,6 +4,9 @@ set :repository,  "git@github.com:elenag/first_app.git"
 set :scm, :git
 set :deploy_to, "/home/ubuntu/worldreader"
 set :user, "ubuntu"
+
+
+
 # Or: `accurev`, `bzr`, `cvs`, `darcs`, `git`, `mercurial`, `perforce`, `subversion` or `none`
 
 #role :app, "worldreader"

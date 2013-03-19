@@ -1,0 +1,16 @@
+DELETE
+SELECT
+  dv
+FROM
+  devices dv,
+  accounts ac
+WHERE
+  ac.homeroom_id = 59
+  AND dv.account_id = ac.id
+  
+
+   DELETE 
+   	devices 
+   FROM   devices,   accounts  
+   WHERE   accounts.homeroom_id = 61   
+   AND devices.account_id = accounts.id;
