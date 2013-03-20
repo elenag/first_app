@@ -1,9 +1,5 @@
 ActiveAdmin.register Book do
 
- #scope :African
- #scope :International
- #scope :ToBeReviewed
-
   batch_action :origins do |selection|
     Book.find(selection).each {|p| p.update_attribute(:origin_id, p.publisher.origin_id)}
     redirect_to collection_path, :notice => "country of origin changed!"
@@ -21,6 +17,19 @@ ActiveAdmin.register Book do
 
 
   batch_action :destroy, false
+
+    action_item :only => :index do
+      link_to 'Upload books.csv', :action => 'upload_csv'
+    end
+
+    collection_action :upload_csv do
+      render "admin/csv/upload_csv"
+    end
+
+    collection_action :import_csv, :method => :post do
+      CsvDb.convert_save_books(params[:dump][:file])
+      redirect_to :action => :index, :notice => "CSV imported successfully!"
+    end
 
   filter :asin
   filter :book_status
@@ -44,35 +53,8 @@ ActiveAdmin.register Book do
   filter :created_at
   filter :updated_at
   filter :in_store, :label => "In Amazon Store", :as => :select
- 
-
-  # controller do
-  #   def create 
-  #     create! do |format|
-  #       format.html { redirect_to admin_books_url }
-  #        create!(:notice => "Book has been created") { admin_books_url }
-  #     end
-  #   end
-  # end
-
-
-  action_item :only => :index do
-    	link_to 'Upload books.csv', :action => 'upload_csv'
-  	end
-
-  	collection_action :upload_csv do
-    	render "admin/csv/upload_csv"
-  	end
-
-  	collection_action :import_csv, :method => :post do
-    	CsvDb.convert_save_books(params[:dump][:file])
-    	redirect_to :action => :index, :notice => "CSV imported successfully!"
-  	end
-
-    
-
   
-    index do
+  index do
       selectable_column
       column("Status") {|book| book.book_status.name } 
       column :asin
@@ -112,15 +94,6 @@ ActiveAdmin.register Book do
     end
 
     form do |f|
-  #  	f.inputs "Authors Details" do 
-  #       has_many :authors do |authors|
-  #         authors.input :name
-
-  # f.input :users, :as => :select, :input_html => { :size => 1}, 
-  #       :multiple => false, collection: User.where(role:1), include_blank: false
-  #       end
-  #    end
-       #, :collection => Author.all.map{ |stat| [stat.name, stat.id] }.sort
       f.inputs "Book Details" do 
         f.input :authors, :collection => Author.all.sort_by(&:name) 
         f.input :asin, :input_html => { :size => 10 }

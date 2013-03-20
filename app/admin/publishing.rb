@@ -30,11 +30,30 @@ ActiveAdmin.register Publisher do
     default_actions
   end
 
+  csv do
+        column("Name")      { |pub| pub.name }
+        column("Address")   { |pub| pub.address }
+        column("Phone No")  { |pub| pub.telephone }
+        column("Email")  { |pub| pub.email }
+        column "Contacts Names" do |pub| 
+            pub.pub_contacts.map(&:name).join(", ").html_safe
+        end
+        column "Contacts emails" do |pub| 
+            pub.pub_contacts.map(&:email).join(", ").html_safe
+        end
+        column "Contacts Tel Numbers" do |pub| 
+            pub.pub_contacts.map(&:telephone).join(", ").html_safe
+        end
+        column "Contacts Comments" do |pub| 
+            pub.pub_contacts.map(&:telephone).join(", ").html_safe
+        end
+    end
+
   show do 
     panel("Publisher") do
       attributes_table_for publisher do 
         row :name 
-        row :origin, :label => "Country"
+        row :origin
         row :contract_end_date
         row :free
       end
