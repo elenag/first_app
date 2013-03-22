@@ -39,7 +39,7 @@ class Book < ActiveRecord::Base
 
   accepts_nested_attributes_for :genre, :publisher, :authors, :origin
 
-  validates :title, :publisher_id, :language_id, :genre_id, :book_status_id, :presence => true
+  validates :title, :publisher_id, :language_id, :book_status_id, :presence => true
   validates_length_of :asin, :minimum => 10, :maximum => 10, :allow_blank => true
   validates_uniqueness_of :asin
 

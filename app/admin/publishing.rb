@@ -21,7 +21,8 @@ ActiveAdmin.register Publisher do
   
   index do
     selectable_column
-    column "Name" do |publisher|
+    column "Name", :sortable => true do |publisher|
+
         link_to publisher.name, admin_publisher_path(publisher)
       end
     column :origin, :label => "Country", :sortable => false

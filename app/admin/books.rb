@@ -124,9 +124,10 @@ ActiveAdmin.register Book do
         f.input :restricted, :as => :boolean, :label =>"Rights restrictions", :hint => "(Specify in comments)"
         f.input :limited, :label =>"Copy restrictions", :hint => "(Number of copies to be pushed, following the MOU)"
         f.input :comments 
-        f.input :origin, :label =>"Country"
+        f.input :origin
+        f.input :in_store
       end
-      f.buttons
+      f.actions
     end
 
 end
