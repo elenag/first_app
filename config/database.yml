@@ -23,6 +23,6 @@ production:
   database: worldreader
   encoding: utf8
   username: worldreader
-  password: totKoirIvnavwuds
+  password: *
   host: localhost
   timeout: 5000
