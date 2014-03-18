@@ -9,11 +9,11 @@ ActiveAdmin.register School do
     column :name do |school|
       link_to school.name, admin_school_path(school)
     end
-    column("Project" ) { |school| school.project.name }
+    column("Project") { |school| school.project.name }
     column("Classrooms") do |school|
       link_to school.homerooms.map(&:name).join("<br />").html_safe, admin_homeroom_path(school.homerooms)
     end
-#{|school| homeroom.accounts.where(:status => 'active').count}
+    #{|school| homeroom.accounts.where(:status => 'active').count}
     default_actions
   end
 

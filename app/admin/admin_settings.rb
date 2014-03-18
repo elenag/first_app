@@ -147,20 +147,22 @@ ActiveAdmin.register TextbookLevel do
   index do
     column :name 
     column("Number of books") {|tl| tl.books.count}
+    column("Origin") {|textbook_level| textbook_level.origin.name rescue nil} 
     default_actions
   end
 
   form do |f|
     f.inputs "Textbook Level Details" do
       f.input :name
+      f.input :origin
     end
         
-    f.buttons
+    f.actions
   end
 end
 
 ActiveAdmin.register TextbookSumlevel do
-  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents" 
+  menu :if => proc{ current_admin_user.can_edit_origins? }, :parent => "Continents"   
 
   actions :index, :show, :new, :create, :update, :edit
 

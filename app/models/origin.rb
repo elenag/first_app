@@ -9,6 +9,7 @@ class Origin < ActiveRecord::Base
   accepts_nested_attributes_for :authors
   has_many :publishers
   has_many :books
+  has_many :textbook_levels
   
   validates :name, :continent_id, :presence => true
 

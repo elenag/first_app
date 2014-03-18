@@ -27,7 +27,11 @@ FirstApp::Application.routes.draw do
   # Keep in mind you can assign values other than :controller and :action
 
   # Sample of named route:
-  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase
+  #   match 'products/:id/purchase' => 'catalog#purchase', :as => :purchase  
+  match '/admin/books/changetextlevel' =>  'admin/books#changetextlevel',  :via => 'post', :as => :admin_books_changetextlevel
+  match '/admin/books/loadsubcategory' =>  'admin/books#loadsubcategory',  :via => 'post', :as => :admin_books_loadsubcategory
+  
+
   # This route can be invoked with purchase_url(:id => product.id)
 
   # Sample resource route (maps HTTP verbs to controller actions automatically):
@@ -66,6 +70,8 @@ FirstApp::Application.routes.draw do
   #     resources :products
   #   end
 
+
+  
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
    root :to => 'admin/dashboard#index'

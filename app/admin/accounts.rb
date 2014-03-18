@@ -10,8 +10,8 @@ ActiveAdmin.register Homeroom do
     column "Content Bucket" do |homeroom| 
       homeroom.content_buckets.map(&:name).join("<br />").html_safe
     end
-    column("School" ) { |homeroom| homeroom.school.name }
-    column("Project" ) { |homeroom| homeroom.school.project.name }
+    column("School") { |homeroom| homeroom.school.name }
+    column("Project") { |homeroom| homeroom.school.project.name }
     column("No of accounts") {|homeroom| homeroom.accounts.where(:status => 'active').count} 
     
     default_actions

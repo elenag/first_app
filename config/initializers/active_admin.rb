@@ -20,7 +20,12 @@ ActiveAdmin.setup do |config|
   config.site_title_image = "logo.png"
 
   config.batch_actions = true
- 
+
+  # Set the CSV builder separator (default is ",")
+  # config.csv_column_separator = ';'
+
+  # Set the CSV builder options (default is {})
+  config.csv_options = { :force_quotes => true }
 
   # == Default Namespace
   #
@@ -135,5 +140,18 @@ ActiveAdmin.setup do |config|
   #
   # To load a javascript file:
   #   config.register_javascript 'my_javascript.js'
+
+  config.namespace :admin do |admin|
+
+      # This block will edit the default menu
+      admin.build_menu do |menu|
+        menu.add :label => "Reports"
+        menu.add :label => "Book Coverage",:priority => 2, :parent => "Reports",:url =>"/admin/books/download_coverage_report"       
+        menu.add :label => "Non-Textbook Coverage",:priority => 3, :parent => "Reports",:url =>"/admin/books/non_textbook_coverage_report"       
+        menu.add :label => "Textbook Coverage",:priority => 3, :parent => "Reports",:url =>"/admin/books/textbook_coverage_report"       
+        menu.add :label => "Books Pushed per kit",:priority => 4, :parent => "Reports",:url =>"/admin/books/download_books_per_kit"       
+        menu.add :label => "Donated Value",:priority => 5, :parent => "Reports",:url =>"/admin/publishers/donated_report"       
+      end
+  end
 
 end

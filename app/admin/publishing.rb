@@ -11,23 +11,56 @@ ActiveAdmin.register Publisher do
   action_item :only => :index do
     link_to 'Upload CSV', :action => 'upload_csv'
   end
+
   collection_action :upload_csv do
     render "admin/csv/upload_csv"
   end
+
   collection_action :import_csv, :method => :post do
     CsvDb.convert_save("publishers", params[:dump][:file])
     redirect_to :action => :index, :notice => "CSV imported successfully!"
   end
+
+  # Donated form render // form
+  collection_action :donated_report do
+      render "admin/csv/download_donated_report"
+  end
+
+  collection_action :download_donaterpt_action, :method => :post do
+  
+    yearofreport= (params[:dump]['start_date(1i)']).to_s
+     @csvfilename = CsvDb.download_donaterpt_csv(
+         
+      Date.civil(
+          params[:dump]['start_date(1i)'].to_i,
+          params[:dump]['start_date(2i)'].to_i,
+          params[:dump]['start_date(3i)'].to_i
+      ).to_s,
+      Date.civil(
+          params[:dump]['end_date(1i)'].to_i,
+          params[:dump]['end_date(2i)'].to_i,
+          params[:dump]['end_date(3i)'].to_i
+      ).to_s,      
+      yearofreport
+
+    )
+
+    send_file Rails.root.to_s+"/csvdownload/"+@csvfilename, :type => "application/csv"    
+  end 
+  
   
   index do
     selectable_column
     column "Name", :sortable => true do |publisher|
-
         link_to publisher.name, admin_publisher_path(publisher)
       end
-    column :origin, :label => "Country", :sortable => false
+    column "Continent", :sortable => true do |publisher|
+        publisher.origin.continent.name rescue nil
+    end
+    column "Country" ,:origin, :sortable => false
     column :contract_end_date
-    column :free
+    column "Pricing model",:free
+
     default_actions
   end
 
@@ -48,15 +81,47 @@ ActiveAdmin.register Publisher do
         column "Contacts Comments" do |pub| 
             pub.pub_contacts.map(&:telephone).join(", ").html_safe
         end
-    end
+  end
+  
+  
+
+  filter :name
+  filter :continent, :include_blank => false, :as => :select, :label => "Region", 
+        :collection => proc {Continent.all} rescue nil
+  filter :origin_id, :collection => Origin.all.map{ |origin| [origin.name, origin.id]}.sort
+  filter :created_at
+  filter :updated_at
+  filter :address
+  filter :telephone
+  filter :email
+  filter :account_name
+  filter :account_number
+  filter :bank
+  filter :branch
+  filter :swift_code
+  filter :branch_code
+  filter :bank_code
+  filter :name_US_corresponding_bank
+  filter :routing_number
+  filter :contract_end_date,:label=>"Ereader contract end date"
+  filter :free, :label => "Ereader pricing Model",:collection =>[['Free','free'],['Mixed','mixed'],['Paid','paid']], :as => :select   
+  filter :platform_mobile, :as => :boolean
+  filter :platform_ereader, :as => :boolean
+  filter :platform_mob_contractdate, :label => "Mobile Contract Date"
+
+
 
   show do 
     panel("Publisher") do
       attributes_table_for publisher do 
-        row :name 
+        row :name         
         row :origin
-        row :contract_end_date
-        row :free
+        row :contract_end_date,:label=>"Ereader contract end date"
+        row("Ereader Pricing model") { publisher.free }
+        row("Ereader Platform") { |publisher| publisher.platform_ereader rescue nil}
+        row("Mobile Platform") { |publisher| publisher.platform_mobile rescue nil}
+        row("Mobile Contract Date") { |publisher| publisher.platform_mob_contractdate rescue nil}
+
       end
     end
 
@@ -108,13 +173,42 @@ ActiveAdmin.register Publisher do
   form do |f|
     f.inputs "Publisher Details" do
       f.input :name
-      f.input :origin
-      f.input :contract_end_date
-      f.input :free, :label => "Free Content", :as => :boolean
-    end   
+      f.input :self_published,:label=>"Self published"
+      f.input :origin, :collection => Origin.all.map{ |origin| [origin.name, origin.id]}.sort
+      f.input :contract_end_date,:label=>"Ereader contract end date", :as => :date 
+      booleanoption = [['Free','free'],['Mixed','mixed'],['Paid','paid']]
+      f.input :free, :label => "Ereader Pricing model",:collection =>booleanoption, :as => :radio          
+       f.input :platform_ereader, :as => :boolean
+      f.input :platform_mobile, :as => :boolean
+      f.input :platform_mob_contractdate,:label=>"Mobile contract date", :as => :date
+    end  
+
+    # f.inputs  "Contract Details" do 
+    #   f.input :imprints,:label=>"Imprints"      
+    #   f.input :address,:label=>"Street Address"
+    #   f.input :city
+    #   f.input :postal_code
+    #   f.input :country_id , :label => "Country", :collection => Origin.all.map{ |origin| [origin.name, origin.id]}.sort
+    #   f.input :alernate_add1,:label=>"Alternate Address1"
+    #   f.input :alernate_add2,:label=>"Alternate Address2"
+    #   f.input :website
+    #   f.input :shared_ftp_link,:label=>"Shared FTP Address"
+    #   f.input :telephone
+    #   f.input :email
+
+    # end
 
     f.inputs  "Publisher's Contact Info" do 
-      f.input :address
+      f.input :imprints,:label=>"Imprints"
+      
+      f.input :address,:label=>"Street Address"
+      f.input :city
+      f.input :postal_code
+      # f.input :country_id , :label => "Country", :collection => Origin.all.map{ |origin| [origin.name, origin.id]}.sort
+      f.input :alernate_add1,:label=>"Alternate Address1"
+      f.input :alernate_add2,:label=>"Alternate Address2"
+      f.input :website
+      # f.input :shared_ftp_link,:label=>"Shared FTP Address"
       f.input :telephone
       f.input :email
     end
@@ -125,8 +219,8 @@ ActiveAdmin.register Publisher do
       f.input :bank
       f.input :branch
       f.input :swift_code
-      f.input :branch_code
-      f.input :bank_code
+      # f.input :branch_code
+      # f.input :bank_code
       f.input :name_US_corresponding_bank
       f.input :routing_number
     end
@@ -194,8 +288,6 @@ ActiveAdmin.register Author do
     end      
     f.buttons
   end
-
-
 end
 
 ActiveAdmin.register Category do

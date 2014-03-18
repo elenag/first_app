@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
-  protect_from_forgery
+   protect_from_forgery
 
+  	
 end
 
 # class DevicesController < ApplicationController
@@ -8,4 +9,3 @@ end
 #     @devices = current_admin_user.devices
 #   end
 # end
-

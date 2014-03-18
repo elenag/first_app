@@ -27,3 +27,10 @@
 // .active_admin       applies to any Active Admin namespace
 // .admin_namespace    applies to the admin namespace (eg: /admin)
 // .other_namespace    applies to a custom namespace named other (eg: /other)
+.choices-group li { float:left; margin-right:50px !important;}
+#publisher_self_published_input > label { width: 122px;}
+.admin_books .filter_check_boxes{
+	
+	height: 200px;
+    overflow-y: scroll;
+}

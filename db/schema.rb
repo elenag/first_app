@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130305123820) do
+ActiveRecord::Schema.define(:version => 20130906074646) do
 
   create_table "accounts", :force => true do |t|
     t.string   "acc_number"
@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.integer "project_id"
   end
 
-  add_index "admin_users_projects", ["admin_user_id", "project_id"], :name => "admin_user_project_index"
+  add_index "admin_users_projects", ["admin_user_id", "project_id"], :name => "admin_user_project_index", :unique => true
 
   create_table "appstatuses", :force => true do |t|
     t.string   "name"
@@ -103,16 +103,16 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
   create_table "books", :force => true do |t|
     t.string   "asin"
     t.string   "title"
-    t.decimal  "price"
+    t.decimal  "price",                                                  :precision => 10, :scale => 2
     t.integer  "rating"
-    t.boolean  "flagged",              :default => false
+    t.boolean  "flagged",                                                                               :default => false
     t.boolean  "copublished"
     t.integer  "publisher_id"
     t.integer  "language_id"
     t.integer  "genre_id"
     t.text     "description"
-    t.datetime "created_at",                              :null => false
-    t.datetime "updated_at",                              :null => false
+    t.datetime "created_at",                                                                                               :null => false
+    t.datetime "updated_at",                                                                                               :null => false
     t.date     "date_added"
     t.boolean  "restricted"
     t.integer  "limited"
@@ -120,29 +120,61 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.integer  "textbook_level_id"
     t.integer  "textbook_subject_id"
     t.integer  "book_status_id"
-    t.integer  "appstatus_id"
-    t.string   "mou_fname"
-    t.text     "comments"
     t.boolean  "source_file"
     t.boolean  "source_cover"
     t.boolean  "mobi"
     t.boolean  "epub"
     t.boolean  "fixed_epub"
+    t.text     "comments"
+    t.string   "mou_fname"
     t.integer  "origin_id"
+    t.integer  "appstatus_id"
+    t.string   "appstatus"
     t.string   "keywords"
     t.integer  "read_level_id"
     t.integer  "textbook_sumlevel_id"
     t.integer  "category_id"
     t.integer  "subcategory_id"
     t.boolean  "in_store"
+    t.string   "binu_source_file_name"
+    t.string   "binu_paperback_equivalent"
+    t.string   "binu_sort_title"
+    t.string   "binu_series"
+    t.string   "binu_creator_1_name"
+    t.string   "binu_creator_1_role"
+    t.string   "binu_publisher"
+    t.string   "binu_imprint"
+    t.string   "binu_pub_date"
+    t.string   "binu_srp_inc_vat"
+    t.string   "binu_currency"
+    t.string   "binu_on_sale_date"
+    t.string   "binu_langauge"
+    t.string   "binu_geo_rights"
+    t.string   "binu_subject1"
+    t.string   "binu_subject2"
+    t.string   "binu_bisac"
+    t.string   "binu_bic"
+    t.string   "binu_bic2"
+    t.string   "binu_fiction_subject2"
+    t.string   "binu_keyword"
+    t.string   "binu_short_description"
+    t.string   "binu_not_for_sale"
+    t.string   "binu_ready_for_sale"
+    t.string   "binu_country"
+    t.boolean  "certified_by_national_board_of_education"
+    t.integer  "book_id"
+    t.boolean  "geo_restricted"
+    t.string   "geo_restrictedby"
+    t.string   "pricingmodel",                             :limit => 0
+    t.string   "textguide_book_id",                        :limit => 45
   end
 
   add_index "books", ["book_status_id", "appstatus_id"], :name => "index_books_on_book_status_id_and_appstatus_id"
   add_index "books", ["category_id"], :name => "index_books_on_category_id"
   add_index "books", ["fiction_type_id"], :name => "index_books_on_fiction_type_id"
-  add_index "books", ["genre_id"], :name => "index_books_on_genre_id"
-  add_index "books", ["language_id"], :name => "index_books_on_language_id"
-  add_index "books", ["publisher_id"], :name => "index_books_on_publisher_id"
+  add_index "books", ["genre_id"], :name => "books_genre_index"
+  add_index "books", ["language_id"], :name => "books_language_index"
+  add_index "books", ["publisher_id"], :name => "books_publisher_index"
   add_index "books", ["read_level_id"], :name => "index_books_on_read_level_id"
   add_index "books", ["subcategory_id"], :name => "index_books_on_subcategory_id"
   add_index "books", ["textbook_level_id"], :name => "index_books_on_textbook_level_id"
@@ -249,6 +281,13 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "grades_books", :id => false, :force => true do |t|
+    t.integer "book_id"
+    t.integer "origin_grade_id"
+  end
+
+  add_index "grades_books", ["book_id", "origin_grade_id"], :name => "index_grades_books_on_book_id_and_origin_grade_id"
+
   create_table "homerooms", :force => true do |t|
     t.string   "name"
     t.integer  "school_id"
@@ -257,6 +296,52 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
   end
 
   add_index "homerooms", ["school_id"], :name => "index_homerooms_on_school_id"
+
+  create_table "homerooms_content_buckets", :id => false, :force => true do |t|
+    t.integer "content_bucket_id"
+    t.integer "homeroom_id"
+  end
+
+  add_index "homerooms_content_buckets", ["homeroom_id", "content_bucket_id"], :name => "homeroom_content_bucket_index", :unique => true
+
+  create_table "kdp_reports", :force => true do |t|
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "asin"
+    t.string   "month_sold"
+    t.string   "transaction_type"
+    t.integer  "net_units_sold_or_borrowed"
+    t.decimal  "average_delivery_cost",      :precision => 10, :scale => 2
+    t.decimal  "royalty",                    :precision => 10, :scale => 2
+    t.string   "store"
+    t.string   "currency"
+    t.string   "exchange_rate"
+    t.string   "usd_net"
+    t.string   "owed_to_publisher"
+    t.integer  "book_id"
+    t.datetime "created_at",                                                :null => false
+    t.datetime "updated_at",                                                :null => false
+  end
+
+  create_table "kdp_reports_bck", :id => false, :force => true do |t|
+    t.integer  "id",                                                        :default => 0, :null => false
+    t.date     "start_date"
+    t.date     "end_date"
+    t.string   "asin"
+    t.string   "month_sold"
+    t.string   "transaction_type"
+    t.integer  "net_units_sold_or_borrowed"
+    t.decimal  "average_delivery_cost",      :precision => 10, :scale => 2
+    t.decimal  "royalty",                    :precision => 10, :scale => 2
+    t.string   "store"
+    t.string   "currency"
+    t.string   "exchange_rate"
+    t.string   "usd_net"
+    t.string   "owed_to_publisher"
+    t.integer  "book_id"
+    t.datetime "created_at",                                                               :null => false
+    t.datetime "updated_at",                                                               :null => false
+  end
 
   create_table "languages", :force => true do |t|
     t.string   "name"
@@ -332,21 +417,19 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
 
   create_table "pub_contacts", :force => true do |t|
     t.string   "name"
-    t.string   "email"
-    t.string   "telephone"
-    t.string   "comments"
+    t.string   "email",        :limit => 35
+    t.string   "telephone",    :limit => 25
+    t.text     "comments"
     t.integer  "publisher_id"
-    t.datetime "created_at",   :null => false
-    t.datetime "updated_at",   :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
-
-  add_index "pub_contacts", ["publisher_id"], :name => "index_pub_contacts_on_publisher_id"
 
   create_table "publishers", :force => true do |t|
     t.string   "name"
     t.integer  "origin_id"
-    t.datetime "created_at",                 :null => false
-    t.datetime "updated_at",                 :null => false
+    t.datetime "created_at",                                                  :null => false
+    t.datetime "updated_at",                                                  :null => false
     t.string   "address"
     t.string   "telephone"
     t.string   "email"
@@ -360,7 +443,19 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.string   "name_US_corresponding_bank"
     t.string   "routing_number"
     t.date     "contract_end_date"
-    t.boolean  "free"
+    t.string   "free",                       :limit => 0, :default => "free"
+    t.date     "platform_mob_contractdate"
+    t.boolean  "self_published"
+    t.string   "imprints"
+    t.string   "city"
+    t.string   "postal_code"
+    t.integer  "country_id"
+    t.string   "alernate_add1"
+    t.string   "alernate_add2"
+    t.string   "website"
+    t.string   "shared_ftp_link"
+    t.integer  "platform_mobile"
+    t.integer  "platform_ereader"
   end
 
   add_index "publishers", ["origin_id"], :name => "index_publishers_on_origin_id"
@@ -399,6 +494,20 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "restrictedcontinent_books", :id => false, :force => true do |t|
+    t.integer "book_id"
+    t.integer "geo_continent_id"
+  end
+
+  add_index "restrictedcontinent_books", ["book_id", "geo_continent_id"], :name => "index_restrictedcontinent_books_on_book_id_and_geo_continent_id"
+
+  create_table "restrictedorigin_books", :id => false, :force => true do |t|
+    t.integer "book_id"
+    t.integer "geo_origin_id"
+  end
+
+  add_index "restrictedorigin_books", ["book_id", "geo_origin_id"], :name => "index_restrictedorigin_books_on_book_id_and_geo_origin_id"
+
   create_table "schools", :force => true do |t|
     t.string   "name"
     t.integer  "project_id"
@@ -418,7 +527,7 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.string   "role"
   end
 
-  add_index "students", ["account_id"], :name => "index_students_on_account_id"
+  add_index "students", ["account_id"], :name => "index_students_on_account_id", :unique => true
 
   create_table "subcategories", :force => true do |t|
     t.string   "name"
@@ -432,6 +541,7 @@ ActiveRecord::Schema.define(:version => 20130305123820) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+    t.integer  "origin_id"
   end
 
   create_table "textbook_subjects", :force => true do |t|

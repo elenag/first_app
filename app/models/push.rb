@@ -5,7 +5,7 @@ class Push < ActiveRecord::Base
    belongs_to :content_bucket
 
    has_one :project, :through => :content_bucket
-
+  
    validates :push_date, :book_id, :content_bucket_id, :presence => true
 
    class << self

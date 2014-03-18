@@ -191,15 +191,7 @@ ActiveAdmin.register Device do
           f.input :device_type, :collection => DeviceType.all 
           f.input :action, :collection => Device.device_action_collection
 
-        end
-        
+        end        
         f.actions
-
-    end
-
-  
+    end  
 end
-
-
-
-
