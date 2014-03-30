@@ -234,7 +234,7 @@ ActiveAdmin.register Publisher do
       end
     end
 
-    f.buttons
+    f.actions
   end
 
 end
@@ -286,7 +286,7 @@ ActiveAdmin.register Author do
       f.input :origin, :collection => Origin.all.map{ |origin| [origin.name, origin.id] }
       f.input :comments
     end      
-    f.buttons
+    f.actions
   end
 end
 
@@ -305,7 +305,7 @@ ActiveAdmin.register Category do
         p.input :name
       end
     end
-      f.buttons
+      f.actions
     end
 end
 
@@ -324,6 +324,6 @@ ActiveAdmin.register Subcategory do
             f.input :category, :collection => Category.all.map{ |cat| [cat.name, cat.id] }
         end
         
-        f.buttons
+        f.actions
     end
 end

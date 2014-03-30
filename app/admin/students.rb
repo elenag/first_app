@@ -47,7 +47,7 @@ ActiveAdmin.register Student do
       f.input :account, :collection => Account.all.map{ |account| [account.acc_number, account.id] }
       #   f.input :homeroom
     end
-    f.buttons
+    f.actions
   end
 
   show do 

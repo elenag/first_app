@@ -79,8 +79,8 @@ ActiveAdmin.register Project do
       f.input :target_size
       f.input :current_size
     
-    f.buttons
-    
+    #f.buttons
+    f.actions
     end
 end
 
